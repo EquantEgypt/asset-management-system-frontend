@@ -11,7 +11,9 @@ export class LoginGuard implements CanActivate {
   canActivate(): boolean {
     if (this.auth.isAuthenticated()) {
       // already logged in → redirect to dashboard
-      this.router.navigate(['/employee-dashboard']);
+      const role= this.auth.getRole();
+      this.router.navigate([`/${role}-dashboard`]);
+      
       return false;
     }
     return true; // allow access to login
