@@ -1,34 +1,44 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, tap } from 'rxjs';
+import { Observable, of, throwError, tap } from 'rxjs';
 
 @Injectable({
     providedIn: 'root'
 })
 export class AuthService {
-    private apiUrl = 'https://localhost:8080';
+   private mockUsers = [
+    { email: 'maryiamreda@orange.com', password: '12345@Am', role: 'employee' },
+    { email: 'admin@orange.com', password: 'Admin@123', role: 'admin' }
+  ];
 
-    constructor(private http: HttpClient) {}
+    login(email: string, password: string): Observable<any> {
+        const user = this.mockUsers.find(u => u.email === email && u.password === password);
+        
+        if (!user) {
+            return throwError(() => new Error('Invalid credentials'));
+        }
 
-    login(username: string, password: string): Observable<any> {
-        const headers = new HttpHeaders({
-            'Authorization': 'Basic ' + btoa(`${username}:${password}`)
-        });
-        console.log("reached here");
-        return this.http.post<any>(`${this.apiUrl}/tasks`, {}, { headers }).pipe(
-      tap(() => {
-        // mark user as logged in
-        localStorage.setItem('authToken', btoa(`${username}:${password}`));
-      })
-    );
+        // Return the user wrapped in Observable with tap for side effects
+        return of(user).pipe(
+            tap((foundUser) => {
+                // Store auth token and role in localStorage
+                localStorage.setItem('authToken', btoa(`${email}:${password}`));
+                localStorage.setItem('role', foundUser.role);
+                console.log('User logged in successfully:', foundUser);
+            })
+        );
     }
 
     logout(): void {
-        // Implement logout logic if needed
-        // For example, remove tokens from localStorage
         localStorage.removeItem('authToken');
+        localStorage.removeItem('role');
+        console.log('User logged out');
     }
+
     isAuthenticated(): boolean {
-    return !!localStorage.getItem('authToken');
-  }
+        return !!localStorage.getItem('authToken');
+    }
+
+    getRole(): string | null {
+        return localStorage.getItem('role');
+    }
 }
