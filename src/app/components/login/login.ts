@@ -49,16 +49,21 @@ export class Login {
     togglePassword() {
         this.showPassword = !this.showPassword;
     }
+formSubmitted = false;
 
-    onSubmit() {
-        if (this.profileForm.invalid) {
+ onSubmit() {
+this.formSubmitted = true;
+
+        const email = this.email?.value!;
+        const password = this.password?.value!;
+
+        if (this.profileForm.invalid  ) {
             this.profileForm.markAllAsTouched();
             return;
         }
 
-        const email = this.email?.value!;
-        const password = this.password?.value!;
-        const keepLoggedIn = this.keepLoggedIn?.value || false; // Get checkbox value
+        
+        const keepLoggedIn = this.keepLoggedIn?.value || false; 
 
         this.authService.login(email, password, keepLoggedIn).subscribe({
             next: (user) => {
@@ -67,6 +72,7 @@ export class Login {
                 this.router.navigate([`/${user.role}-dashboard`]);
             },
             error: (err) => {
+               
                 console.error('Login failed:', err.message);
             }
         });

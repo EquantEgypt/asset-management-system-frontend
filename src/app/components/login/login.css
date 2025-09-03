@@ -2,12 +2,12 @@
 
         .login-card {
             
-            background: linear-gradient(135deg, #4A90E2 0%, #357ABD 100%);
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
             border-radius: 20px;
             padding: 40px 30px;
-            width: 350px;
+            width: 400px;
             box-shadow: 0 20px 40px rgba(74, 144, 226, 0.3);
-            color: white;
+            color: var(--text-color);
             box-shadow: rgba(0, 0, 0, 0.17) 0px -23px 25px 0px inset, rgba(0, 0, 0, 0.15) 0px -36px 30px 0px inset, rgba(0, 0, 0, 0.1) 0px -79px 40px 0px inset, rgba(0, 0, 0, 0.06) 0px 2px 1px, rgba(0, 0, 0, 0.09) 0px 4px 2px, rgba(0, 0, 0, 0.09) 0px 8px 4px, rgba(0, 0, 0, 0.09) 0px 16px 8px, rgba(0, 0, 0, 0.09) 0px 32px 16px;
         }
 
@@ -69,7 +69,7 @@
             background: rgba(255, 255, 255, 0.1);
             border: none;
             border-radius: 24px;
-            color: white;
+            color: var(--text-color);
             font-size: 15px;
             backdrop-filter: blur(10px);
             position: relative;
@@ -130,7 +130,8 @@
             width: 18px;
             height: 18px;
             margin-right: 8px;
-            accent-color: white;
+            accent-color: var(--text-color)
+;
         }
 
         .checkbox-label {
@@ -138,26 +139,16 @@
             opacity: 0.9;
         }
 
-        .forgot-password {
-            color: white;
-            text-decoration: none;
-            font-size: 13px;
-            opacity: 0.9;
-        }
-
-        .forgot-password:hover {
-            text-decoration: underline;
-        }
-
+        
         .login-button {
             width: 100%;
             padding: 13px;
-            background: #6eabf3; 
-            color: rgba(255, 255, 255, 0.9);
+            background: var(--accent-color); 
+            color:var(--text-color);
             border: none;
             border-radius: 24px;
             font-size: 16px;
-            font-weight: 600;
+            font-weight: 500;
             cursor: pointer;
             margin-bottom: 30px;
             transition: all 0.3s ease;
