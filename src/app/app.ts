@@ -3,19 +3,10 @@ import { RouterOutlet } from '@angular/router';
 import { Login } from './login/login';
 import { HttpClient } from '@angular/common/http';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-<<<<<<< HEAD
-import { ToastService, AngularToastifyModule } from 'angular-toastify'; 
-
-@Component({
-  selector: 'app-root',
-  imports: [RouterOutlet,FontAwesomeModule, AngularToastifyModule],
-    providers: [ToastService],
-=======
 
 @Component({
   selector: 'app-root',
   imports: [RouterOutlet,FontAwesomeModule],
->>>>>>> enhance UI and CSS styling; integrate FontAwesome
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
