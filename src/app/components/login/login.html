@@ -16,7 +16,7 @@
             <i class="fa-solid fa-envelope"></i>
         </div>
       </div>
-<div *ngIf="email?.invalid && (email?.dirty || email?.touched || formSubmitted)" class="error">
+<div *ngIf="email?.invalid && (email?.dirty || email?.touched )" class="error">
         <div *ngIf="email?.errors?.['required']">Email is required.</div>
         <div *ngIf="email?.errors?.['email']">Invalid email format.</div>
         <small *ngIf="email?.errors?.['pattern']">
@@ -41,7 +41,7 @@
           <i class="fas" [class.fa-eye]="!showPassword" [class.fa-eye-slash]="showPassword"></i>
         </div>
       </div>
-      <div *ngIf="password?.invalid && (password?.dirty || password?.touched || formSubmitted)" class="error">
+      <div *ngIf="password?.invalid && (password?.dirty || password?.touched )" class="error">
         <small *ngIf="password?.errors?.['required']">Password is required</small>
         <small *ngIf="password?.errors?.['minlength']">
           Password must be at least 8 characters
@@ -64,8 +64,9 @@
       </div>
     </div>
 
-    <button type="submit" class="login-button" [disabled]="profileForm.invalid">
+    <button type="submit" class="login-button" >
       Login
     </button>
   </form>
+
 </div>
