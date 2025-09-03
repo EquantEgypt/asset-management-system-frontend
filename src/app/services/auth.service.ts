@@ -10,20 +10,24 @@ export class AuthService {
     { email: 'admin@orange.com', password: 'Admin@123', role: 'admin' }
   ];
 
-    login(email: string, password: string): Observable<any> {
+    login(email: string, password: string, keepLoggedIn: boolean): Observable<any> {
         const user = this.mockUsers.find(u => u.email === email && u.password === password);
         
         if (!user) {
             return throwError(() => new Error('Invalid credentials'));
         }
 
-        // Return the user wrapped in Observable with tap for side effects
         return of(user).pipe(
             tap((foundUser) => {
-                // Store auth token and role in localStorage
-                localStorage.setItem('authToken', btoa(`${email}:${password}`));
-                localStorage.setItem('role', foundUser.role);
-                console.log('User logged in successfully:', foundUser);
+                const storage = keepLoggedIn ? localStorage : sessionStorage;
+                
+                storage.setItem('authToken', btoa(`${email}:${password}`));
+                storage.setItem('role', foundUser.role);
+                
+                const otherStorage = keepLoggedIn ? sessionStorage : localStorage;
+                otherStorage.removeItem('authToken');
+                otherStorage.removeItem('role');
+                
             })
         );
     }
@@ -31,14 +35,20 @@ export class AuthService {
     logout(): void {
         localStorage.removeItem('authToken');
         localStorage.removeItem('role');
+        sessionStorage.removeItem('authToken');
+        sessionStorage.removeItem('role');
         console.log('User logged out');
     }
 
     isAuthenticated(): boolean {
-        return !!localStorage.getItem('authToken');
+        return !!(localStorage.getItem('authToken') || sessionStorage.getItem('authToken'));
     }
 
     getRole(): string | null {
-        return localStorage.getItem('role');
+        return localStorage.getItem('role') || sessionStorage.getItem('role');
+    }
+
+    getAuthToken(): string | null {
+        return localStorage.getItem('authToken') || sessionStorage.getItem('authToken');
     }
 }

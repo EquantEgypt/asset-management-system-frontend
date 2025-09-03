@@ -12,6 +12,6 @@ export class EmployeeDashboard {
   constructor(private auth:AuthService, private router: Router){}
  logout() {
     this.auth.logout();
-    this.router.navigate(['/login']); // redirect after logout
+    this.router.navigate(['/login']);
   }
 }
