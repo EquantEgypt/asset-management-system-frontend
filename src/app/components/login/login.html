@@ -12,21 +12,29 @@
                  <div *ngIf="email?.invalid && (email?.dirty || email?.touched)" class="error">
             <div *ngIf="email?.errors?.['required']">Email is required.</div>
             <div *ngIf="email?.errors?.['email']">Invalid email format.</div>
+            <small *ngIf="email?.errors?.['pattern']">
+    Email must be an @orange address
+  </small>
         </div>
             </div>
 
             <div class="form-group">
                 <label class="form-label">Password</label>
                 <div class="password-input-container">
-                    <input type="password" class="form-input password-input" formControlName="password" placeholder="••••••••••">
+                    <input     [type]="showPassword ? 'text' : 'password'" class="form-input password-input" formControlName="password" placeholder="••••••••••">
                     <div class="input-icon">🔒</div>
-                    <div class="eye-icon">👁</div>
+                   <div class="eye-icon" (click)="togglePassword()" style="cursor: pointer;">
+    {{ showPassword ? '🙈' : '👁' }}
+  </div>
                 </div>
                 <div *ngIf="password?.invalid && (password?.dirty || password?.touched)" class="error">
-            <div *ngIf="password?.errors?.['required']">Password is required.</div>
-            <div *ngIf="password?.errors?.['minlength']">
-                Password must be at least 6 characters long.
-            </div>
+           <small *ngIf="password?.errors?.['required']">Password is required</small>
+  <small *ngIf="password?.errors?.['minlength']">
+    Password must be at least 6 characters
+  </small>
+  <small *ngIf="password?.errors?.['pattern']">
+    Password must include an uppercase letter, a number, and a special character
+  </small>
         </div>
             </div>
 
@@ -35,7 +43,7 @@
                     <input type="checkbox" id="remember" class="checkbox">
                     <label for="remember" class="checkbox-label">Keep me logged in</label>
                 </div>
-                <a href="#" class="forgot-password">Forgot password?</a>
+                <!-- <a href="#" class="forgot-password">Forgot password?</a> -->
             </div>
 
             <button type="submit"  class="login-button">Login</button>
