@@ -1,68 +1,34 @@
 import { Injectable } from '@angular/core';
-import { Observable, of, throwError, tap } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
-import { Router } from '@angular/router';
-import { Role } from '../model/roles.enum';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable, tap } from 'rxjs';
 
-
-
-const AUTH_TOKEN = 'AUTH_TOKEN';
-const ROLES = 'ROLES';
-const USER = 'User';
-const BACKEND_URL = 'http://localhost:8080';
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
-
 export class AuthService {
+    private apiUrl = 'https://localhost:8080';
 
+    constructor(private http: HttpClient) {}
 
-  constructor(private http: HttpClient, private router: Router) { }
-
-
-
-  login(email: string, password: string, keepLoggedIn: boolean): Observable<any> {
-    // Encode email:password into Base64
-    const basicAuthToken = btoa(`${email}:${password}`);
-
-    // Make a request with the Authorization header 
-    return this.http.post<any>(
-      `${BACKEND_URL}/auth/login`,
-      {},  // body 
-      {
-        headers: { Authorization: `Basic ${basicAuthToken}` }
-      }
-    ).pipe(
-      tap((response) => {
-        const storage = keepLoggedIn ? localStorage : sessionStorage;
-        storage.setItem(AUTH_TOKEN, basicAuthToken);
-        localStorage.setItem(USER, JSON.stringify(response));
-        this.router.navigate([`/dashboard`]);
+    login(username: string, password: string): Observable<any> {
+        const headers = new HttpHeaders({
+            'Authorization': 'Basic ' + btoa(`${username}:${password}`)
+        });
+        console.log("reached here");
+        return this.http.post<any>(`${this.apiUrl}/tasks`, {}, { headers }).pipe(
+      tap(() => {
+        // mark user as logged in
+        localStorage.setItem('authToken', btoa(`${username}:${password}`));
       })
     );
-  }
-  logout(): void {
-    localStorage.removeItem(AUTH_TOKEN);
-    localStorage.removeItem(ROLES);
-    sessionStorage.removeItem(AUTH_TOKEN);
-    sessionStorage.removeItem(ROLES);
-  }
-
-  isAuthenticated(): boolean {
-    return !!(localStorage.getItem(AUTH_TOKEN) || sessionStorage.getItem(AUTH_TOKEN));
-  }
-
-  getRole(): Role | null {
-    try {
-      return JSON.parse(localStorage.getItem(USER) ?? 'null')?.role ?? null;
-    } catch {
-      return null;
     }
-  }
 
-
-
-  getAuthToken(): string | null {
-    return localStorage.getItem(AUTH_TOKEN) || sessionStorage.getItem(AUTH_TOKEN);
+    logout(): void {
+        // Implement logout logic if needed
+        // For example, remove tokens from localStorage
+        localStorage.removeItem('authToken');
+    }
+    isAuthenticated(): boolean {
+    return !!localStorage.getItem('authToken');
   }
 }
