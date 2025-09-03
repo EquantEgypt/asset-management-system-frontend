@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -10,7 +11,7 @@ import { AuthService } from '../../services/auth.service';
   styleUrl: './login.css'
 })
 export class Login {
-     constructor(private AuthService: AuthService) {}
+     constructor(private authService: AuthService, private router: Router) {}
       showPassword = false; // default: hidden
 
     profileForm = new FormGroup({
@@ -36,22 +37,26 @@ get name() {
     this.showPassword = !this.showPassword;
   }
 
-   onSubmit() {
-  if (this.profileForm.invalid) {
-    // mark all controls as touched so errors show up
-    this.profileForm.markAllAsTouched();
-    return;
-  }
+    onSubmit() {
+        if (this.profileForm.invalid) {
+            this.profileForm.markAllAsTouched();
+            return;
+        }
 
-this.AuthService.login(this.email!.value!, this.password!.value!).subscribe({
-    next: (response) => {
-      console.log(' Login successful:', response);
-      // maybe save token, navigate, etc.
-    },
-    error: (err) => {
-      console.error(' Login failed:', err);
+        const email = this.email?.value!;
+        const password = this.password?.value!;
+
+        // Fixed: Use correct service name and fixed template literal
+        this.authService.login(email, password).subscribe({
+            next: (user) => {
+                console.log('from logn form' + user)
+                console.log('Login successful:', user);
+                // Fixed: Use 'user' instead of undefined variable, proper template literal
+                this.router.navigate([`/${user.role}-dashboard`]);
+            },
+            error: (err) => {
+                console.error('Login failed:', err.message);
+            }
+        });
     }
-  });
-}
-
 }
