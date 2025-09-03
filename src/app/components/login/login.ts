@@ -1,8 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, ContentChild } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
+import { faEye, faEyeSlash, faEnvelope, faLock } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-login',
@@ -11,8 +12,12 @@ import { Router } from '@angular/router';
   styleUrl: './login.css'
 })
 export class Login {
+    faEye = faEye;
+  faEyeSlash = faEyeSlash;
+  faEnvelope = faEnvelope;
+  faLock = faLock;
+    showPassword = false;
      constructor(private authService: AuthService, private router: Router) {}
-      showPassword = false; // default: hidden
 
     profileForm = new FormGroup({
         email: new FormControl('', [Validators.required, Validators.email,   Validators.pattern(/^[a-zA-Z0-9._%+-]+@orange.com$/)
