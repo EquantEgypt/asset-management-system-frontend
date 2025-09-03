@@ -1,14 +1,10 @@
 import { Component, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { Login } from './login/login';
-import { HttpClient } from '@angular/common/http';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { ToastService, AngularToastifyModule } from 'angular-toastify'; 
+import { Login } from './components/login/login';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet,FontAwesomeModule, AngularToastifyModule],
-    providers: [ToastService],
+  imports: [RouterOutlet,Login],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
