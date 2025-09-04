@@ -19,21 +19,20 @@ login(email: string, password: string, keepLoggedIn: boolean): Observable<any> {
   const basicAuthToken = btoa(`${email}:${password}`);
 
   // Make a request with the Authorization header (optional: to verify credentials)
-  return this.http.post<any>('http://localhost:8080/auth/login', {
+  return this.http.post<any>(
+  'http://localhost:8080/auth/login',
+  {},  // body (empty if not needed)
+  {
     headers: { Authorization: `Basic ${basicAuthToken}` }
-  }).pipe(
-    tap((response) => {
-      // response can contain the role if your backend provides it
-      const storage = keepLoggedIn ? localStorage : sessionStorage;
+  }
+).pipe(
+  tap((response) => {
+    const storage = keepLoggedIn ? localStorage : sessionStorage;
+    storage.setItem('authToken', basicAuthToken);
+    storage.setItem('role', response.role.toLowerCase());
+  })
+);
 
-      storage.setItem('authToken', basicAuthToken);
-      storage.setItem('role', response.role); // you must ensure backend sends it
-
-      const otherStorage = keepLoggedIn ? sessionStorage : localStorage;
-      otherStorage.removeItem('authToken');
-      otherStorage.removeItem('role');
-    })
-  );
 }
 
 
