@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Observable, of, throwError, tap } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 @Injectable({
     providedIn: 'root'
 })
 
 export class AuthService {
-    constructor(private http: HttpClient) {}
+    constructor(private http: HttpClient, private router:Router) {}
 
    private mockUsers = [
     { email: 'maryiamreda@orange.com', password: '12345@Am', role: 'employee' },
@@ -18,10 +19,10 @@ login(email: string, password: string, keepLoggedIn: boolean): Observable<any> {
   // Encode email:password into Base64
   const basicAuthToken = btoa(`${email}:${password}`);
 
-  // Make a request with the Authorization header (optional: to verify credentials)
+  // Make a request with the Authorization header 
   return this.http.post<any>(
   'http://localhost:8080/auth/login',
-  {},  // body (empty if not needed)
+  {},  // body 
   {
     headers: { Authorization: `Basic ${basicAuthToken}` }
   }
@@ -29,7 +30,9 @@ login(email: string, password: string, keepLoggedIn: boolean): Observable<any> {
   tap((response) => {
     const storage = keepLoggedIn ? localStorage : sessionStorage;
     storage.setItem('authToken', basicAuthToken);
-    storage.setItem('role', response.role.toLowerCase());
+    const role=response.role.toLowerCase();
+    storage.setItem('role',role );
+this.router.navigate([`/${role}-dashboard`]);
   })
 );
 
