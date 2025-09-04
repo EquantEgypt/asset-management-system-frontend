@@ -1,36 +1,42 @@
 import { Injectable } from '@angular/core';
 import { Observable, of, throwError, tap } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
     providedIn: 'root'
 })
+
 export class AuthService {
+    constructor(private http: HttpClient) {}
+
    private mockUsers = [
     { email: 'maryiamreda@orange.com', password: '12345@Am', role: 'employee' },
     { email: 'admin@orange.com', password: 'Admin@123', role: 'admin' }
   ];
 
-    login(email: string, password: string, keepLoggedIn: boolean): Observable<any> {
-        const user = this.mockUsers.find(u => u.email === email && u.password === password);
-        
-        if (!user) {
-            return throwError(() => new Error('Invalid credentials'));
-        }
+login(email: string, password: string, keepLoggedIn: boolean): Observable<any> {
+  // Encode email:password into Base64
+  const basicAuthToken = btoa(`${email}:${password}`);
 
-        return of(user).pipe(
-            tap((foundUser) => {
-                const storage = keepLoggedIn ? localStorage : sessionStorage;
-                
-                storage.setItem('authToken', btoa(`${email}:${password}`));
-                storage.setItem('role', foundUser.role);
-                
-                const otherStorage = keepLoggedIn ? sessionStorage : localStorage;
-                otherStorage.removeItem('authToken');
-                otherStorage.removeItem('role');
-                
-            })
-        );
-    }
+  // Make a request with the Authorization header (optional: to verify credentials)
+  return this.http.post<any>('http://localhost:8080/auth/login', {
+    headers: { Authorization: `Basic ${basicAuthToken}` }
+  }).pipe(
+    tap((response) => {
+      // response can contain the role if your backend provides it
+      const storage = keepLoggedIn ? localStorage : sessionStorage;
+
+      storage.setItem('authToken', basicAuthToken);
+      storage.setItem('role', response.role); // you must ensure backend sends it
+
+      const otherStorage = keepLoggedIn ? sessionStorage : localStorage;
+      otherStorage.removeItem('authToken');
+      otherStorage.removeItem('role');
+    })
+  );
+}
+
+
 
     logout(): void {
         localStorage.removeItem('authToken');
