@@ -33,7 +33,7 @@ export class Login {
             Validators.minLength(8),
             Validators.pattern(/^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*]).+$/)
         ]),
-        keepLoggedIn: new FormControl(false) // Added proper default value
+        keepLoggedIn: new FormControl(false)
     });
 
     get email() {
@@ -73,7 +73,7 @@ export class Login {
             next: (user) => {
                 this.toast.success('Login successful')
                 console.log('Login successful:', user);
-                this.router.navigate([`/${user.role}-dashboard`]);
+                // this.router.navigate([`/${user.role}-dashboard`]);
             },
             error: (err) => {
      this.toast.error(err);
