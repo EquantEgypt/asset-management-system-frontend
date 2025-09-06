@@ -5,7 +5,6 @@ import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { faEye, faEyeSlash, faEnvelope, faLock } from '@fortawesome/free-solid-svg-icons';
 import { ToastService } from 'angular-toastify';
-// import Toastify from 'toastify-js';
 
 @Component({
   selector: 'app-login',
@@ -13,6 +12,7 @@ import { ToastService } from 'angular-toastify';
   templateUrl: './login.html',
   styleUrl: './login.css'
 })
+
 export class Login {
     faEye = faEye;
     faEyeSlash = faEyeSlash;
@@ -31,7 +31,7 @@ export class Login {
         password: new FormControl('', [
             Validators.required,
             Validators.minLength(8),
-            // Validators.pattern(/^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*]).+$/)
+            Validators.pattern(/^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*]).+$/)
         ]),
         keepLoggedIn: new FormControl(false) // Added proper default value
     });
@@ -54,8 +54,6 @@ export class Login {
 
 
  onSubmit() {
-
-
         const email = this.email?.value!;
         const password = this.password?.value!;
 
@@ -76,9 +74,13 @@ export class Login {
                 this.router.navigate([`/${user.role}-dashboard`]);
             },
             error: (err) => {
-     this.toast.error(err);
+                let message='Login Failed';
+                if(err.status==401) message='wrong credentials';
+                 else if(err.status==500) message='server error ';
 
-                console.error('Login failed:', err.message);
+     this.toast.error(message);
+
+                console.error('Login failed:', err);
             }
         });
     }

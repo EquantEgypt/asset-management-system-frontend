@@ -26,5 +26,4 @@ canActivate(route: ActivatedRouteSnapshot): boolean {
   return false;
 }
 
-
 }
