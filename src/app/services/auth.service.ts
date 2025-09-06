@@ -10,10 +10,7 @@ import { Router } from '@angular/router';
 export class AuthService {
     constructor(private http: HttpClient, private router:Router) {}
 
-   private mockUsers = [
-    { email: 'maryiamreda@orange.com', password: '12345@Am', role: 'employee' },
-    { email: 'admin@orange.com', password: 'Admin@123', role: 'admin' }
-  ];
+   
 
 login(email: string, password: string, keepLoggedIn: boolean): Observable<any> {
   // Encode email:password into Base64
@@ -30,19 +27,15 @@ login(email: string, password: string, keepLoggedIn: boolean): Observable<any> {
   tap((response) => {
     const storage = keepLoggedIn ? localStorage : sessionStorage;
     storage.setItem('authToken', basicAuthToken);
-    const role = response.role?.roleType; // "Department_Manager", "Admin", or "Employee"
+    const role = response.role?.roleType;
   if (role) {
     storage.setItem('role', role);
   }
-
-    this.router.navigate([`/${role}-dashboard`]);
+      this.router.navigate([`/${role.toLowerCase()}-dashboard`]);
   })
 );
 
 }
-
-
-
     logout(): void {
         localStorage.removeItem('authToken');
         localStorage.removeItem('role');
@@ -55,7 +48,7 @@ login(email: string, password: string, keepLoggedIn: boolean): Observable<any> {
         return !!(localStorage.getItem('authToken') || sessionStorage.getItem('authToken'));
     }
 
-getRole(): "Employee" | "Admin" | "Department_Manager" | null {
+getRole():string | null {
   return (localStorage.getItem('role') || sessionStorage.getItem('role')) as
     | "Employee"
     | "Admin"
