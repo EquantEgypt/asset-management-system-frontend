@@ -30,9 +30,12 @@ login(email: string, password: string, keepLoggedIn: boolean): Observable<any> {
   tap((response) => {
     const storage = keepLoggedIn ? localStorage : sessionStorage;
     storage.setItem('authToken', basicAuthToken);
-    const role=response.role.toLowerCase();
-    storage.setItem('role',role );
-this.router.navigate([`/${role}-dashboard`]);
+    const role = response.role?.roleType; // "Department_Manager", "Admin", or "Employee"
+  if (role) {
+    storage.setItem('role', role);
+  }
+
+    this.router.navigate([`/${role}-dashboard`]);
   })
 );
 
@@ -52,9 +55,13 @@ this.router.navigate([`/${role}-dashboard`]);
         return !!(localStorage.getItem('authToken') || sessionStorage.getItem('authToken'));
     }
 
-    getRole(): string | null {
-        return localStorage.getItem('role') || sessionStorage.getItem('role');
-    }
+getRole(): "Employee" | "Admin" | "Department_Manager" | null {
+  return (localStorage.getItem('role') || sessionStorage.getItem('role')) as
+    | "Employee"
+    | "Admin"
+    | "Department_Manager"
+    | null;
+}
 
     getAuthToken(): string | null {
         return localStorage.getItem('authToken') || sessionStorage.getItem('authToken');
