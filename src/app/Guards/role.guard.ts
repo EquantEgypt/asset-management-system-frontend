@@ -18,13 +18,10 @@ canActivate(route: ActivatedRouteSnapshot): boolean {
   const requiredRoles = route.data['roles'] as RoleType[];
   const userRole = this.auth.getRole();
 
-  if (userRole && requiredRoles.includes(userRole as RoleType)) {
-    return true;
-  }
-console.log('AuthGuard:', this.auth.isAuthenticated());
-console.log('RoleGuard: userRole=', userRole, 'required=', requiredRoles);
-
-  // Role mismatch : go to login
+   if (userRole && requiredRoles && requiredRoles.includes(userRole as RoleType)) {
+            return true;
+        }
+             
   this.router.navigate(['/login']);
   return false;
 }
