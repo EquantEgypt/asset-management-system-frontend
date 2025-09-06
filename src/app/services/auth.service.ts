@@ -42,7 +42,6 @@ login(email: string, password: string, keepLoggedIn: boolean): Observable<any> {
         localStorage.removeItem('role');
         sessionStorage.removeItem('authToken');
         sessionStorage.removeItem('role');
-        console.log('User logged out');
     }
 
     isAuthenticated(): boolean {
