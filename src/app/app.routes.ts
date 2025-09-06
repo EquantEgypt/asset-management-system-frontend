@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
-import { Login } from './components/login/login';
-import { EmployeeDashboard } from './components/employee-dashboard/employee-dashboard';
-import { AdminDashboard } from './components/admin-dashboard/admin-dashboard';
+import { Login } from './auth/login/login';
+import { EmployeeDashboard } from './dashboards/employee-dashboard/employee-dashboard';
+import { AdminDashboard } from './dashboards/admin-dashboard/admin-dashboard';
 import { AuthGuard } from './Guards/auth.guard';
 import { LoginGuard } from './Guards/login.guard';
 import { RoleGuard } from './Guards/role.guard';
@@ -13,19 +13,20 @@ export const routes: Routes = [
   {
     path: 'login',
     component: Login,
-    canActivate: [LoginGuard]  
+    canActivate: [LoginGuard]
   },
   {
     path: 'employee-dashboard',
     component: EmployeeDashboard,
-    canActivate: [AuthGuard , RoleGuard ] ,
-    data: { roles: [RoleType.EMPLOYEE] }
+    canActivate: [AuthGuard, RoleGuard],
+    data: { roles: ['Employee'] as RoleType[] }
   },
   {
     path: 'admin-dashboard',
     component: AdminDashboard,
-    canActivate: [AuthGuard , RoleGuard]   ,
-    data: { roles: [RoleType.ADMIN] }
-  },
+    canActivate: [AuthGuard, RoleGuard],
+    data: { roles: ['Admin'] as RoleType[] }
+  }
+    ,
   { path: '**', redirectTo: 'login' }
 ];

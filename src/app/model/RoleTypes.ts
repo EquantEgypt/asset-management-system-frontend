@@ -1,4 +1,1 @@
-export enum RoleType {
-  EMPLOYEE = 'employee',
-  ADMIN = 'admin'
-}
+export type RoleType = "Department_Manager" | "Admin" | "Employee";
