@@ -70,16 +70,12 @@ export class Login {
         this.authService.login(email, password, keepLoggedIn).subscribe({
             next: (user) => {
                 this.toast.success('Login successful')
-                console.log('Login successful:', user);
             },
             error: (err) => {
                 let message='Login Failed';
                 if(err.status==401) message='wrong credentials';
                  else if(err.status==500) message='server error ';
-
-     this.toast.error(message);
-
-                console.error('Login failed:', err);
+                this.toast.error(message);
             }
         });
     }
