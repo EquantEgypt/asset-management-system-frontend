@@ -77,10 +77,7 @@ export class Login {
                 let message='Login Failed';
                 if(err.status==401) message='wrong credentials';
                  else if(err.status==500) message='server error ';
-
-     this.toast.error(message);
-
-                console.error('Login failed:', err);
+                this.toast.error(message);
             }
         });
     }
