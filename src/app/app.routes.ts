@@ -5,7 +5,7 @@ import { AdminDashboard } from './components/admin-dashboard/admin-dashboard';
 import { AuthGuard } from './Guards/auth.guard';
 import { LoginGuard } from './Guards/login.guard';
 import { RoleGuard } from './Guards/role.guard';
-import { RoleType } from './types/RoleTypes';
+import { RoleType } from './model/RoleTypes';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
