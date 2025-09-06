@@ -8,7 +8,9 @@ import { Router } from '@angular/router';
 })
 
 export class AuthService {
-    constructor(private http: HttpClient, private router:Router) {}
+
+
+constructor(private http: HttpClient, private router:Router) {}
 
    
 
@@ -34,7 +36,6 @@ login(email: string, password: string, keepLoggedIn: boolean): Observable<any> {
       this.router.navigate([`/${role.toLowerCase()}-dashboard`]);
   })
 );
-
 }
     logout(): void {
         localStorage.removeItem('authToken');
