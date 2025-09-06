@@ -24,7 +24,7 @@ canActivate(route: ActivatedRouteSnapshot): boolean {
 console.log('AuthGuard:', this.auth.isAuthenticated());
 console.log('RoleGuard: userRole=', userRole, 'required=', requiredRoles);
 
-  // Role mismatch → go to login
+  // Role mismatch : go to login
   this.router.navigate(['/login']);
   return false;
 }
