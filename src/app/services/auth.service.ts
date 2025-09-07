@@ -29,6 +29,8 @@ login(email: string, password: string, keepLoggedIn: boolean): Observable<any> {
   tap((response) => {
     const storage = keepLoggedIn ? localStorage : sessionStorage;
     storage.setItem('authToken', basicAuthToken);
+        storage.setItem('email', email);
+
     const role = response.role?.roleType;
   if (role) {
     storage.setItem('role', role);
@@ -56,6 +58,9 @@ getRole():string | null {
     | null;
 }
 
+getCurrentUserEmail(){
+    return (localStorage.getItem('email') || sessionStorage.getItem('email'))
+}
     getAuthToken(): string | null {
         return localStorage.getItem('authToken') || sessionStorage.getItem('authToken');
     }

@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
+import { AssetsContainer } from '../../components/assets-container/assets-container';
 
 @Component({
   selector: 'app-employee-dashboard',
-  imports: [],
+  imports: [AssetsContainer],
   templateUrl: './employee-dashboard.html',
   styleUrl: './employee-dashboard.css'
 })
