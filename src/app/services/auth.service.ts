@@ -33,7 +33,7 @@ login(email: string, password: string, keepLoggedIn: boolean): Observable<any> {
   if (role) {
     storage.setItem('role', role);
   }
-      this.router.navigate([`/${role.toLowerCase()}-dashboard`]);
+      this.router.navigate([`/dashboard`]);
   })
 );
 }

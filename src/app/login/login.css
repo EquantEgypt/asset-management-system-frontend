@@ -1,8 +1,6 @@
-
-
-        .login-card {
+      .login-card {
             
-  background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
             border-radius: 20px;
             padding: 40px 30px;
             width: 450px;
@@ -120,16 +118,13 @@
             display: flex;
             align-items: center;
              margin-bottom: 30px;
-
-
         }
 
         .checkbox {
             width: 18px;
             height: 18px;
             margin-right: 8px;
-            accent-color: var(--text-color)
-;
+            accent-color: var(--text-color);
         }
 
         .checkbox-label {
