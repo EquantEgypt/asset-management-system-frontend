@@ -1,1 +1,32 @@
-<p>assets-container works!</p>
+<div class="assets-container">
+  <h2 class="title">💻 Assets</h2>
+
+  <div *ngIf="loading" class="loading">Loading assets...</div>
+
+  <div *ngIf="!loading && assets.length === 0" class="empty">
+    No assets found.
+  </div>
+
+  <div *ngIf="!loading && assets.length > 0" class="assets-grid">
+    <div *ngFor="let asset of assets" class="asset-card">
+      <h3 class="asset-name">{{ asset.name }}</h3>
+      <p class="asset-category">{{ asset.category }} • {{ asset.type }}</p>
+      <p class="asset-desc">{{ asset.description }}</p>
+
+      <p class="asset-serial">Serial: {{ asset.serialNumber || 'N/A' }}</p>
+      <p class="asset-purchase">
+        Purchased: {{ asset.purchaseDate || 'Unknown' }}
+      </p>
+
+      <p class="asset-status">
+        <span [ngClass]="asset.status" class="status-badge">
+          {{ asset.status }}
+        </span>
+      </p>
+
+      <p *ngIf="asset.assignedTo" class="assigned">
+        Assigned to: {{ asset.assignedTo }}
+      </p>
+    </div>
+  </div>
+</div>
