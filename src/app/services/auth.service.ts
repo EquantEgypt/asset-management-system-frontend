@@ -61,8 +61,17 @@ export class AuthService {
   }
 
 
+<<<<<<< HEAD
 
   getAuthToken(): string | null {
     return localStorage.getItem(AUTH_TOKEN) || sessionStorage.getItem(AUTH_TOKEN);
   }
+=======
+getCurrentUserEmail(){
+    return (localStorage.getItem('email') || sessionStorage.getItem('email'))
+}
+    getAuthToken(): string | null {
+        return localStorage.getItem(AUTH_TOKEN) || sessionStorage.getItem(AUTH_TOKEN);
+    }
+>>>>>>> table styles
 }
