@@ -6,7 +6,8 @@ import { AuthGuard } from './Guards/auth.guard';
 import { LoginGuard } from './Guards/login.guard';
 import { RoleGuard } from './Guards/role.guard';
 import { RoleType } from './model/RoleTypes';
-
+import {ItDashboard} from './dashboards/it-dashboard/it-dashboard';
+import { ManagerDashboard } from './dashboards/manager-dashboard/manager-dashboard';
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
 
@@ -26,7 +27,19 @@ export const routes: Routes = [
     component: AdminDashboard,
     canActivate: [AuthGuard, RoleGuard],
     data: { roles: ['Admin'] as RoleType[] }
-  }
-    ,
+  },
+  {
+    path: 'it-dashboard',
+    component: ItDashboard,
+    canActivate:[AuthGuard,RoleGuard],
+    data: {roles: ['IT']as RoleType[]}
+
+  },
+  {
+   path: 'manager-dashboard',
+    component: ManagerDashboard,
+    canActivate:[AuthGuard,RoleGuard],
+    data: {roles: ['Department_Manager']as RoleType[]}
+  },
   { path: '**', redirectTo: 'login' }
 ];
