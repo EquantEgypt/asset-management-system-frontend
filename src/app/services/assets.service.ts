@@ -18,6 +18,7 @@ export class AssetService {
     return of([]);
   }
 
+ 
   const userRole = this.auth.getRole();
   const currentUserEmail = this.auth.getCurrentUserEmail();
 
@@ -29,6 +30,8 @@ export class AssetService {
       return assignedUser?.email === currentUserEmail;
     });
     return of(userAssets);
+
+    
   }
 }
 
