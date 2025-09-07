@@ -12,25 +12,26 @@ import { Asset } from '../model/asset.model';
 export class AssetService {
   constructor(private auth: AuthService, private router: Router) {}
 
-  getDisplayedAssets(): Observable<Asset[]> {
-    if (!this.auth.isAuthenticated()) {
-      this.router.navigate(['/login']);
-      return of([]);
-    }
-
-    const userRole = this.auth.getRole();
-    const currentUserEmail = this.getCurrentUserEmail();
-    console.log("this is getDisplayedAssets and the user function return  " + userRole);
-    if (userRole === 'Admin') {
-      return of(assets);
-    } else {
-      const userAssets = assets.filter(asset => {
-        const assignedUser = users.find(user => user.username === asset.assignedTo);
-        return assignedUser?.email === currentUserEmail;
-      });
-      return of(userAssets);
-    }
+ getDisplayedAssets(): Observable<Asset[]> {
+  if (!this.auth.isAuthenticated()) {
+    this.router.navigate(['/login']);
+    return of([]);
   }
+
+  const userRole = this.auth.getRole();
+  const currentUserEmail = this.auth.getCurrentUserEmail();
+
+  if (userRole === 'Admin') {
+    return of(assets);
+  } else {
+    const userAssets = assets.filter(asset => {
+      const assignedUser = users.find(user => user.username === asset.assignedTo);
+      return assignedUser?.email === currentUserEmail;
+    });
+    return of(userAssets);
+  }
+}
+
 
   getDisplayedUsers(): Observable<User[]> {
     if (!this.auth.isAuthenticated()) {
@@ -61,10 +62,6 @@ export class AssetService {
     }
   }
 
- 
-
-
-  
 }
 
  
