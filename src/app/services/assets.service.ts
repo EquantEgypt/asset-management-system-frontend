@@ -20,8 +20,8 @@ export class AssetService {
 
     const userRole = this.auth.getRole();
     const currentUserEmail = this.getCurrentUserEmail();
-    
-    if (userRole === 'admin') {
+    console.log("this is getDisplayedAssets and the user function return  " + userRole);
+    if (userRole === 'Admin') {
       return of(assets);
     } else {
       const userAssets = assets.filter(asset => {
@@ -40,7 +40,7 @@ export class AssetService {
 
     const userRole = this.auth.getRole();
     
-    if (userRole === 'admin') {
+    if (userRole === 'Admin') {
       return of(users);
     } else {
       return of([]);
