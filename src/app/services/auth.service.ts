@@ -3,6 +3,11 @@ import { Observable, of, throwError, tap } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 
+
+
+const AUTH_TOKEN = 'AUTH_TOKEN';
+const ROLES = 'ROLES';
+
 @Injectable({
     providedIn: 'root'
 })
@@ -28,28 +33,28 @@ login(email: string, password: string, keepLoggedIn: boolean): Observable<any> {
 ).pipe(
   tap((response) => {
     const storage = keepLoggedIn ? localStorage : sessionStorage;
-    storage.setItem('authToken', basicAuthToken);
+    storage.setItem(AUTH_TOKEN, basicAuthToken);
     const role = response.role?.roleType;
   if (role) {
-    storage.setItem('role', role);
+    storage.setItem(ROLES, role);
   }
       this.router.navigate([`/dashboard`]);
   })
 );
 }
     logout(): void {
-        localStorage.removeItem('authToken');
-        localStorage.removeItem('role');
-        sessionStorage.removeItem('authToken');
-        sessionStorage.removeItem('role');
+        localStorage.removeItem(AUTH_TOKEN);
+        localStorage.removeItem(ROLES);
+        sessionStorage.removeItem(AUTH_TOKEN);
+        sessionStorage.removeItem(ROLES);
     }
 
     isAuthenticated(): boolean {
-        return !!(localStorage.getItem('authToken') || sessionStorage.getItem('authToken'));
+        return !!(localStorage.getItem(AUTH_TOKEN) || sessionStorage.getItem(AUTH_TOKEN));
     }
 
 getRole():string | null {
-  return (localStorage.getItem('role') || sessionStorage.getItem('role')) as
+  return (localStorage.getItem(ROLES) || sessionStorage.getItem(ROLES)) as
     | "Employee"
     | "Admin"
     | "Department_Manager"
@@ -57,6 +62,6 @@ getRole():string | null {
 }
 
     getAuthToken(): string | null {
-        return localStorage.getItem('authToken') || sessionStorage.getItem('authToken');
+        return localStorage.getItem(AUTH_TOKEN) || sessionStorage.getItem(AUTH_TOKEN);
     }
 }
