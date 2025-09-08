@@ -1,5 +1,10 @@
 <div class="login-card">
-  <div class="profile-icon"></div>
+   <div *ngIf="errorMessage" class="error-banner">
+    <i class="fa-solid fa-circle-exclamation"></i>
+    {{ errorMessage }}
+  </div>
+
+  <div *ngIf="!errorMessage" class="profile-icon"></div>
   <h2 class="title">Login to your account</h2>
   
   <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
@@ -59,7 +64,7 @@
       </div>
     </div>
 
-    <button type="submit" class="login-button" >
+    <button type="submit" class="login-button" [disabled]="profileForm.invalid" >
       Login
     </button>
   </form>

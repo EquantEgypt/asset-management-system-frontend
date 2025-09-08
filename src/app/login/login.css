@@ -157,7 +157,17 @@ box-shadow: rgba(14, 63, 126, 0.06) 0px 0px 0px 1px, rgba(42, 51, 70, 0.03) 0px 
     color: pink;
     font-size: 16px;
 }
-      
+.error-banner{
+    background: #ffe5e5;
+  padding: 10px 15px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+     color: red;
+}  
 
         @media (max-width: 400px) {
             .login-card {
