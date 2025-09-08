@@ -43,12 +43,7 @@
       </div>
       <div *ngIf="password?.invalid && (password?.dirty || password?.touched )" class="error">
         <small *ngIf="password?.errors?.['required']">Password is required</small>
-        <small *ngIf="password?.errors?.['minlength']">
-          Password must be at least 8 characters
-        </small>
-        <small *ngIf="password?.errors?.['pattern']">
-          Password must include an uppercase letter, a number, and a special character
-        </small>
+
       </div>
     </div>
 
