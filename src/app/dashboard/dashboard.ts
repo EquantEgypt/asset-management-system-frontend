@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
-
 import { CommonModule } from '@angular/common';
 import {MatTableModule} from '@angular/material/table';
 import { UserList } from '../user/list/user-list/user-list';
