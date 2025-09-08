@@ -29,9 +29,7 @@ export class Login {
             Validators.pattern(/^[a-zA-Z0-9._%+-]+@orange.com$/)
         ]),
         password: new FormControl('', [
-            Validators.required,
-            Validators.minLength(8),
-            Validators.pattern(/^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*]).+$/)
+            Validators.required
         ]),
         keepLoggedIn: new FormControl(false)
     });
