@@ -67,4 +67,6 @@ export class AssetService {
 
 }
 
+
+export { assets, users };
  
