@@ -1,23 +1,24 @@
 import { Component } from '@angular/core';
-import { AuthService } from '../../services/auth.service';
+import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
-import { UsersContainer } from '../../components/users-container/users-container';
-import { AssetsContainer } from '../../components/assets-container/assets-container';
+
 import { CommonModule } from '@angular/common';
 import {MatTableModule} from '@angular/material/table';
+import { UserList } from '../user/list/user-list/user-list';
+import { AssetList } from '../asset/list/asset-list/asset-list';
 
 @Component({
-  selector: 'app-admin-dashboard',
-  imports: [UsersContainer,AssetsContainer,CommonModule , MatTableModule],
-  templateUrl: './admin-dashboard.html',
-  styleUrl: './admin-dashboard.css'
+  selector: 'app-dashboard',
+  imports: [UserList,AssetList,CommonModule , MatTableModule],
+  templateUrl: './dashboard.html',
+  styleUrl: './dashboard.css'
 })
-export class AdminDashboard {
+export class Dashboard {
 constructor(private auth:AuthService, private router: Router){}
 activeTab: any= 'assets'; 
 setActive(tab: 'assets' | 'users') {
     this.activeTab = tab;
-  }
+}
  logout() {
     this.auth.logout();
     this.router.navigate(['/login']);
