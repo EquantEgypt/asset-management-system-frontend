@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable, of, throwError, tap } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { Role } from '../model/roles.enum';
 
 
 
@@ -53,11 +54,9 @@ login(email: string, password: string, keepLoggedIn: boolean): Observable<any> {
         return !!(localStorage.getItem(AUTH_TOKEN) || sessionStorage.getItem(AUTH_TOKEN));
     }
 
-getRole():string | null {
+getRole():Role | null {
   return (localStorage.getItem(ROLES) || sessionStorage.getItem(ROLES)) as
-    | "Employee"
-    | "Admin"
-    | "Department_Manager"
+    Role
     | null;
 }
 
