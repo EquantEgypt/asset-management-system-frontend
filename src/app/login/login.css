@@ -164,6 +164,9 @@ box-shadow: rgba(14, 63, 126, 0.06) 0px 0px 0px 1px, rgba(42, 51, 70, 0.03) 0px 
     font-size: 16px;
 }
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> logic of the submit  and remove toast
 .error-banner{
     background: #ffe5e5;
   padding: 10px 15px;
@@ -175,9 +178,12 @@ box-shadow: rgba(14, 63, 126, 0.06) 0px 0px 0px 1px, rgba(42, 51, 70, 0.03) 0px 
   gap: 8px;
      color: red;
 }  
+<<<<<<< HEAD
 =======
       
 >>>>>>> Address PR review comments
+=======
+>>>>>>> logic of the submit  and remove toast
 
         @media (max-width: 400px) {
             .login-card {
