@@ -53,8 +53,8 @@ errorMessage: string | null = null;
 
 
          const keepLoggedIn = this.keepLoggedIn?.value || false; 
-
-        this.authService.login(email, password, keepLoggedIn).subscribe({
+ if (this.profileForm.valid  ) {
+    this.authService.login(email, password, keepLoggedIn).subscribe({
             next: (user) => {
                         this.errorMessage = null
 
@@ -63,5 +63,7 @@ errorMessage: string | null = null;
         this.errorMessage = 'Invalid email or password. Please try again.';
             }
         });
+ }
+        
     }
 }
