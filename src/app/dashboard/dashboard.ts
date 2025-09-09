@@ -9,8 +9,8 @@ import { Router } from '@angular/router';
   styleUrl: './dashboard.css'
 })
 export class Dashboard {
-constructor(private auth:AuthService, private router: Router){}
- logout() {
+  constructor(private auth: AuthService, private router: Router) { }
+  logout() {
     this.auth.logout();
     this.router.navigate(['/login']);
   }

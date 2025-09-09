@@ -5,14 +5,14 @@ import { Role } from '../model/roles.enum';
 
 @Injectable({ providedIn: 'root' })
 export class AuthGuard implements CanActivate {
-  constructor(private auth: AuthService, private router: Router) {}
+  constructor(private auth: AuthService, private router: Router) { }
 
-  canActivate(route: ActivatedRouteSnapshot,state: RouterStateSnapshot): boolean {
-        const requiredRoles = route.data['roles'] as Role[];
+  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
+    const requiredRoles = route.data['roles'] as Role[];
 
     if (state.url === '/login') {
       if (this.auth.isAuthenticated()) {
-        
+
         this.router.navigate(['/dashboard']);
         return false;  // block access
       }
