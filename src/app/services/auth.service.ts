@@ -27,7 +27,7 @@ export class AuthService {
 
     // Make a request with the Authorization header 
     return this.http.post<any>(
-      `${BACKEND_URL}/login`,
+      `${BACKEND_URL}/auth/login`,
       {},  // body 
       {
         headers: { Authorization: `Basic ${basicAuthToken}` }

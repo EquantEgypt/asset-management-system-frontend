@@ -51,9 +51,11 @@ export class Login {
         const email = this.email?.value!;
         const password = this.password?.value!;
 
+            console.log("button is working")
 
         const keepLoggedIn = this.keepLoggedIn?.value || false;
         if (this.profileForm.valid) {
+            console.log("logging is working")
             this.authService.login(email, password, keepLoggedIn).subscribe({
                 next: (user) => {
                     this.errorMessage = null
