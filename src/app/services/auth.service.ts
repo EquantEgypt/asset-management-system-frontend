@@ -2,12 +2,14 @@ import { Injectable } from '@angular/core';
 import { Observable, of, throwError, tap } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { Role } from '../model/roles.enum';
 
 
 
 const AUTH_TOKEN = 'AUTH_TOKEN';
 const ROLES = 'ROLES';
-
+const USER='User';
+const BACKEND_URL= 'http://localhost:8080';
 @Injectable({
     providedIn: 'root'
 })
@@ -25,8 +27,8 @@ login(email: string, password: string, keepLoggedIn: boolean): Observable<any> {
 
   // Make a request with the Authorization header 
   return this.http.post<any>(
-  'http://localhost:8080/auth/login',
-  {},  // body 
+ `${BACKEND_URL}/login`,
+   {},  // body 
   {
     headers: { Authorization: `Basic ${basicAuthToken}` }
   }
@@ -34,10 +36,7 @@ login(email: string, password: string, keepLoggedIn: boolean): Observable<any> {
   tap((response) => {
     const storage = keepLoggedIn ? localStorage : sessionStorage;
     storage.setItem(AUTH_TOKEN, basicAuthToken);
-    const role = response.role?.roleType;
-  if (role) {
-    storage.setItem(ROLES, role);
-  }
+   localStorage.setItem(USER, JSON.stringify(response.user));
       this.router.navigate([`/dashboard`]);
   })
 );
@@ -53,17 +52,11 @@ login(email: string, password: string, keepLoggedIn: boolean): Observable<any> {
         return !!(localStorage.getItem(AUTH_TOKEN) || sessionStorage.getItem(AUTH_TOKEN));
     }
 
-getRole():string | null {
-  return (localStorage.getItem(ROLES) || sessionStorage.getItem(ROLES)) as
-    | "Employee"
-    | "Admin"
-    | "Department_Manager"
-    | null;
+getRole(): Role | null {
+  return JSON.parse(localStorage.getItem(USER) ?? 'null')?.role ?? null;
 }
 
-getCurrentUserEmail(){
-    return (localStorage.getItem('email') || sessionStorage.getItem('email'))
-}
+
     getAuthToken(): string | null {
         return localStorage.getItem(AUTH_TOKEN) || sessionStorage.getItem(AUTH_TOKEN);
     }
