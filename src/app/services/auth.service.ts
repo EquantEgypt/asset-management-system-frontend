@@ -36,8 +36,8 @@ export class AuthService {
       tap((response) => {
         const storage = keepLoggedIn ? localStorage : sessionStorage;
         storage.setItem(AUTH_TOKEN, basicAuthToken);
-localStorage.setItem(USER, JSON.stringify(response));
-           this.router.navigate([`/dashboard`]);
+        localStorage.setItem(USER, JSON.stringify(response));
+        this.router.navigate([`/dashboard`]);
       })
     );
   }
@@ -52,13 +52,13 @@ localStorage.setItem(USER, JSON.stringify(response));
     return !!(localStorage.getItem(AUTH_TOKEN) || sessionStorage.getItem(AUTH_TOKEN));
   }
 
-getRole(): Role | null {
-  try {
-    return JSON.parse(localStorage.getItem(USER) ?? 'null')?.role?? null;
-  } catch {
-    return null;
+  getRole(): Role | null {
+    try {
+      return JSON.parse(localStorage.getItem(USER) ?? 'null')?.role ?? null;
+    } catch {
+      return null;
+    }
   }
-}
 
 
 
