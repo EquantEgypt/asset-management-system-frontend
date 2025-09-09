@@ -1,12 +1,11 @@
 <div class="admin-dashboard-container">
-    <div class="top-header">
+    <div class="top-header"*ngIf="canAccessUsers()">
     <h2>Access</h2>
     <div class="card-selector">
       <div class=" card-container users-card-container " 
       [class.active]="activeTab === 'assets'"
       (click)="setActive('assets')">
                 <i class="fa-solid fa-database "></i>
-
 
            <h3>Assets</h3>
       </div>
