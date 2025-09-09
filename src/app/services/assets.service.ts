@@ -20,7 +20,7 @@ export class AssetService {
 
  
   const userRole = this.auth.getRole();
-  const currentUserEmail = this.auth.getCurrentUserEmail();
+  const currentUserEmail = this.getCurrentUserEmail();
 
   if (userRole === 'Admin') {
     return of(assets);
