@@ -3,8 +3,9 @@ import { Login } from './login/login';
 import { AuthGuard } from './guards/auth.guard';
 import { Dashboard } from './dashboard/dashboard';
 import { Role } from './model/roles.enum';
+import { AddAssetComponent } from './asset/add/add-asset';
 export const routes: Routes = [
-  { path: '', redirectTo: 'login', pathMatch: 'full' },
+  { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
 
   {
     path: 'login',
@@ -17,5 +18,12 @@ export const routes: Routes = [
     canActivate: [AuthGuard],
     data: { roles: [Role.ADMIN, Role.EMPLOYEE, Role.MANAGER, Role.IT] }
   },
-  { path: '**', redirectTo: 'login' }
+  {
+    path: 'assets/add',
+    component: AddAssetComponent,
+    canActivate: [AuthGuard],
+    data: { roles: [Role.ADMIN] }
+  },
+
+  { path: '**', redirectTo: 'dashboard' }
 ];

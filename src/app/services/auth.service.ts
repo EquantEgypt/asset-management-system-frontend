@@ -3,7 +3,7 @@ import { Observable, of, throwError, tap } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Role } from '../model/roles.enum';
-
+import { UserRole } from '../model/user.model'; // Import UserRole
 
 
 const AUTH_TOKEN = 'AUTH_TOKEN';
@@ -36,7 +36,7 @@ login(email: string, password: string, keepLoggedIn: boolean): Observable<any> {
   tap((response) => {
     const storage = keepLoggedIn ? localStorage : sessionStorage;
     storage.setItem(AUTH_TOKEN, basicAuthToken);
-   localStorage.setItem(USER, JSON.stringify(response.user));
+   localStorage.setItem(USER, JSON.stringify(response)); // Store the whole user DTO from backend
       this.router.navigate([`/dashboard`]);
   })
 );
@@ -44,16 +44,23 @@ login(email: string, password: string, keepLoggedIn: boolean): Observable<any> {
     logout(): void {
         localStorage.removeItem(AUTH_TOKEN);
         localStorage.removeItem(ROLES);
+        localStorage.removeItem(USER);
         sessionStorage.removeItem(AUTH_TOKEN);
         sessionStorage.removeItem(ROLES);
+        sessionStorage.removeItem(USER);
     }
 
     isAuthenticated(): boolean {
         return !!(localStorage.getItem(AUTH_TOKEN) || sessionStorage.getItem(AUTH_TOKEN));
     }
 
-getRole(): Role | null {
-  return JSON.parse(localStorage.getItem(USER) ?? 'null')?.role ?? null;
+getRole(): UserRole | null {
+  const userStr = localStorage.getItem(USER);
+  if (!userStr) {
+    return null;
+  }
+  const user = JSON.parse(userStr);
+  return user?.role ?? null;
 }
 
 
