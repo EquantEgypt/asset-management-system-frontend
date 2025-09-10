@@ -13,9 +13,10 @@ import { UserService } from '../../../services/users.service';
 })
 
 export class UserList  implements AfterViewInit {
- pageSize = 5;
+  totalElements=0;
+  pageSize = 3;
   pageIndex = 0;
-  pageSizeOptions = [5, 10, 25];
+  pageSizeOptions = [3, 5, 7];
   constructor (private userService: UserService){}
     @ViewChild(MatPaginator) paginator: MatPaginator | undefined;
 
@@ -23,34 +24,43 @@ export class UserList  implements AfterViewInit {
 
   displayedColumns: string[] = ['id', 'username', 'email', 'role', 'department'];
   
+//this is making a problem like i want the paginator to be 1 – 3 of (elementlength) but it always return 1 – datasource no of data source no 
 
-  totalElements = 0;
 
   ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-    this.loadUsers();
-  }
+    // this.dataSource.paginator = this.paginator; assign paginator to dataSource for server-side pagination
+    this.loadUsers(this.pageIndex,this.pageSize);
 
-  loadUsers(pageIndex: number = 0, pageSize: number = 5) {
-    this.userService.getUsers(pageIndex, pageSize).subscribe(res => {
-      this.dataSource.data = res.content;     
-      this.totalElements = res.page.totalElements; 
-      console.log(res);
-    });
   }
-  pageEvent: PageEvent | undefined;
+  loadUsers(pageIndex: number = this.pageIndex, pageSize: number = this.pageSize) {
+  this.userService.getUsers(pageIndex, pageSize).subscribe(res => {
+  this.dataSource.data = res.content;
+  this.totalElements = res.page?.totalElements || 0;
+
+
+    if (this.paginator) {
+        this.paginator.length = this.totalElements;
+        this.paginator.pageIndex = pageIndex;
+        this.paginator.pageSize = pageSize;
+      }
+
+    
+  });
+}
+
+
+  // pageEvent: PageEvent | undefined;
 
   handlePageEvent(e: PageEvent) {
-    this.pageEvent = e;
-    this.pageSize = e.pageSize;
-    console.log('the page size now is ' , this.pageSize);
+     this.pageSize = e.pageSize;
     this.pageIndex = e.pageIndex;
-      console.log('the page index now is ' , this.pageIndex);
-      this.loadUsers(e.pageIndex, e.pageSize);
+    
+    console.log('Page event - Index:', e.pageIndex, 'Size:', e.pageSize);
+    console.log('Total elements:', this.totalElements);
+    
+    this.loadUsers(e.pageIndex, e.pageSize);
 
   }
 
-  // onPageChange(event: any) {
-  //   this.loadUsers(event.pageIndex, event.pageSize);
-  // }
+  
 }
