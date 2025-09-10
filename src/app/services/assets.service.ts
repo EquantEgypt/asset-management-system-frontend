@@ -2,15 +2,16 @@
 import { Injectable } from '@angular/core';
 import { Router } from "@angular/router";
 import { AuthService } from "./auth.service";
-import { Observable, of } from 'rxjs';
+import { map, Observable, of, tap } from 'rxjs';
 import { User, users, assets } from '../model/user.model';
 import { Asset } from '../model/asset.model';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AssetService {
-  constructor(private auth: AuthService, private router: Router) {}
+  constructor(private auth: AuthService, private router: Router,private http: HttpClient) {}
 
  getDisplayedAssets(): Observable<Asset[]> {
   if (!this.auth.isAuthenticated()) {
@@ -32,21 +33,14 @@ export class AssetService {
   }
 }
 
+getDisplayedUsers(): Observable<User[]> {
+  const token = this.auth.getAuthToken();  
+  const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+  return this.http.get<User[]>('http://localhost:8080/auth/users',{
+    headers: { Authorization: `Basic ${token}` }
+  });
+}
 
-  getDisplayedUsers(): Observable<User[]> {
-    if (!this.auth.isAuthenticated()) {
-      this.router.navigate(['/login']);
-      return of([]);
-    }
-
-    const userRole = this.auth.getRole();
-    
-    if (userRole === 'Admin') {
-      return of(users);
-    } else {
-      return of([]);
-    }
-  }
 
   private getCurrentUserEmail(): string | null {
     const token = this.auth.getAuthToken();

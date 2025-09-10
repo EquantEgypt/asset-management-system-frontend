@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatTableModule } from '@angular/material/table';
+
+import { MatTableDataSource } from '@angular/material/table';
 
 import { User } from '../../model/user.model';
 import { AssetService } from '../../services/assets.service';
@@ -18,12 +19,15 @@ export class UsersContainer {
 
   displayedColumns: string[] = ['id', 'username', 'email', 'role', 'department'];
 
-  constructor(private assetService: AssetService) {}
+  dataSource = new MatTableDataSource<User>([]);  // <-- DataSource for pagination
 
+  constructor(private assetService: AssetService) {}
   ngOnInit() {
     this.assetService.getDisplayedUsers().subscribe(data => {
       this.users = data;
+    console.log('Users from API:', this.users);
       this.loading = false;
     });
   }
+  
 }

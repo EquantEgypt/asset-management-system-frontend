@@ -1,11 +1,7 @@
 <div class="users-container">
   <h2 class="title">👥 Users</h2>
 
-  <div *ngIf="loading" class="loading">Loading users...</div>
-
-  <div *ngIf="!loading && users.length === 0" class="empty">
-    No users found.
-  </div>
+  
 
   <table mat-table [dataSource]="users" class="mat-elevation-z4 users-table" *ngIf="!loading && users.length > 0">
 
@@ -52,3 +48,4 @@
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
 </div>
+
