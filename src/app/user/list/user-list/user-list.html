@@ -40,17 +40,13 @@
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
 
-  <mat-paginator 
-  [length]="totalElements"
-   [pageIndex]="pageIndex"
-               [pageSize]="pageSize"
-  [pageSizeOptions]="pageSizeOptions"
-               (page)="handlePageEvent($event)"
-                 class="pagniation-bannel">
+  <mat-paginator
+    [length]="totalElements"
+    [pageIndex]="pageIndex" 
+    [pageSize]="pageSize"
+    [pageSizeOptions]="pageSizeOptions" 
+    (page)="handlePageEvent($event)" 
+    aria-label="Select page"  
+    class="pagniation-bannel">
   </mat-paginator>
-<!--   
-  <mat-paginator [pageSizeOptions]="[5, 10, 20]"
-                 showFirstLastButtons
-                 aria-label="Select page of periodic elements"   class="pagniation-bannel">
-  </mat-paginator> -->
 </div>
