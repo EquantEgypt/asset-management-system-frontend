@@ -45,13 +45,13 @@ export class AssetService {
   }
 
   getCategories(): Observable<Category[]> {
-    return this.http.get<Category[]>(`${BACKEND_URL}/api/categories`, {
+    return this.http.get<Category[]>(`${BACKEND_URL}/api/category/all`, {
       headers: this.getAuthHeaders()
     });
   }
 
   getTypes(): Observable<Type[]> {
-    return this.http.get<Type[]>(`${BACKEND_URL}/api/types`, {
+    return this.http.get<Type[]>(`${BACKEND_URL}/api/types/all`, {
       headers: this.getAuthHeaders()
     });
   }

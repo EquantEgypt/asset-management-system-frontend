@@ -2,8 +2,8 @@
   <form [formGroup]="assetForm" (ngSubmit)="onSubmit()" class="asset-form">
     <h2 class="form-title">Add New Asset</h2>
 
-    <div *ngIf="errorMessage" class="error-banner">
-      {{ errorMessage }}
+    <div *ngIf="apiErrorMessage" class="error-banner">
+      {{ apiErrorMessage }}
     </div>
 
     <div class="form-row">
@@ -42,39 +42,28 @@
     <div class="form-row">
       <div class="form-group">
         <label for="allStock">Total Stock</label>
-        <input id="allStock" type="number" formControlName="allStock" (input)="onStockChange()">
+        <input id="allStock" type="number" formControlName="allStock">
         <small class="help-text">Total number of assets</small>
       </div>
       <div class="form-group">
         <label for="numberOfAvailableToAssign">Available</label>
-        <input id="numberOfAvailableToAssign" type="number" formControlName="numberOfAvailableToAssign" (input)="onStockChange()">
+        <input id="numberOfAvailableToAssign" type="number" formControlName="numberOfAvailableToAssign">
         <small class="help-text">Available for assignment</small>
       </div>
       <div class="form-group">
         <label for="numberOfMaintenance">Maintenance</label>
-        <input id="numberOfMaintenance" type="number" formControlName="numberOfMaintenance" (input)="onStockChange()">
+        <input id="numberOfMaintenance" type="number" formControlName="numberOfMaintenance">
         <small class="help-text">Under maintenance</small>
       </div>
       <div class="form-group">
         <label for="numberOfRetired">Retired</label>
-        <input id="numberOfRetired" type="number" formControlName="numberOfRetired" (input)="onStockChange()">
+        <input id="numberOfRetired" type="number" formControlName="numberOfRetired">
         <small class="help-text">Retired assets</small>
       </div>
     </div>
 
-    <div class="stock-validation" *ngIf="showStockValidation">
-      <div class="validation-info">
-        <strong>Stock Validation:</strong>
-        <span>Available ({{ formValue?.numberOfAvailableToAssign || 0 }}) + 
-              Maintenance ({{ formValue?.numberOfMaintenance || 0 }}) + 
-              Retired ({{ formValue?.numberOfRetired || 0 }}) = 
-              {{ (formValue?.numberOfAvailableToAssign || 0) + (formValue?.numberOfMaintenance || 0) + (formValue?.numberOfRetired || 0) }}
-        </span>
-        <span class="total-stock">Total Stock: {{ formValue?.allStock || 0 }}</span>
-        <span class="validation-status" [class.valid]="isStockValid()" [class.invalid]="!isStockValid()">
-          {{ isStockValid() ? '✓ Valid' : '✗ Invalid' }}
-        </span>
-      </div>
+    <div *ngIf="assetForm.errors?.['stockDistribution'] && (assetForm.touched || assetForm.dirty)" class="error-banner">
+      <p>{{ assetForm.errors?.['stockDistribution'] }}</p>
     </div>
 
     <div class="form-actions">

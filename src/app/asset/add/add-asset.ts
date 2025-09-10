@@ -1,10 +1,23 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AssetService, AssetRequest } from '../../services/assets.service';
 import { Category, Type } from '../../model/asset.model';
 import { ToastService } from 'angular-toastify';
+
+export const stockDistributionValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
+    const allStock = control.get('allStock')?.value ?? 0;
+    const available = control.get('numberOfAvailableToAssign')?.value ?? 0;
+    const maintenance = control.get('numberOfMaintenance')?.value ?? 0;
+    const retired = control.get('numberOfRetired')?.value ?? 0;
+
+    const sumOfParts = available + maintenance + retired;
+    return sumOfParts > allStock
+        ? { stockDistribution: 'The sum of available, maintenance, and retired assets cannot exceed the total stock.' }
+        : null;
+};
+
 
 @Component({
   selector: 'app-add-asset',
@@ -17,9 +30,7 @@ export class AddAssetComponent implements OnInit {
   assetForm: FormGroup;
   categories: Category[] = [];
   types: Type[] = [];
-  errorMessage: string | null = null;
-  showStockValidation = false;
-  formValue: any = {};
+  apiErrorMessage: string | null = null;
 
   constructor(
     private fb: FormBuilder,
@@ -37,29 +48,14 @@ export class AddAssetComponent implements OnInit {
       numberOfAvailableToAssign: [0, [Validators.required, Validators.min(0)]],
       numberOfMaintenance: [0, [Validators.required, Validators.min(0)]],
       numberOfRetired: [0, [Validators.required, Validators.min(0)]]
+    }, {
+      validators: stockDistributionValidator
     });
   }
 
   ngOnInit(): void {
     this.loadCategories();
     this.loadTypes();
-    this.updateFormValue();
-  }
-
-  onStockChange(): void {
-    this.updateFormValue();
-    this.showStockValidation = true;
-  }
-
-  updateFormValue(): void {
-    this.formValue = this.assetForm.value;
-  }
-
-  isStockValid(): boolean {
-    const totalCalculated = (this.formValue?.numberOfAvailableToAssign || 0) + 
-                           (this.formValue?.numberOfMaintenance || 0) + 
-                           (this.formValue?.numberOfRetired || 0);
-    return totalCalculated === (this.formValue?.allStock || 0);
   }
 
   loadCategories(): void {
@@ -83,20 +79,18 @@ export class AddAssetComponent implements OnInit {
   }
 
   onSubmit(): void {
+    this.apiErrorMessage = null;
+    this.assetForm.markAllAsTouched();
+
     if (this.assetForm.invalid) {
-      this.assetForm.markAllAsTouched();
+      const stockError = this.assetForm.errors?.['stockDistribution'];
+      if (stockError) {
+          this.toast.error(stockError);
+      } else {
+          this.toast.error('Please fill out all required fields correctly.');
+      }
       return;
     }
-    
-    const formValue = this.assetForm.value;
-    const totalCalculated = formValue.numberOfAvailableToAssign + formValue.numberOfMaintenance + formValue.numberOfRetired;
-
-    if (totalCalculated !== formValue.allStock) {
-        this.errorMessage = "The sum of available, maintenance, and retired assets must equal the total stock.";
-        return;
-    }
-
-    this.errorMessage = null;
 
     const assetData: AssetRequest = this.assetForm.value;
     this.assetService.addAsset(assetData).subscribe({
@@ -105,9 +99,9 @@ export class AddAssetComponent implements OnInit {
         this.router.navigate(['/dashboard']);
       },
       error: (err) => {
-        this.errorMessage = err.error?.message || 'Failed to add asset. Please try again.';
-        if (this.errorMessage) {
-          this.toast.error(this.errorMessage);
+        this.apiErrorMessage = err.error?.message || 'Failed to add asset. Please try again.';
+        if (this.apiErrorMessage) {
+          this.toast.error(this.apiErrorMessage);
         }
         console.error(err);
       }
