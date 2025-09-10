@@ -90,16 +90,15 @@ export class UserList implements OnInit {
   pageEvent: PageEvent | undefined;
 
   handlePageEvent(e: PageEvent) {
-    this.pageEvent = e;
-    this.pageSize = e.pageSize;
-    console.log('the page size now is ' , this.pageSize);
+     this.pageSize = e.pageSize;
     this.pageIndex = e.pageIndex;
-      console.log('the page index now is ' , this.pageIndex);
-      this.loadUsers(e.pageIndex, e.pageSize);
+    
+    console.log('Page event - Index:', e.pageIndex, 'Size:', e.pageSize);
+    console.log('Total elements:', this.totalElements);
+    
+    this.loadUsers(e.pageIndex, e.pageSize);
 
   }
 
-  // onPageChange(event: any) {
-  //   this.loadUsers(event.pageIndex, event.pageSize);
-  // }
+  
 }
