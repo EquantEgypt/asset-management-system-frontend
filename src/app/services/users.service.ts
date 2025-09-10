@@ -14,12 +14,13 @@ export class UserService{
   constructor(private http: HttpClient,private auth: AuthService, private router: Router) {}
 
 
-getUsers(page: number = 0, size: number = 5): Observable<any>{
+getUsers(page: number, size: number): Observable<any>{
 const token= this.auth.getAuthToken();
-console.log('what i get is ' , page,'and',size)
+console.log('what i get is index' , page,'and pagesize is',size)
     const header= new HttpHeaders().set("Authorization",`Bearer ${token}`)
     return this.http.get<any>(`http://localhost:8080/get/users?page=${page}&size=${size}`,{
     headers: { Authorization: `Basic ${token}` }
   });
 }
+
 }
