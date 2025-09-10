@@ -2,16 +2,26 @@
 import { Injectable } from '@angular/core';
 import { Router } from "@angular/router";
 import { AuthService } from "./auth.service";
+<<<<<<< HEAD
 import { map, Observable, of, tap } from 'rxjs';
 import { User, users, assets } from '../model/user.model';
 import { Asset } from '../model/asset.model';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+=======
+import { Observable, of } from 'rxjs';
+import { User, users, assets } from '../model/user.model';
+import { Asset } from '../model/asset.model';
+>>>>>>> 5bf3ff21afccd43f6c0d3a6ff765732d0c1960ff
 
 @Injectable({
   providedIn: 'root'
 })
 export class AssetService {
+<<<<<<< HEAD
   constructor(private auth: AuthService, private router: Router,private http: HttpClient) {}
+=======
+  constructor(private auth: AuthService, private router: Router) {}
+>>>>>>> 5bf3ff21afccd43f6c0d3a6ff765732d0c1960ff
 
  getDisplayedAssets(): Observable<Asset[]> {
   if (!this.auth.isAuthenticated()) {
@@ -19,8 +29,14 @@ export class AssetService {
     return of([]);
   }
 
+<<<<<<< HEAD
   const userRole = this.auth.getRole();
   const currentUserEmail = this.auth.getCurrentUserEmail();
+=======
+ 
+  const userRole = this.auth.getRole();
+  const currentUserEmail = this.getCurrentUserEmail();
+>>>>>>> 5bf3ff21afccd43f6c0d3a6ff765732d0c1960ff
 
   if (userRole === 'Admin') {
     return of(assets);
@@ -30,6 +46,7 @@ export class AssetService {
       return assignedUser?.email === currentUserEmail;
     });
     return of(userAssets);
+<<<<<<< HEAD
   }
 }
 
@@ -41,6 +58,28 @@ getDisplayedUsers(): Observable<User[]> {
   });
 }
 
+=======
+
+    
+  }
+}
+
+
+  getDisplayedUsers(): Observable<User[]> {
+    if (!this.auth.isAuthenticated()) {
+      this.router.navigate(['/login']);
+      return of([]);
+    }
+
+    const userRole = this.auth.getRole();
+    
+    if (userRole === 'Admin') {
+      return of(users);
+    } else {
+      return of([]);
+    }
+  }
+>>>>>>> 5bf3ff21afccd43f6c0d3a6ff765732d0c1960ff
 
   private getCurrentUserEmail(): string | null {
     const token = this.auth.getAuthToken();
@@ -58,4 +97,9 @@ getDisplayedUsers(): Observable<User[]> {
 
 }
 
+<<<<<<< HEAD
+=======
+
+export { assets, users };
+>>>>>>> 5bf3ff21afccd43f6c0d3a6ff765732d0c1960ff
  
