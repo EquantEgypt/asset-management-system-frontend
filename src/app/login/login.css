@@ -1,13 +1,10 @@
-<<<<<<< HEAD:src/app/auth/login/login.css
-
-=======
 .login-card-container{
       min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
 }
->>>>>>> 5bf3ff21afccd43f6c0d3a6ff765732d0c1960ff:src/app/login/login.css
+
 .container{
     min-height: 100vh;
             display: flex;

@@ -8,7 +8,7 @@ import {assets} from '../../../services/assets.service'
   selector: 'app-asset-list',
   imports: [MatTableModule, CommonModule],
   templateUrl: './asset-list.html',
-  styleUrl: './asset-list.css'
+    styleUrls: ['./asset-list.css']
 })
 export class AssetList {
 

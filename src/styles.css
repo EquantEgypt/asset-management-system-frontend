@@ -1,32 +1,22 @@
 /* You can add global styles to this file, and also import other style files */
 :root{
-      --form-bg: rgba(255, 255, 255, 0.1);
-        --primary-color: #4A90E2;
+  --form-bg: rgba(255, 255, 255, 0.1);
+  --primary-color: #4A90E2;
   --primary-dark: #357ABD;
   --text-color: white;
-    --accent-color: #6eabf3;
-
-
+  --accent-color: #6eabf3;
 }
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
 
-        body {
-            background-color: #e8ebef;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            /* min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center; */
-        }
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
-<<<<<<< HEAD
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #e8ebef;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+}
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
-=======
->>>>>>> 5bf3ff21afccd43f6c0d3a6ff765732d0c1960ff
