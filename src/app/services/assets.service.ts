@@ -33,7 +33,7 @@ export class AssetService {
   }
 
   getAssets(): Observable<Asset[]> {
-    return this.http.get<Asset[]>(`${BACKEND_URL}/asset/all`, {
+    return this.http.get<Asset[]>(`${BACKEND_URL}/asset`, {
       headers: this.getAuthHeaders()
     });
   }
@@ -45,13 +45,13 @@ export class AssetService {
   }
 
   getCategories(): Observable<Category[]> {
-    return this.http.get<Category[]>(`${BACKEND_URL}/api/category/all`, {
+    return this.http.get<Category[]>(`${BACKEND_URL}/api/category`, {
       headers: this.getAuthHeaders()
     });
   }
 
   getTypes(): Observable<Type[]> {
-    return this.http.get<Type[]>(`${BACKEND_URL}/api/types/all`, {
+    return this.http.get<Type[]>(`${BACKEND_URL}/api/types`, {
       headers: this.getAuthHeaders()
     });
   }
