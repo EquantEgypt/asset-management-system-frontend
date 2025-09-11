@@ -98,11 +98,11 @@ export class UserList implements OnInit {
   loadDepartments(): void {
     this.departmentService.getDepartmentsName().subscribe({
       next: (res) => this.departments = res,
-      error: (err) => console.error("can't load departments", err) //ways to improve this ?
+      error: (err) => console.error("can't load departments", err)
     });
   }
   filterByDepartment(): void {
-  this.pageIndex = 0; 
-  this.loadUsers();
-}
+    this.pageIndex = 0;
+    this.loadUsers();
+  }
 }
