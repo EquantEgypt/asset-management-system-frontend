@@ -1,8 +1,8 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { User } from '../../../model/user.model';
-import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import {MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { CommonModule } from '@angular/common';
-import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import {  MatTableModule } from '@angular/material/table';
 import { UserService } from '../../../services/users.service';
 import { Department } from '../../../model/department.model';
 import { DepartmentService } from '../../../services/departments.service';
@@ -10,10 +10,11 @@ import { Role } from '../../../model/roles.enum';
 import { AuthService } from '../../../services/auth.service';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-user-list',
-  imports: [CommonModule, MatTableModule, MatPaginatorModule, MatFormFieldModule, MatSelectModule],
+  imports: [CommonModule, MatTableModule, MatPaginatorModule, MatFormFieldModule, MatSelectModule,MatProgressSpinnerModule],
   templateUrl: './user-list.html',
   styleUrl: './user-list.css'
 })
@@ -28,6 +29,7 @@ export class UserList implements OnInit {
   role: Role | null = null;
   filteredDepartment: number | '' = '';
   users: User[] = [];
+  isLoading = false;
   constructor(
     private userService: UserService,
     private departmentService: DepartmentService,
@@ -50,10 +52,13 @@ export class UserList implements OnInit {
   }
 
   loadUsers(): void {
+  this.isLoading = true;
     this.userService.getUsers(this.pageIndex, this.pageSize, this.searchName, this.filteredDepartment)
       .subscribe(res => {
         this.users = res.content;
         this.totalElements = res.page?.totalElements || 0;
+        this.isLoading = false;
+
       });
   }
 
