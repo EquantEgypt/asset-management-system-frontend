@@ -1,5 +1,3 @@
-
-
 .users-container {
   padding: 1.5rem;
   background: #fff;
@@ -36,12 +34,15 @@ td.mat-cell {
 .role.admin {
   background: #1e88e5;
 }
+
 .role.employee {
   background: #43a047;
 }
+
 .role.department_manager {
   background: #fb8c00;
 }
+
 .role.it {
   background: #8e24aa;
 }
@@ -49,16 +50,27 @@ td.mat-cell {
 .department {
   background: #00acc1;
 }
-.table-nav{
-  
+
+.table-nav {
+  display: flex;
+  justify-content: space-between;
+
+
+}
+.filters-div{
+  display: flex;
+  gap:10px
 }
 .search-by-name-div {
-  border: 2px solid black;
-  width: fit-content;
- 
-  border-radius: 6px; 
+  border: 1px solid #dbd6d6;
+    padding: 5px;
+    width: fit-content;
+  border-radius: 6px;
   height: 31px;
 
+}
+.search-by-name:focus {
+  outline: none;
 }
 
 .search-by-name {
@@ -73,7 +85,11 @@ td.mat-cell {
   outline: none;
 }
 
-button{
- border: none;
+button {
+  background: transparent;
+  border: none;
   cursor: pointer;
+}
+.pagniation-bannel{
+  background-color: white;
 }

@@ -1,12 +1,23 @@
 <div class="users-container">
   <div class="table-nav">
     <h2 class="title">👥 Users</h2>
-    <div class="search-by-name-div">
-      <input type="text" class="search-by-name" placeholder="Search by name" (input)="searchByName(searchInput.value)"
-        #searchInput />
-      <button (click)="searchByName(searchInput.value)">
-        <i class="fa-solid fa-magnifying-glass"></i>
-      </button>
+    <div class="filters-div">
+      <div class="filter-by-department" *ngIf="role=='Admin'">
+        <select>
+          <option value="">All Departments</option>
+          <option *ngFor="let dept of departments" [value]="dept.departmentId">
+            {{ dept.departmentName }}
+          </option>
+        </select>
+      </div>
+      <div  class="search-by-name-div">
+        <input type="text" class="search-by-name" placeholder="Search by name" (input)="searchByName(searchInput.value)"
+          #searchInput />
+        <button (click)="searchByName(searchInput.value)">
+          <i class="fa-solid fa-magnifying-glass"></i>
+        </button>
+      </div>
+
     </div>
 
   </div>
