@@ -17,6 +17,7 @@ export class UserList  implements AfterViewInit {
   pageSize = 3;
   pageIndex = 0;
   pageSizeOptions = [3, 5, 7];
+  searchName:string=""
   constructor (private userService: UserService){}
     @ViewChild(MatPaginator) paginator: MatPaginator | undefined;
 
@@ -24,16 +25,15 @@ export class UserList  implements AfterViewInit {
 
   displayedColumns: string[] = ['id', 'username', 'email', 'role', 'department'];
   
-//this is making a problem like i want the paginator to be 1 – 3 of (elementlength) but it always return 1 – datasource no of data source no 
 
 
   ngAfterViewInit() {
     // this.dataSource.paginator = this.paginator; assign paginator to dataSource for server-side pagination
-    this.loadUsers(this.pageIndex,this.pageSize);
+    this.loadUsers(this.pageIndex,this.pageSize , this.searchName);
 
   }
-  loadUsers(pageIndex: number = this.pageIndex, pageSize: number = this.pageSize) {
-  this.userService.getUsers(pageIndex, pageSize).subscribe(res => {
+  loadUsers(pageIndex: number = this.pageIndex, pageSize: number = this.pageSize,username?:string) {
+  this.userService.getUsers(pageIndex, pageSize,username).subscribe(res => {
   this.dataSource.data = res.content;
   this.totalElements = res.page?.totalElements || 0;
 
@@ -52,15 +52,15 @@ export class UserList  implements AfterViewInit {
   // pageEvent: PageEvent | undefined;
 
   handlePageEvent(e: PageEvent) {
-     this.pageSize = e.pageSize;
+       this.pageSize = e.pageSize;
     this.pageIndex = e.pageIndex;
-    
-    console.log('Page event - Index:', e.pageIndex, 'Size:', e.pageSize);
-    console.log('Total elements:', this.totalElements);
-    
-    this.loadUsers(e.pageIndex, e.pageSize);
+    this.loadUsers(this.pageIndex, this.pageSize, this.searchName);
 
   }
 
-  
+   searchByName(text: string) {
+    this.searchName = text.toLowerCase().trim();
+    this.pageIndex = 0; // reset to first page when searching
+    this.loadUsers(this.pageIndex, this.pageSize, this.searchName);
+  }
 }
