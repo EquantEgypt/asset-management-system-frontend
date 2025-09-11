@@ -2,8 +2,6 @@
   <div class="table-nav">
     <h2 class="title">👥 Users</h2>
     <div class="filters-div">
-
-
       <div class="filter-by-department" *ngIf="role=='Admin'">
         <mat-form-field appearance="fill" class="department-select">
           <mat-label>Filter by Department</mat-label>
@@ -27,8 +25,8 @@
 
   </div>
   <div *ngIf="isLoading" class="loading-div">
-  <mat-spinner diameter="40"></mat-spinner>
-</div>
+    <mat-spinner diameter="40"></mat-spinner>
+  </div>
   <div *ngIf="users.length > 0">
     <table mat-table [dataSource]="users" class="mat-elevation-z4 users-table">
 
