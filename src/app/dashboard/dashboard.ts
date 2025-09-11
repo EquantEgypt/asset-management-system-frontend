@@ -2,14 +2,14 @@ import { Component } from '@angular/core';
 import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import {MatTableModule} from '@angular/material/table';
+import { MatTableModule } from '@angular/material/table';
 import { UserList } from '../user/list/user-list/user-list';
 import { AssetList } from '../asset/list/asset-list/asset-list';
 import { Role } from '../model/roles.enum';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [UserList,AssetList,CommonModule , MatTableModule],
+  imports: [UserList, AssetList, CommonModule, MatTableModule],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css'
 })

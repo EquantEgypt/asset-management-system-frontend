@@ -8,17 +8,17 @@ import { Department } from '../../../model/department.model';
 import { DepartmentService } from '../../../services/departments.service';
 import { Role } from '../../../model/roles.enum';
 import { AuthService } from '../../../services/auth.service';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatSelectModule} from '@angular/material/select';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
 
 @Component({
   selector: 'app-user-list',
-  imports: [CommonModule, MatTableModule, MatPaginatorModule,MatFormFieldModule,MatSelectModule],
+  imports: [CommonModule, MatTableModule, MatPaginatorModule, MatFormFieldModule, MatSelectModule],
   templateUrl: './user-list.html',
   styleUrl: './user-list.css'
 })
 
-export class UserList implements OnInit  {
+export class UserList implements OnInit {
   totalElements = 0;
   pageSize = 3;
   pageIndex = 0;
@@ -26,8 +26,8 @@ export class UserList implements OnInit  {
   searchName: string = "";
   departments: Department[] = [];
   role: Role | null = null;
-filteredDepartment: number | '' = '';
-users: User[] = [];
+  filteredDepartment: number | '' = '';
+  users: User[] = [];
   constructor(
     private userService: UserService,
     private departmentService: DepartmentService,
@@ -42,20 +42,20 @@ users: User[] = [];
 
 
   ngOnInit() {
-  this.loadUsers();
-  this.role = this.auth.getRole(); 
-  this.loadDepartments(); 
+    this.loadUsers();
+    this.role = this.auth.getRole();
+    this.loadDepartments();
 
 
   }
 
-loadUsers(): void {
-  this.userService.getUsers(this.pageIndex, this.pageSize, this.searchName, this.filteredDepartment)
-    .subscribe(res => {
-      this.users = res.content;
- this.totalElements = res.page?.totalElements || 0;
-    });
-}
+  loadUsers(): void {
+    this.userService.getUsers(this.pageIndex, this.pageSize, this.searchName, this.filteredDepartment)
+      .subscribe(res => {
+        this.users = res.content;
+        this.totalElements = res.page?.totalElements || 0;
+      });
+  }
 
 
 
@@ -68,18 +68,18 @@ loadUsers(): void {
 
   searchByName(text: string) {
     this.searchName = text.toLowerCase().trim();
-    this.pageIndex = 0; 
+    this.pageIndex = 0;
     this.loadUsers();
   }
 
   loadDepartments(): void {
     this.departmentService.getDepartmentsName().subscribe({
       next: (res) => this.departments = res,
-      error: (err) => console.error("can't load departments", err) //ways to improve this ?
+      error: (err) => console.error("can't load departments", err)
     });
   }
   filterByDepartment(): void {
-  this.pageIndex = 0; 
-  this.loadUsers();
-}
+    this.pageIndex = 0;
+    this.loadUsers();
+  }
 }
