@@ -91,3 +91,8 @@ button {
   cursor: pointer;
 }
 
+.loading-div{
+  display: flex;
+  justify-content: center;
+  padding: 4px;
+}
