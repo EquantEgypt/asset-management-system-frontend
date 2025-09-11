@@ -2,15 +2,25 @@
   <div class="table-nav">
     <h2 class="title">👥 Users</h2>
     <div class="filters-div">
-      <div class="filter-by-department" *ngIf="role=='Admin'">
-        <select>
-          <option value="">All Departments</option>
-          <option *ngFor="let dept of departments" [value]="dept.departmentId">
-            {{ dept.departmentName }}
-          </option>
-        </select>
-      </div>
-      <div  class="search-by-name-div">
+      
+
+<div class="filter-by-department" *ngIf="role=='Admin'">
+  <mat-form-field appearance="fill"  class="department-select">
+    <mat-label>Filter by Department</mat-label>
+    <mat-select [(value)]="filteredDepartment" (selectionChange)="filterByDepartment()">
+      <mat-option [value]="''">All Departments</mat-option>
+      <mat-option *ngFor="let dept of departments" [value]="dept.departmentId">
+        {{ dept.departmentName }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
+
+
+
+
+
+      <div class="search-by-name-div">
         <input type="text" class="search-by-name" placeholder="Search by name" (input)="searchByName(searchInput.value)"
           #searchInput />
         <button (click)="searchByName(searchInput.value)">
@@ -22,7 +32,7 @@
 
   </div>
 
-  <table mat-table [dataSource]="dataSource" class="mat-elevation-z4 users-table" *ngIf="dataSource.data.length > 0">
+  <table mat-table [dataSource]="users" class="mat-elevation-z4 users-table" *ngIf="users.length > 0">
 
     <ng-container matColumnDef="id">
       <th mat-header-cell *matHeaderCellDef>ID</th>
