@@ -26,7 +26,7 @@ export class UserList implements OnInit {
 
   ngOnInit(): void {
     const userRole = this.authService.getRole();
-    if (userRole && userRole.roleType === Role.ADMIN) {
+    if (userRole && userRole === Role.ADMIN) {
       this.canViewUsers = true;
       this.loadUsers();
     } else {

@@ -44,11 +44,11 @@ export class AssetList implements OnInit {
   }
 
   checkUserRole(): void {
-    const userRole = this.authService.getRole();
-    if (userRole && userRole.roleType === Role.ADMIN) {
-      this.isAdmin = true;
-    }
+  const userRole = this.authService.getRole();
+  if (userRole && userRole === Role.ADMIN) {
+    this.isAdmin = true;
   }
+}
 
   loadAssets(): void {
     this.isLoading = true;

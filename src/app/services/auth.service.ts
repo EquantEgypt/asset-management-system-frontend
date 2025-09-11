@@ -3,7 +3,6 @@ import { Observable, of, throwError, tap } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Role } from '../model/roles.enum';
-import { UserRole } from '../model/user.model'; // Import UserRole
 
 
 const AUTH_TOKEN = 'AUTH_TOKEN';
@@ -54,8 +53,8 @@ login(email: string, password: string, keepLoggedIn: boolean): Observable<any> {
         return !!(localStorage.getItem(AUTH_TOKEN) || sessionStorage.getItem(AUTH_TOKEN));
     }
 
-getRole(): UserRole | null {
-  const userStr = localStorage.getItem(USER);
+getRole(): Role | null { 
+  const userStr = localStorage.getItem('User');
   if (!userStr) {
     return null;
   }
