@@ -1,3 +1,5 @@
+
+
 .users-container {
   padding: 1.5rem;
   background: #fff;
@@ -47,6 +49,31 @@ td.mat-cell {
 .department {
   background: #00acc1;
 }
-.pagination-bannel{
-  background-color: white;
+.table-nav{
+  
+}
+.search-by-name-div {
+  border: 2px solid black;
+  width: fit-content;
+ 
+  border-radius: 6px; 
+  height: 31px;
+
+}
+
+.search-by-name {
+  border: none;
+  outline: none;
+  background-color: transparent;
+  font-size: 16px;
+
+}
+
+.search-by-name:focus {
+  outline: none;
+}
+
+button{
+ border: none;
+  cursor: pointer;
 }
