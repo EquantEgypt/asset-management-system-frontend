@@ -90,15 +90,15 @@ export class UserList implements OnInit {
   pageEvent: PageEvent | undefined;
 
   handlePageEvent(e: PageEvent) {
-     this.pageSize = e.pageSize;
+       this.pageSize = e.pageSize;
     this.pageIndex = e.pageIndex;
-    
-    console.log('Page event - Index:', e.pageIndex, 'Size:', e.pageSize);
-    console.log('Total elements:', this.totalElements);
-    
-    this.loadUsers(e.pageIndex, e.pageSize);
+    this.loadUsers(this.pageIndex, this.pageSize, this.searchName);
 
   }
 
-  
+   searchByName(text: string) {
+    this.searchName = text.toLowerCase().trim();
+    this.pageIndex = 0; // reset to first page when searching
+    this.loadUsers(this.pageIndex, this.pageSize, this.searchName);
+  }
 }
