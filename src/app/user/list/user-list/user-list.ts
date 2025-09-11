@@ -38,7 +38,6 @@ export class UserList implements OnInit {
   ) { }
 
 
-
   displayedColumns: string[] = ['id', 'username', 'email', 'role', 'department'];
 
 
@@ -89,16 +88,20 @@ export class UserList implements OnInit {
   }
   pageEvent: PageEvent | undefined;
 
-  handlePageEvent(e: PageEvent) {
-       this.pageSize = e.pageSize;
-    this.pageIndex = e.pageIndex;
-    this.loadUsers(this.pageIndex, this.pageSize, this.searchName);
+  
 
-  }
-
-   searchByName(text: string) {
+  searchByName(text: string) {
     this.searchName = text.toLowerCase().trim();
     this.pageIndex = 0; // reset to first page when searching
     this.loadUsers(this.pageIndex, this.pageSize, this.searchName);
+  }
+  ngOnInit(): void {
+    this.loadDepartments(); //  this to load department names when page renders
+  }
+  loadDepartments(): void {
+    this.departmentService.getDepartmentsName().subscribe({
+      next: (res) => this.departments = res,
+      error: (err) => console.error("can't load departments", err)
+    });
   }
 }
