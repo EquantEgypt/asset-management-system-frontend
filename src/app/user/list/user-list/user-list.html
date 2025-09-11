@@ -1,5 +1,15 @@
 <div class="users-container">
-  <h2 class="title">👥 Users</h2>
+  <div class="table-nav">
+    <h2 class="title">👥 Users</h2>
+    <div class="search-by-name-div">
+      <input type="text" class="search-by-name" placeholder="Search by name" (input)="searchByName(searchInput.value)"
+        #searchInput />
+      <button (click)="searchByName(searchInput.value)">
+        <i class="fa-solid fa-magnifying-glass"></i>
+      </button>
+    </div>
+
+  </div>
 
   <table mat-table [dataSource]="dataSource" class="mat-elevation-z4 users-table" *ngIf="dataSource.data.length > 0">
 
@@ -40,13 +50,9 @@
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
 
-  <mat-paginator
-    [length]="totalElements"
-    [pageIndex]="pageIndex" 
-    [pageSize]="pageSize"
-    [pageSizeOptions]="pageSizeOptions" 
-    (page)="handlePageEvent($event)" 
-    aria-label="Select page"  
+  <mat-paginator [length]="totalElements" [pageIndex]="pageIndex" [pageSize]="pageSize"
+    [pageSizeOptions]="pageSizeOptions" (page)="handlePageEvent($event)" aria-label="Select page"
     class="pagniation-bannel">
   </mat-paginator>
+
 </div>
