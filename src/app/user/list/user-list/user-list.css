@@ -61,7 +61,7 @@ td.mat-cell {
   display: flex;
   gap:10px
 }
-.search-by-name-div {
+.search-bar-div {
   border: 1px solid #dbd6d6;
     padding: 5px;
     width: fit-content;
@@ -69,11 +69,11 @@ td.mat-cell {
   height: 31px;
 
 }
-.search-by-name:focus {
+.search-bar:focus {
   outline: none;
 }
 
-.search-by-name {
+.search-bar {
   border: none;
   outline: none;
   background-color: transparent;
@@ -81,7 +81,7 @@ td.mat-cell {
 
 }
 
-.search-by-name:focus {
+.search-bar:focus {
   outline: none;
 }
 

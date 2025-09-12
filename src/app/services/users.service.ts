@@ -1,10 +1,20 @@
 import { Router } from "@angular/router";
 import { AuthService } from "./auth.service";
 import { Injectable } from "@angular/core";
-import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
 import { Observable } from "rxjs";
+import { User } from "../model/user.model";
 
 const BACKEND_URL = 'http://localhost:8080/get/users';
+ interface Page<T> {
+  content: T[];
+  page: {
+    size: number;
+    number: number;
+    totalElements: number;
+    totalPages: number;
+  };
+}
 
 @Injectable({
   providedIn: 'root'
@@ -14,18 +24,23 @@ export class UserService {
   constructor(private http: HttpClient, private auth: AuthService, private router: Router) { }
 
 
-  getUsers(page: number, size: number, username?: string, departmentId?: number | ''): Observable<any> {
+  getUsers(page: number, size: number, searchWord?: string, departmentId?: number | '',filteredRole?:string|''): Observable<Page<User>> {
     const token = this.auth.getAuthToken();
-    let url = `${BACKEND_URL}?page=${page}&size=${size}`;
-    if (username && username.trim() !== '') {
-      url += `&username=${encodeURIComponent(username)}`;
+
+    let params=new HttpParams().set('page',page).set('size',size);
+    if (searchWord && searchWord.trim() !== '') {
+     params=params.set('search',searchWord);
+    }
+
+    if (filteredRole && filteredRole.trim() !== '') {
+     params=params.set('role',filteredRole);
     }
     if (departmentId !== '' && departmentId !== null && departmentId !== undefined) {
-      url += `&departmentId=${encodeURIComponent(departmentId)}`;
+           params=params.set('departmentId',departmentId);
     }
-    const header = new HttpHeaders().set("Authorization", `Bearer ${token}`)
-    return this.http.get<any>(url, {
-      headers: { Authorization: `Basic ${token}` }
+    return this.http.get<Page<User>>(`${BACKEND_URL}`, {
+      headers: { Authorization: `Basic ${token}` },
+      params
     });
   }
 }

@@ -6,7 +6,6 @@ import { Department } from '../../../model/department.model';
 import { DepartmentService } from '../../../services/departments.service';
 import { Role } from '../../../model/roles.enum';
 import { AuthService } from '../../../services/auth.service';
-import { NgModule } from '@angular/core';
 import { SharedModule } from '../../../shared/shared.module';
 
 
@@ -22,10 +21,12 @@ export class UserList implements OnInit {
   pageSize = 3;
   pageIndex = 0;
   pageSizeOptions = [3, 5, 7];
-  searchName: string = "";
+  searchWord: string = "";
   departments: Department[] = [];
-  role: Role | null = null;
+  userRole: Role | null = null;
   filteredDepartment: number | '' = '';
+  filteredRole:string |''=''
+  Role=Role;
   users: User[] = [];
   isLoading = false;
   constructor(
@@ -38,13 +39,13 @@ export class UserList implements OnInit {
   displayedColumns: string[] = ['id', 'username', 'email', 'role', 'department'];
   ngOnInit() {
     this.loadUsers();
-    this.role = this.auth.getRole();
+    this.userRole = this.auth.getRole();
     this.loadDepartments();
   }
 
   loadUsers(): void {
     this.isLoading = true;
-    this.userService.getUsers(this.pageIndex, this.pageSize, this.searchName, this.filteredDepartment)
+    this.userService.getUsers(this.pageIndex, this.pageSize, this.searchWord, this.filteredDepartment,this.filteredRole)
       .subscribe(res => {
         this.users = res.content;
         this.totalElements = res.page?.totalElements || 0;
@@ -59,8 +60,8 @@ export class UserList implements OnInit {
 
   }
 
-  searchByName(text: string) {
-    this.searchName = text.toLowerCase().trim();
+  searchByNameOrEmail(text: string) {
+    this.searchWord = text.toLowerCase().trim();
     this.pageIndex = 0;
     this.loadUsers();
   }
@@ -95,4 +96,13 @@ export class UserList implements OnInit {
     this.pageIndex = 0;
     this.loadUsers();
   }
+
+
+roles = Object.values(Role);
+
+filterByRole(): void {
+    this.pageIndex = 0;
+    this.loadUsers();
+  }
+
 }

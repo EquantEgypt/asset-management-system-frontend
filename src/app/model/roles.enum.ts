@@ -4,4 +4,3 @@ MANAGER = 'Department_Manager',
 ADMIN = 'Admin',
 IT = 'IT'
 }
-

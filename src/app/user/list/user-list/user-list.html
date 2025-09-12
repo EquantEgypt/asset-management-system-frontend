@@ -2,7 +2,7 @@
   <div class="table-nav">
     <h2 class="title">👥 Users</h2>
     <div class="filters-div">
-      <div class="filter-by-department" *ngIf="role=='Admin'">
+      <div class="filter-by-department" *ngIf="userRole=='Admin'">
         <mat-form-field appearance="fill" class="department-select">
           <mat-label>Filter by Department</mat-label>
           <mat-select [(value)]="filteredDepartment" (selectionChange)="filterByDepartment()">
@@ -13,10 +13,22 @@
           </mat-select>
         </mat-form-field>
       </div>
-      <div class="search-by-name-div">
-        <input type="text" class="search-by-name" placeholder="Search by name" (input)="searchByName(searchInput.value)"
+
+      <div class="filter-by-role" >
+        <mat-form-field appearance="fill" class="role-select">
+          <mat-label>Filter by Role</mat-label>
+          <mat-select [(value)]="filteredRole" (selectionChange)="filterByRole()">
+            <mat-option [value]="''">All Roles</mat-option>
+            <mat-option *ngFor="let role of roles" [value]="role">
+              {{ role }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="search-bar-div">
+        <input type="text" class="search-bar" placeholder="Search by name/email" (input)="searchByNameOrEmail(searchInput.value)"
           #searchInput />
-        <button (click)="searchByName(searchInput.value)">
+        <button (click)="searchByNameOrEmail(searchInput.value)">
           <i class="fa-solid fa-magnifying-glass"></i>
         </button>
       </div>
