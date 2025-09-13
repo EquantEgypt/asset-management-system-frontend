@@ -3,16 +3,36 @@
     <h2 class="title">💻 Assets</h2>
 
     <div class="search-bar">
+
+      <select [(ngModel)]="selectedCategory" (change)="loadAssets()">
+        <option value="">All</option> 
+        <option *ngFor="let category of categories" [value]="category">
+          {{ category }}
+        </option>
+      </select>
+            <select [(ngModel)]="selectedType" (change)="loadAssets()">
+        <option value="">All</option> 
+        <option *ngFor="let type of types" [value]="type">
+          {{ type }}
+        </option>
+      </select>
+      <input
+        type="text"
+        placeholder="Search brands..."
+        [(ngModel)]="searchBrand"
+        (keyup.enter)="loadAssets()"
+      />
       <input
         type="text"
         placeholder="Search assets..."
-        [(ngModel)]="searchTerm"
-        (keyup.enter)="applySearch()"
+        [(ngModel)]="searchName"
+        (keyup.enter)="loadAssets()"
       />
-      <button mat-raised-button color="primary" (click)="applySearch()">
+      <button mat-raised-button color="primary" (click)="loadAssets()">
         Search
       </button>
     </div>
+
   </div>
 
   <table

@@ -1,3 +1,5 @@
+import { category } from "./category.model";
+
 export interface Category {
   categoryId: number;
   categoryName: string;
@@ -11,8 +13,9 @@ export interface Type {
 export interface Asset {
   id: number;
   name: string;
-  category: string;
-  type: string;
+  category: String;
+  type: String;
+  brand : string;
   assignedTo: string;
   status: string;
   purchaseDate: string;
