@@ -9,17 +9,14 @@ export interface Type {
 }
 
 export interface Asset {
-  assetId: number;
-  assetName: string;
-  brand: string;
-  assetDescription: string;
-  category: Category;   // بقى object مش string
-  type: Type;           // بقى object مش string
-  allStock: number;
-  numberOfAvailableToAssign: number;
-  numberOfMaintenance: number;
-  numberOfRetired: number;
-}
+  id: number;
+  name: string;
+  category: string;
+  type: string;
+  assignedTo: string;
+  status: string;
+  purchaseDate: string;
+} 
 
 export enum Status {
   AVAILABLE = "available",

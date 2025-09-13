@@ -35,44 +35,46 @@ export class AssetList {
   }
 
   applySearch() {
-    const term = this.searchTerm.trim();
-    if (!term) {
-      this.loadAssets();
-      return;
+  const term = this.searchTerm.trim().toLowerCase();
+
+  if (!term) {
+    // لو السيرش فاضي رجع كل الأصول اللي اتحملت
+    this.filteredAssets = [...this.assets];
+    return;
+  }
+
+  this.filteredAssets = this.assets.filter(asset =>
+    asset.name.toLowerCase().includes(term) ||
+    asset.category.toLowerCase().includes(term) ||
+    asset.type.toLowerCase().includes(term)
+  );
+}
+
+
+public loadAssets() {
+  this.assetService.getAssetsByRole().subscribe({
+    next: (data) => {
+      this.assets = data.map(item => this.mapAsset(item));   // نخزن كل الأصول
+      this.filteredAssets = [...this.assets];                // نظهرهم كلهم أول ما نحمل
+    },
+    error: (err) => {
+      console.error('Error fetching assets', err);
+      this.assets = [];
+      this.filteredAssets = [];
     }
-
-    this.assetService.searchAssets(term).subscribe({
-      next: (data) => {
-        this.filteredAssets = data.map(item => this.mapAsset(item));
-      },
-      error: (err) => {
-        console.error('Error fetching assets', err);
-        this.filteredAssets = [];
-      }
-    });
-  }
-
-  public loadAssets() {
-    this.assetService.getAssetsByRole().subscribe({
-      next: (data) => {
-        this.filteredAssets = data.map(item => this.mapAsset(item));
-      },
-      error: (err) => {
-        console.error('Error fetching assets', err);
-        this.filteredAssets = [];
-      }
-    });
-  }
+  });
+}
 
   private mapAsset(item: any): any {
-    return {
-      id: item.id,
-      name: item.asset?.assetName || '—',
-      category: item.asset?.category?.categoryName || '—',
-      type: item.asset?.type?.typeName || '—',
-      assignedTo: item.assignedUser?.username || '—',
-      status: item.status || '—',
-      purchaseDate: item.dateAssigned ? new Date(item.dateAssigned).toLocaleDateString() : '—',
-    };
-  }
+  return {
+    id: item.assetId,   // بدلاً من item.id
+    name: item.assetName || '—',
+    category: item.category?.categoryName || '—',
+    type: item.type?.typeName || '—',
+    assignedTo: '—',  // لسه مش راجع مع الـ DTO
+    status: '—',      // برضه مش راجع مع الـ DTO
+    purchaseDate: '—' // مش موجود في DTO بتاعك
+  };
+}
+
 }
