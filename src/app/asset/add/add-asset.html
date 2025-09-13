@@ -47,8 +47,11 @@
       </div>
 
     <div class="form-actions">
-      <button type="button" class="cancel-btn" routerLink="/dashboard">Cancel</button>
-      <button type="submit" class="submit-btn" [disabled]="assetForm.invalid">Add Asset</button>
+      <button type="button" class="cancel-btn" routerLink="/dashboard" [disabled]="isLoading">Cancel</button>
+      <button type="submit" class="submit-btn" [disabled]="assetForm.invalid || isLoading">
+        <span *ngIf="!isLoading">Add Asset</span>
+        <span *ngIf="isLoading">Adding...</span>
+      </button>
     </div>
   </form>
 </div>

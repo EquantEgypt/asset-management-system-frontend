@@ -1,10 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject, DestroyRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { AssetService, AssetRequest } from '../../services/assets.service';
-import { Category, Type } from '../../model/asset.model';
+import { AssetService } from '../../services/assets.service';
+import { CategoryService } from '../../services/category.service';
+import { TypeService } from '../../services/assetType.service';
+import { AssetRequest } from '../../model/asset.model';
 import { ToastService } from 'angular-toastify';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Category } from '../../model/categoryModel';
+import { Type } from '../../model/AssetTypeModel';
 
 @Component({
   selector: 'app-add-asset',
@@ -18,10 +23,15 @@ export class AddAssetComponent implements OnInit {
   categories: Category[] = [];
   types: Type[] = [];
   errorMessage: string | null = null;
+  isLoading = false;
+
+  private destroyRef = inject(DestroyRef);
 
   constructor(
     private fb: FormBuilder,
     private assetService: AssetService,
+    private categoryService: CategoryService,
+    private typeService: TypeService,
     private router: Router,
     private toast: ToastService
   ) {
@@ -41,11 +51,15 @@ export class AddAssetComponent implements OnInit {
   }
 
   loadCategories(): void {
-    this.assetService.getCategories().subscribe(data => this.categories = data);
+    this.categoryService.getCategories()
+      .pipe(takeUntilDestroyed(this.destroyRef)) 
+      .subscribe(data => this.categories = data);
   }
 
   loadTypes(): void {
-    this.assetService.getTypes().subscribe(data => this.types = data);
+    this.typeService.getTypes()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(data => this.types = data);
   }
 
   onSubmit(): void {
@@ -54,6 +68,7 @@ export class AddAssetComponent implements OnInit {
       return;
     }
     
+    this.isLoading = true;
     this.errorMessage = null;
 
     const formValue = this.assetForm.value;
@@ -66,10 +81,12 @@ export class AddAssetComponent implements OnInit {
 
     this.assetService.addAsset(assetData).subscribe({
       next: () => {
+        this.isLoading = false; 
         this.toast.success('Asset added successfully!');
         this.router.navigate(['/dashboard']);
       },
       error: (err) => {
+        this.isLoading = false;
         this.errorMessage = err.error?.message || 'Failed to add asset. Please try again.';
         if (this.errorMessage) {
           this.toast.error(this.errorMessage);

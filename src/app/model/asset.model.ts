@@ -1,12 +1,5 @@
-export interface Category {
-  categoryId: number;
-  categoryName: string;
-}
-
-export interface Type {
-  typeId: number;
-  typeName: string;
-}
+import { Type } from "./AssetTypeModel";
+import { Category } from "./categoryModel";
 
 export interface Asset {
   assetId: number;
@@ -15,6 +8,18 @@ export interface Asset {
   assetDescription: string;
   category: Category;
   type: Type;
+  allStock: number;
+  numberOfAvailableToAssign: number;
+  numberOfMaintenance: number;
+  numberOfRetired: number;
+}
+
+export interface AssetRequest {
+  assetName: string;
+  brand: string;
+  assetDescription?: string;
+  categoryId: number;
+  typeId: number;
   allStock: number;
   numberOfAvailableToAssign: number;
   numberOfMaintenance: number;
