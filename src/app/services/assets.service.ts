@@ -38,9 +38,16 @@ export class AssetService {
   }
 
   getAssetsByRole(): Observable<Asset[]> {
-    const token = this.auth.getAuthToken();
-    if (!token) return of([]);
-    const headers = new HttpHeaders().set('Authorization', `Basic ${token}`);
+  const token = this.auth.getAuthToken();
+  if (!token) return of([]);
+  const headers = new HttpHeaders().set('Authorization', `Basic ${token}`);
+
+  const role = this.auth.getRole();
+  if (role === 'Admin') {
     return this.http.get<Asset[]>(`http://localhost:8080/asset/all`, { headers });
+  } else {
+    return this.http.get<Asset[]>(`http://localhost:8080/asset`, { headers });
   }
+}
+
 }

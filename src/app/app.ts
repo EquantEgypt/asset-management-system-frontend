@@ -3,11 +3,12 @@ import { RouterOutlet } from '@angular/router';
 import { Login } from './login/login';
 import { HttpClient } from '@angular/common/http';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { ToastService, AngularToastifyModule } from 'angular-toastify'; 
+import { ToastService, AngularToastifyModule } from 'angular-toastify';
+import { NavbarComponent } from "./navbar/navbar"; 
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet,FontAwesomeModule, AngularToastifyModule],
+  imports: [RouterOutlet, FontAwesomeModule, AngularToastifyModule, NavbarComponent],
     providers: [ToastService],
   templateUrl: './app.html',
   styleUrl: './app.css'
