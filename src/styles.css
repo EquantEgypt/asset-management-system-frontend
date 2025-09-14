@@ -20,3 +20,68 @@ body {
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+/* ============= Responsive Design ============= */
+@media (max-width: 768px) {
+  /* 🔹 Containers */
+  .assets-container,
+  .users-container,
+  .admin-dashboard-container,
+  .login-card-container {
+    padding: 1rem;
+  }
+
+  /* 🔹 Search bars */
+  .search-bar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.5rem;
+  }
+
+  .search-bar input {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  /* 🔹 Cards */
+  .card-selector {
+    flex-direction: column;
+  }
+
+  .card-container {
+    padding: 20px;
+    width: 100%;
+  }
+
+  /* 🔹 Navbar */
+  .navbar {
+    flex-direction: column;
+    gap: 10px;
+    text-align: center;
+  }
+
+  .nav-right {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  /* 🔹 Tables */
+  .users-table,
+  .assets-table {
+    font-size: 14px;
+    overflow-x: auto;
+    display: block;
+  }
+
+  th.mat-header-cell,
+  td.mat-cell {
+    white-space: nowrap;
+  }
+
+  /* 🔹 Login card */
+  .login-card {
+    width: 90% !important;
+    margin: 20px auto;
+    padding: 20px;
+  }
+}

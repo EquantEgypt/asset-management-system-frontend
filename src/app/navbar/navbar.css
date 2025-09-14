@@ -35,3 +35,6 @@
   border-radius: 4px;
   cursor: pointer;
 }
+.nav-right button:hover {
+  background: #ff0000;
+}

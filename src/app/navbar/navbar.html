@@ -4,9 +4,6 @@
   </div>
 
   <div class="nav-right">
-    <a routerLink="/dashboard" routerLinkActive="active">Dashboard</a>
-    <a routerLink="/assets" routerLinkActive="active">Assets</a>
-    <a routerLink="/users" *ngIf="canAccessUsers()" routerLinkActive="active">Users</a>
     <button (click)="logout()">Logout</button>
   </div>
 </nav>

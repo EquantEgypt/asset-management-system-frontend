@@ -7,7 +7,7 @@ import { Role } from '../model/roles.enum';
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [CommonModule, RouterModule], // ✅ لازم تضيف دول
+  imports: [CommonModule, RouterModule], 
   templateUrl: './navbar.html',
   styleUrls: ['./navbar.css']
 })

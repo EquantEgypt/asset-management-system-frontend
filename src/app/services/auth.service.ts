@@ -69,4 +69,5 @@
     getAuthToken(): string | null {
       return localStorage.getItem(AUTH_TOKEN) || sessionStorage.getItem(AUTH_TOKEN);
     }
+    
   }
