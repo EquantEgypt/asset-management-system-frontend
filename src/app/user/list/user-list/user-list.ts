@@ -66,25 +66,10 @@ export class UserList implements OnInit {
     this.loadUsers();
   }
 
-  loadDepartments(): void {
-    this.departmentService.getDepartmentsName().subscribe({
-      next: (res) => this.departments = res,
-      error: (err) => console.error("can't load departments", err)
-    });
-  }
-  filterByDepartment(): void {
-    this.pageIndex = 0;
-    this.loadUsers();
-  }
+  
   pageEvent: PageEvent | undefined;
 
   
-
-  searchByName(text: string) {
-    this.searchName = text.toLowerCase().trim();
-    this.pageIndex = 0; 
-    this.loadUsers();
-  }
 
   loadDepartments(): void {
     this.departmentService.getDepartmentsName().subscribe({
