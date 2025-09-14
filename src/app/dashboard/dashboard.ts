@@ -32,7 +32,7 @@ export class Dashboard {
   setActive(tab: 'assets' | 'users') {
   this.activeTab = tab;
   if (tab === 'assets') {
-    // ننتظر Angular لتنشئ component
+
     setTimeout(() => {
       this.assetListComponent?.loadAssets();
     });

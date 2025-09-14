@@ -18,12 +18,11 @@ export interface Asset {
   brand : string;
   assignedTo: string;
   status: string;
-  purchaseDate: string;
+  Department: string;
 } 
 
 export enum Status {
-  AVAILABLE = "available",
-  ASSIGNED = "assigned",
-  MAINTENANCE = "maintenance",
-  RETIRED = "retired"
+  GOOD = "GOOD",
+  MAINTENANCE = "UNDER_MAINTENANCE",
+  RETIRED = "RETIRED"
 }

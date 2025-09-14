@@ -22,36 +22,38 @@ export class AssetService {
     const token = this.auth.getAuthToken();
     if (!token) return of([]);
     const headers = new HttpHeaders().set('Authorization', `Basic ${token}`);
-    return this.http.get<User[]>('http://192.168.1.9:8080/auth/users', { headers });
+    return this.http.get<User[]>('http://192.168.19.96:8080/auth/users', { headers });
   }
 
   getAllAssets(): Observable<Asset[]> {
     const token = this.auth.getAuthToken();
     if (!token) return of([]);
     const headers = new HttpHeaders().set('Authorization', `Basic ${token}`);
-    return this.http.get<Asset[]>(`http://192.168.1.9:8080/asset/all`, { headers });
+    return this.http.get<Asset[]>(`http://192.168.19.96:8080/asset/all`, { headers });
   }
 
   searchAssets(assetName: string): Observable<Asset[]> {
     const token = this.auth.getAuthToken();
     if (!token) return of([]);
     const headers = new HttpHeaders().set('Authorization', `Basic ${token}`);
-    return this.http.get<Asset[]>(`http://192.168.1.9:8080/asset?assetName=${encodeURIComponent(assetName)}`, { headers });
+    return this.http.get<Asset[]>(`http://192.168.19.96:8080/asset?assetName=${encodeURIComponent(assetName)}`, { headers });
   }
 
-getAssets(params: any): Observable<Asset[]> {
+getAssets(params: any): Observable<any> {
   let httpParams = new HttpParams();
-    const token = this.auth.getAuthToken();
-    if (!token) return of([]);
-    const headers = new HttpHeaders().set('Authorization', `Basic ${token}`);
+  const token = this.auth.getAuthToken();
+  if (!token) return of([]);
+  const headers = new HttpHeaders().set('Authorization', `Basic ${token}`);
+
   Object.keys(params).forEach(key => {
-    if (params[key]) {
+    if (params[key] !== null && params[key] !== '') {
       httpParams = httpParams.set(key, params[key]);
     }
   });
-  console.log(httpParams);
-  return this.http.get<Asset[]>('http://192.168.1.9:8080/asset',{headers , params: httpParams });
+
+  return this.http.get<any>('http://192.168.19.96:8080/asset', { headers, params: httpParams });
 }
+
 
     getCategories(): Observable<category[]> {
   const token = this.auth.getAuthToken();
@@ -60,7 +62,7 @@ getAssets(params: any): Observable<Asset[]> {
 
   const role = this.auth.getRole();
 
-    return this.http.get<category[]>(`http://192.168.1.9:8080/api/categories`, { headers });
+    return this.http.get<category[]>(`http://192.168.19.96:8080/api/categories`, { headers });
 
   }
       getTypes(): Observable<type[]> {
@@ -70,7 +72,7 @@ getAssets(params: any): Observable<Asset[]> {
 
   const role = this.auth.getRole();
 
-    return this.http.get<type[]>(`http://192.168.1.9:8080/api/types`, { headers });
+    return this.http.get<type[]>(`http://192.168.19.96:8080/api/types`, { headers });
 
   }
 }

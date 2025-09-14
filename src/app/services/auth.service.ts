@@ -7,7 +7,7 @@
   const AUTH_TOKEN = 'AUTH_TOKEN';
   const ROLES = 'ROLES';
   const USER = 'User';
-  const BACKEND_URL = 'http://192.168.1.9:8080';
+  const BACKEND_URL = 'http://192.168.19.96:8080';
 
   @Injectable({
     providedIn: 'root'

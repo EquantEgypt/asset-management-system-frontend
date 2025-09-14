@@ -113,4 +113,11 @@ td.mat-cell {
   font-size: 0.95rem;
   width: 220px;
 }
+button[mat-raised-button] {
+  height: 40px;
+  border-radius: 8px;
+  font-weight: 500;
+  padding: 0 1.2rem;
+  background-color: #1e88e5;
+}
 
