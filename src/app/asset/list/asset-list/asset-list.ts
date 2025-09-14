@@ -12,7 +12,7 @@ import { MatButtonModule } from '@angular/material/button';
   selector: 'app-asset-list',
   imports: [CommonModule, MatTableModule, MatButtonModule],
   templateUrl: './asset-list.html',
-  styleUrl: './asset-list.css'
+  styleUrls: ['./asset-list.css']
 })
 export class AssetList implements OnInit {
 
@@ -26,10 +26,7 @@ export class AssetList implements OnInit {
     'brand',
     'category',
     'type',
-    'allStock',
-    'available',
-    'maintenance',
-    'retired'
+    'quantity', 
   ];
 
   constructor(
@@ -44,11 +41,11 @@ export class AssetList implements OnInit {
   }
 
   checkUserRole(): void {
-  const userRole = this.authService.getRole();
-  if (userRole && userRole === Role.ADMIN) {
-    this.isAdmin = true;
+    const userRole = this.authService.getRole();
+    if (userRole && userRole === Role.ADMIN) {
+      this.isAdmin = true;
+    }
   }
-}
 
   loadAssets(): void {
     this.isLoading = true;

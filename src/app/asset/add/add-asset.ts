@@ -41,7 +41,7 @@ export class AddAssetComponent implements OnInit {
       assetDescription: [''],
       categoryId: [null, [Validators.required]],
       typeId: [null, [Validators.required]],
-      allStock: [0, [Validators.required, Validators.min(0)]]
+      quantity: [0, [Validators.required, Validators.min(0)]]
     });
   }
 
@@ -71,13 +71,7 @@ export class AddAssetComponent implements OnInit {
     this.isLoading = true;
     this.errorMessage = null;
 
-    const formValue = this.assetForm.value;
-    const assetData: AssetRequest = {
-      ...formValue,
-      numberOfAvailableToAssign: formValue.allStock,
-      numberOfMaintenance: 0,
-      numberOfRetired: 0
-    };
+    const assetData: AssetRequest = this.assetForm.value; 
 
     this.assetService.addAsset(assetData).subscribe({
       next: () => {

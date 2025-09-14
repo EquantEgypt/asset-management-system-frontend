@@ -3,15 +3,12 @@ import { Category } from "./categoryModel";
 
 export interface Asset {
   assetId: number;
-  assetName:string;
+  assetName: string;
   brand: string;
   assetDescription: string;
   category: Category;
   type: Type;
-  allStock: number;
-  numberOfAvailableToAssign: number;
-  numberOfMaintenance: number;
-  numberOfRetired: number;
+  quantity: number;
 }
 
 export interface AssetRequest {
@@ -20,8 +17,5 @@ export interface AssetRequest {
   assetDescription?: string;
   categoryId: number;
   typeId: number;
-  allStock: number;
-  numberOfAvailableToAssign: number;
-  numberOfMaintenance: number;
-  numberOfRetired: number;
+  quantity: number;
 }

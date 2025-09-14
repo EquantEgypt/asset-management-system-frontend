@@ -22,7 +22,7 @@ export class CategoryService {
   }
 
   getCategories(): Observable<Category[]> {
-    return this.http.get<Category[]>(`${BACKEND_URL}/api/category`, {
+    return this.http.get<Category[]>(`${BACKEND_URL}/api/categories`, {
       headers: this.getAuthHeaders()
     });
   }
