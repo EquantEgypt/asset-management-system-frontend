@@ -15,7 +15,7 @@ export class UserService{
   getUsers(page: number = 0, size: number = 5): Observable<any>{
     const token= this.auth.getAuthToken();
     console.log('what i get is ' , page,'and',size)
-    return this.http.get<any>(`http://192.168.19.96:8080/get/users?page=${page}&size=${size}`,{
+    return this.http.get<any>(`http://localhost:8080/get/users?page=${page}&size=${size}`,{
       headers: { Authorization: `Basic ${token}` }
     });
   }

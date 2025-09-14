@@ -4,6 +4,9 @@
   </div>
 
   <div class="nav-right">
-    <button (click)="logout()">Logout</button>
+    @if (!isLoginPage()) {
+  <button (click)="logout()">Logout</button>
+}
+
   </div>
 </nav>

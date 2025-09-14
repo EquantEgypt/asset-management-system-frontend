@@ -1,0 +1,5 @@
+export enum Status {
+  GOOD = "GOOD",
+  MAINTENANCE = "UNDER_MAINTENANCE",
+  RETIRED = "RETIRED"
+}

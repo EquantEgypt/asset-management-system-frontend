@@ -26,4 +26,8 @@ export class NavbarComponent {
     this.auth.logout();
     this.router.navigate(['/login']);
   }
+
+  isLoginPage(): boolean {
+    return this.router.url === '/login';
+  }
 }

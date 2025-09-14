@@ -1,5 +1,6 @@
-import { Asset, Status } from "./asset.model";
+import { Asset } from "./asset.model";
 import { Role } from "./roles.enum";
+
 
 export interface User {
   id: number;
