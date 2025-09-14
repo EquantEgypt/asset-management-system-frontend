@@ -1,6 +1,7 @@
 <div class="admin-dashboard-container">
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   <div class="top-header" *ngIf="role=='Admin' || role=='Department_Manager' ">
     <h2>Access</h2>
     <div class="card-selector">
@@ -31,6 +32,11 @@
 >>>>>>> only admin or manager can access users list component
     <h2>Access</h2>
     <div class="card-selector">
+=======
+  <div class="top-header" *ngIf="role=='Admin' || role=='Department_Manager' ">
+    <h2>Access</h2>
+    <div class="card-selector">
+>>>>>>> 9c3a9dfc53734f73513efe6aebbfa31dcaed826a
       <div class=" card-container users-card-container " [class.active]="activeTab === 'assets'"
         (click)="setActive('assets')">
         <i class="fa-solid fa-database "></i>
@@ -38,11 +44,15 @@
         <h3>Assets</h3>
       </div>
 
+<<<<<<< HEAD
 >>>>>>> search by name:search bar
+=======
+>>>>>>> 9c3a9dfc53734f73513efe6aebbfa31dcaed826a
       <div class=" card-container assets-card-container" [class.active]="activeTab === 'users'"
         (click)="setActive('users')">
         <i class="fa-solid fa-users"></i>
         <h3>Users</h3>
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
       <div class=" card-container assets-card-container"
@@ -66,19 +76,28 @@
 =======
 <div class="card-display">
 =======
+=======
+>>>>>>> 9c3a9dfc53734f73513efe6aebbfa31dcaed826a
       </div>
     </div>
     
   </div>
   <div class="card-display">
+<<<<<<< HEAD
 >>>>>>> search by name:search bar
+=======
+>>>>>>> 9c3a9dfc53734f73513efe6aebbfa31dcaed826a
     <app-asset-list *ngIf="activeTab === 'assets'"></app-asset-list>
     <app-user-list *ngIf="activeTab === 'users'"></app-user-list>
   </div>
 </div>
+<<<<<<< HEAD
 <<<<<<< HEAD
   <button (click)="logout()"></button>
 >>>>>>> enhance code
 =======
 <button (click)="logout()"></button>
 >>>>>>> search by name:search bar
+=======
+<button (click)="logout()"></button>
+>>>>>>> 9c3a9dfc53734f73513efe6aebbfa31dcaed826a
