@@ -11,6 +11,8 @@ const BACKEND_URL = 'http://localhost:8080';
   providedIn: 'root'
 })
 export class AuthService {
+    private storage: Storage = sessionStorage; 
+
   constructor(private http: HttpClient, private router: Router) { }
   login(email: string, password: string, keepLoggedIn: boolean): Observable<any> {
     // Encode email:password into Base64
@@ -24,33 +26,32 @@ export class AuthService {
       }
     ).pipe(
       tap((response) => {
-        const storage = keepLoggedIn ? localStorage : sessionStorage;
-        storage.setItem(AUTH_TOKEN, basicAuthToken);
-        storage.setItem(USER, JSON.stringify(response));
+         this.storage = keepLoggedIn ? localStorage : sessionStorage;
+        this.storage.setItem(AUTH_TOKEN, basicAuthToken);
+        this.storage.setItem(USER, JSON.stringify(response));
         console.log( JSON.stringify(response))
         this.router.navigate([`/dashboard`]);
       })
     );
   }
   logout(): void {
-    localStorage.removeItem(AUTH_TOKEN);
-    localStorage.removeItem(ROLES);
-    sessionStorage.removeItem(AUTH_TOKEN);
-    sessionStorage.removeItem(ROLES);
+    this.storage.removeItem(AUTH_TOKEN);
+    this.storage.removeItem(ROLES);
   }
   isAuthenticated(): boolean {
-    return !!(localStorage.getItem(AUTH_TOKEN) || sessionStorage.getItem(AUTH_TOKEN));
+    return !!(this.storage.getItem(AUTH_TOKEN));
   }
-  getRole(): Role | null {
-    try {
-      return JSON.parse(localStorage.getItem(USER) ?? 'null')?.role ?? null;
+  getRole(): Role | null { 
+  const userStr = this.storage.getItem(USER);
+  if (!userStr) {
+    return null;
+  }
+  const user = JSON.parse(userStr);
+  return user?.role ?? null;
+}
 
-    } catch {
-      return null;
-    }
-  }
   getAuthToken(): string | null {
-    return localStorage.getItem(AUTH_TOKEN) || sessionStorage.getItem(AUTH_TOKEN);
+    return this.storage.getItem(AUTH_TOKEN) ;
   }
 }
 

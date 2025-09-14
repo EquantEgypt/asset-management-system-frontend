@@ -26,6 +26,7 @@ export class AuthGuard implements CanActivate {
     }
     if (requiredRoles) {
       const role = this.auth.getRole();
+      console.log('role is ',role)
       if (!role || !requiredRoles.includes(role)) {
         return false;
       }
