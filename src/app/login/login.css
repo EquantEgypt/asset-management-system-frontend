@@ -1,10 +1,16 @@
-      .login-card-container{
+.login-card-container{
       min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
 }
-      .login-card {
+.container{
+    min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+}
+        .login-card {
             
             background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
             border-radius: 20px;

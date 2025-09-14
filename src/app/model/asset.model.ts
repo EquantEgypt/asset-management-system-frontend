@@ -1,17 +1,21 @@
+import { Type } from "./AssetTypeModel";
+import { Category } from "./categoryModel";
+
 export interface Asset {
-  id: number;
-  name: string;
-  description: string;
-  category: string;
-  type: string;
-  assignedTo?: string;
-  status:status;
-  serialNumber?: string;
-  purchaseDate?: String;
+  assetId: number;
+  assetName: string;
+  brand: string;
+  assetDescription: string;
+  category: Category;
+  type: Type;
+  quantity: number;
 }
-export enum status{
-  'available' ,
-  'assigned'  ,
-  'maintenance' ,
-  'retired'
+
+export interface AssetRequest {
+  assetName: string;
+  brand: string;
+  assetDescription?: string;
+  categoryId: number;
+  typeId: number;
+  quantity: number;
 }
