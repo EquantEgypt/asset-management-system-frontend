@@ -60,13 +60,17 @@ export class AssetList {
 
     this.assetService.getTypes().subscribe({
       next: (data) => {
+        console.log(data);
         this.types = data.map(item => item.typeName);
       },
       error: (err) => {
         console.error('Error fetching types', err);
         this.types = [];
       }
-    });
+    }
+    );
+      console.log(this.types);
+
   }
 
 

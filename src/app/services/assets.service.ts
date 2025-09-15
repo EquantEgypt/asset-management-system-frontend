@@ -16,7 +16,7 @@ export class AssetService {
     private auth: AuthService,
     private router: Router,
     private http: HttpClient
-  ) {}
+  ) { }
 
   getDisplayedUsers(): Observable<User[]> {
     const token = this.auth.getAuthToken();
@@ -39,40 +39,37 @@ export class AssetService {
     return this.http.get<Asset[]>(`http://localhost:8080/asset?assetName=${encodeURIComponent(assetName)}`, { headers });
   }
 
-getAssets(params: any): Observable<any> {
-  let httpParams = new HttpParams();
-  const token = this.auth.getAuthToken();
-  if (!token) return of([]);
-  const headers = new HttpHeaders().set('Authorization', `Basic ${token}`);
+  getAssets(params: any): Observable<any> {
+    let httpParams = new HttpParams();
+    const token = this.auth.getAuthToken();
+    if (!token) return of([]);
+    const headers = new HttpHeaders().set('Authorization', `Basic ${token}`);
 
-  Object.keys(params).forEach(key => {
-    if (params[key] !== null && params[key] !== '') {
-      httpParams = httpParams.set(key, params[key]);
-    }
-  });
+    Object.keys(params).forEach(key => {
+      if (params[key] !== null && params[key] !== '') {
+        httpParams = httpParams.set(key, params[key]);
+      }
+    });
 
-  return this.http.get<any>('http://localhost:8080/asset', { headers, params: httpParams });
-}
+    return this.http.get<any>('http://localhost:8080/asset', { headers, params: httpParams });
+  }
 
 
-    getCategories(): Observable<category[]> {
-  const token = this.auth.getAuthToken();
-  if (!token) return of([]);
-  const headers = new HttpHeaders().set('Authorization', `Basic ${token}`);
+  getCategories(): Observable<category[]> {
+    const token = this.auth.getAuthToken();
+    if (!token) return of([]);
+    const headers = new HttpHeaders().set('Authorization', `Basic ${token}`);
 
-  const role = this.auth.getRole();
+    const role = this.auth.getRole();
 
     return this.http.get<category[]>(`http://localhost:8080/api/categories`, { headers });
 
   }
-      getTypes(): Observable<type[]> {
-  const token = this.auth.getAuthToken();
-  if (!token) return of([]);
-  const headers = new HttpHeaders().set('Authorization', `Basic ${token}`);
-
-  const role = this.auth.getRole();
-
-    return this.http.get<type[]>(`"http://localhost:8080/api/types`, { headers });
+  getTypes(): Observable<type[]> {
+    const token = this.auth.getAuthToken();
+    if (!token) return of([]);
+    const headers = new HttpHeaders().set('Authorization', `Basic ${token}`);
+    return this.http.get<type[]>(`http://localhost:8080/api/types`, { headers });
 
   }
 }
