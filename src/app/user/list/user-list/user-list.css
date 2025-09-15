@@ -34,16 +34,65 @@ td.mat-cell {
 .role.admin {
   background: #1e88e5;
 }
+
 .role.employee {
   background: #43a047;
 }
+
 .role.department_manager {
   background: #fb8c00;
 }
+
 .role.it {
   background: #8e24aa;
 }
 
 .department {
   background: #00acc1;
+}
+
+.table-nav {
+  display: flex;
+  justify-content: space-between;
+
+
+}
+.filters-div{
+  display: flex;
+  gap:10px
+}
+.search-bar-div {
+  border: 1px solid #dbd6d6;
+    padding: 5px;
+    width: fit-content;
+  border-radius: 6px;
+  height: 31px;
+
+}
+.search-bar:focus {
+  outline: none;
+}
+
+.search-bar {
+  border: none;
+  outline: none;
+  background-color: transparent;
+  font-size: 16px;
+
+}
+
+.search-bar:focus {
+  outline: none;
+}
+
+button {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.loading-div{
+  display: flex;
+  justify-content: center;
+  padding: 4px;
 }
