@@ -8,14 +8,18 @@ export interface Asset {
   assetDescription: string;
   category: Category;
   type: Type;
-  quantity: number;
 }
 
 export interface AssetRequest {
-  assetName: string;
+  name: string;
   brand: string;
   assetDescription?: string;
   categoryId: number;
   typeId: number;
-  quantity: number;
+  location: string;
+  serialNumber: string;
+  purchaseDate: string; 
+  warrantyEndDate: string; 
+  status: string; 
+  imagePath?: string;
 }

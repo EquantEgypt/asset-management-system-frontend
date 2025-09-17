@@ -22,6 +22,7 @@ export class AddAssetComponent implements OnInit {
   assetForm: FormGroup;
   categories: Category[] = [];
   types: Type[] = [];
+  assetStatusOptions = ['AVAILABLE', 'ASSIGNED', 'UNDER_MAINTENANCE', 'RETIRED'];
   errorMessage: string | null = null;
   isLoading = false;
 
@@ -36,12 +37,17 @@ export class AddAssetComponent implements OnInit {
     private toast: ToastService
   ) {
     this.assetForm = this.fb.group({
-      assetName: ['', [Validators.required]],
+      name: ['', [Validators.required]],
       brand: ['', [Validators.required]],
       assetDescription: [''],
       categoryId: [null, [Validators.required]],
       typeId: [null, [Validators.required]],
-      quantity: [0, [Validators.required, Validators.min(0)]]
+      location: ['', [Validators.required]],
+      serialNumber: ['', [Validators.required]],
+      purchaseDate: ['', [Validators.required]],
+      warrantyEndDate: ['', [Validators.required]],
+      status: [null, [Validators.required]],
+      imagePath: ['']
     });
   }
 
@@ -71,7 +77,12 @@ export class AddAssetComponent implements OnInit {
     this.isLoading = true;
     this.errorMessage = null;
 
-    const assetData: AssetRequest = this.assetForm.value; 
+    const formValue = this.assetForm.value;
+    const assetData: AssetRequest = {
+      ...formValue,
+      purchaseDate: new Date(formValue.purchaseDate).toISOString(),
+      warrantyEndDate: new Date(formValue.warrantyEndDate).toISOString()
+    };
 
     this.assetService.addAsset(assetData).subscribe({
       next: () => {

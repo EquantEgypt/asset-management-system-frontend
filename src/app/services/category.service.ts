@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { AuthService } from './auth.service';
 import { Category } from '../model/categoryModel';
 
-const BACKEND_URL = 'http://localhost:8080';
+const BACKEND_URL = 'http://localhost:8080/assets';
 
 @Injectable({
   providedIn: 'root'
@@ -22,7 +22,7 @@ export class CategoryService {
   }
 
   getCategories(): Observable<Category[]> {
-    return this.http.get<Category[]>(`${BACKEND_URL}/api/categories`, {
+    return this.http.get<Category[]>(`${BACKEND_URL}/categories`, {
       headers: this.getAuthHeaders()
     });
   }

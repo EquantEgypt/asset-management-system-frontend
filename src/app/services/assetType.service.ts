@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { AuthService } from './auth.service';
 import { Type } from '../model/AssetTypeModel';
 
-const BACKEND_URL = 'http://localhost:8080';
+const BACKEND_URL = 'http://localhost:8080/assets';
 
 @Injectable({
   providedIn: 'root'
@@ -22,7 +22,7 @@ export class TypeService {
   }
 
   getTypes(): Observable<Type[]> {
-    return this.http.get<Type[]>(`${BACKEND_URL}/api/types`, {
+    return this.http.get<Type[]>(`${BACKEND_URL}/types`, {
       headers: this.getAuthHeaders()
     });
   }
