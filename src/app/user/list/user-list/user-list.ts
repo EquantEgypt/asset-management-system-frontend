@@ -50,6 +50,8 @@ export class UserList implements OnInit {
         this.users = res.content;
         this.totalElements = res.page?.totalElements || 0;
         this.isLoading = false;
+        this.filteredDepartment = this.filteredDepartment;
+        this.filteredRole=this.filteredRole;
 
       });
   }
@@ -60,7 +62,7 @@ export class UserList implements OnInit {
 
   }
 
-  searchByNameOrEmail(text: string) {
+  searchByusername(text: string) {
     this.searchWord = text.toLowerCase().trim();
     this.pageIndex = 0;
     this.loadUsers();

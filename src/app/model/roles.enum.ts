@@ -2,9 +2,9 @@
 
 
 export enum Role {
-EMPLOYEE = 'Employee',
-MANAGER = 'Department_Manager',
-ADMIN = 'Admin',
+EMPLOYEE = 'EMPLOYEE',
+MANAGER = 'DEPARTMENT_MANAGER',
+ADMIN = 'ADMIN',
 IT = 'IT'
 }
 

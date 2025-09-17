@@ -2,13 +2,13 @@
   <div class="table-nav">
     <h2 class="title">👥 Users</h2>
     <div class="filters-div">
-      <div class="filter-by-department" *ngIf="userRole=='Admin'">
+      <div class="filter-by-department" *ngIf="userRole=='ADMIN'">
         <mat-form-field appearance="fill" class="department-select">
           <mat-label>Filter by Department</mat-label>
           <mat-select [(value)]="filteredDepartment" (selectionChange)="filterByDepartment()">
             <mat-option [value]="''">All Departments</mat-option>
-            <mat-option *ngFor="let dept of departments" [value]="dept.departmentId">
-              {{ dept.departmentName }}
+            <mat-option *ngFor="let dept of departments" [value]="dept.id">
+              {{ dept.name }}
             </mat-option>
           </mat-select>
         </mat-form-field>
@@ -26,9 +26,9 @@
         </mat-form-field>
       </div>
       <div class="search-bar-div">
-        <input type="text" class="search-bar" placeholder="Search by name/email" (input)="searchByNameOrEmail(searchInput.value)"
+        <input type="text" class="search-bar" placeholder="Search by username" (input)="searchByusername(searchInput.value)"
           #searchInput />
-        <button (click)="searchByNameOrEmail(searchInput.value)">
+        <button (click)="searchByusername(searchInput.value)">
           <i class="fa-solid fa-magnifying-glass"></i>
         </button>
       </div>

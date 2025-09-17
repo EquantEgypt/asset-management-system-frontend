@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -16,11 +16,17 @@ import { Role } from '../model/roles.enum';
 export class Dashboard {
   role: Role | null = null;
   activeTab: any= 'assets'; 
-
+@ViewChild(AssetList) assetListComponent!: AssetList;
   constructor(private auth: AuthService, private router: Router) { }
 
 setActive(tab: 'assets' | 'users') {
-    this.activeTab = tab;
+  this.activeTab = tab;
+  if (tab === 'assets') {
+
+    setTimeout(() => {
+      this.assetListComponent?.loadAssets();
+    });
+  }
 }
 ngOnInit() {
     this.role = this.auth.getRole();
@@ -30,5 +36,8 @@ ngOnInit() {
     this.auth.logout();
 
     this.router.navigate(['/login']);
+  }
+  canAccessUsers(): boolean {
+    return this.role === 'ADMIN' || this.role === 'DEPARTMENT_MANAGER';
   }
 }
