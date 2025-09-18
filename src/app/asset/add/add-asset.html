@@ -9,7 +9,7 @@
     <div class="form-row">
       <div class="form-group">
         <label for="assetName">Asset Name</label>
-        <input id="assetName" type="text" formControlName="assetName" placeholder="e.g., MacBook Pro 16">
+        <input id="assetName" type="text" formControlName="name" placeholder="e.g., MacBook Pro 16">
       </div>
       <div class="form-group">
         <label for="brand">Brand</label>
@@ -22,14 +22,14 @@
         <label for="categoryId">Category</label>
         <select id="categoryId" formControlName="categoryId">
           <option [ngValue]="null" disabled>Select a category</option>
-          <option *ngFor="let category of categories" [value]="category.categoryId">{{ category.categoryName }}</option>
+          <option *ngFor="let category of categories" [value]="category.id">{{ category.name }}</option>
         </select>
       </div>
       <div class="form-group">
         <label for="typeId">Type</label>
         <select id="typeId" formControlName="typeId">
           <option [ngValue]="null" disabled>Select a type</option>
-          <option *ngFor="let type of types" [value]="type.typeId">{{ type.typeName }}</option>
+          <option *ngFor="let type of types" [value]="type.id">{{ type.name }}</option>
         </select>
       </div>
     </div>
@@ -41,8 +41,35 @@
 
     <div class="form-row">
       <div class="form-group">
-        <label for="quantity">Total Stock</label> <input id="quantity" type="number" formControlName="quantity"> </div>
+        <label for="location">Location</label>
+        <input id="location" type="text" formControlName="location" placeholder="e.g., HQ - IT Department">
       </div>
+      <div class="form-group">
+        <label for="serialNumber">Serial Number</label>
+        <input id="serialNumber" type="text" formControlName="serialNumber" placeholder="e.g., SN-12345">
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="purchaseDate">Purchase Date</label>
+        <input id="purchaseDate" type="date" formControlName="purchaseDate">
+      </div>
+      <div class="form-group">
+        <label for="warrantyEndDate">Warranty End Date</label>
+        <input id="warrantyEndDate" type="date" formControlName="warrantyEndDate">
+      </div>
+    </div>
+    
+    
+        <div class="form-group">
+            <label for="status">Status</label>
+            <select id="status" formControlName="status">
+                <option [ngValue]="null" disabled>Select status</option>
+                <option *ngFor="let status of assetStatusOptions" [value]="status">{{ status }}</option>
+            </select>
+        </div>
+    
 
     <div class="form-actions">
       <button type="button" class="cancel-btn" routerLink="/dashboard" [disabled]="isLoading">Cancel</button>

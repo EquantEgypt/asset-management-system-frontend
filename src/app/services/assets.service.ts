@@ -5,7 +5,7 @@ import { Asset } from '../model/asset.model';
 import { AuthService } from './auth.service';
 import { AssetRequest } from '../model/asset.model';
 
-const BACKEND_URL = 'http://localhost:8080';
+const BACKEND_URL = 'http://localhost:8080/assets';
 
 @Injectable({
   providedIn: 'root'
@@ -22,13 +22,13 @@ export class AssetService {
   }
 
   getAssets(): Observable<Asset[]> {
-    return this.http.get<Asset[]>(`${BACKEND_URL}/api/assets`, {
+    return this.http.get<Asset[]>(`${BACKEND_URL}`, {
       headers: this.getAuthHeaders()
     });
   }
 
   addAsset(assetData: AssetRequest): Observable<Asset> {
-    return this.http.post<Asset>(`${BACKEND_URL}/api/assets`, assetData, {
+    return this.http.post<Asset>(`${BACKEND_URL}`, assetData, {
       headers: this.getAuthHeaders()
     });
   }
