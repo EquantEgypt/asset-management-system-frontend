@@ -4,9 +4,9 @@ import { PageEvent } from '@angular/material/paginator';
 import { Role } from '../../../model/roles.enum';
 import { AuthService } from '../../../services/auth.service';
 import { SharedModule } from '../../../shared/shared.module';
-import { UserService } from '../../../services/user.service';
 import { Department } from '../../../model/department.model';
 import { DepartmentService } from '../../../services/departments.service';
+import { UserService } from '../../../services/user.service';
 
 
 @Component({
@@ -36,7 +36,7 @@ export class UserList implements OnInit {
 
   ) { }
 
-  displayedColumns: string[] = ['id', 'username', 'email', 'role', 'department'];
+  displayedColumns: string[] = ['id', 'username', 'fullName','email', 'role', 'department'];
   ngOnInit() {
     this.loadUsers();
     this.userRole = this.auth.getRole();
@@ -46,7 +46,7 @@ export class UserList implements OnInit {
   loadUsers(): void {
     this.isLoading = true;
     this.userService.getUsers(this.pageIndex, this.pageSize, this.searchWord, this.filteredDepartment,this.filteredRole)
-      .subscribe(res => {
+      .subscribe((res: { content: User[]; page: { totalElements: number; }; }) => {
         this.users = res.content;
         this.totalElements = res.page?.totalElements || 0;
         this.isLoading = false;
