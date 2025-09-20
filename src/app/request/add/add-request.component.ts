@@ -12,6 +12,7 @@ import { Type } from '../../model/AssetTypeModel';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { DestroyRef, inject } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
+import { MiniAsset } from '../../model/MiniAsset.model';
 
 @Component({
   selector: 'app-add-request',
@@ -22,8 +23,8 @@ import { AuthService } from '../../services/auth.service';
 })
 export class AddRequestComponent implements OnInit {
   requestForm: FormGroup;
-  assets: Asset[] = [];
-  filteredAssets: Asset[] = [];
+  assets: MiniAsset[] = [];
+  filteredAssets: MiniAsset[] = [];
   types: Type[] = [];
   requestTypes = ['NEW', 'MAINTENANCE'];
   errorMessage: string | null = null;
@@ -40,11 +41,12 @@ export class AddRequestComponent implements OnInit {
     private toast: ToastService,
     private authService: AuthService
   ) {
-    this.requestForm = this.fb.group({
-      assetId: [null],
-      assetTypeId: [null, [Validators.required]],
-      requestType: [null, [Validators.required]]
-    });
+this.requestForm = this.fb.group({
+  assetId: this.fb.control<number | null>(null),
+  assetTypeId: this.fb.control<number | null>(null, { validators: Validators.required }),
+  requestType: this.fb.control<'NEW' | 'MAINTENANCE' | null>(null, { validators: Validators.required }),
+});
+
   }
 
   ngOnInit(): void {
@@ -57,7 +59,10 @@ export class AddRequestComponent implements OnInit {
 
     this.requestForm.get('assetTypeId')?.valueChanges.subscribe(typeId => {
       if (typeId && this.requestForm.get('requestType')?.value === 'MAINTENANCE') {
-        this.filteredAssets = this.assets.filter(asset => asset.type.id === typeId);
+        console.log(typeId);
+        console.log(this.types)
+        console.log(this.types.find(type => type.id == Number(typeId))!.name);
+        this.filteredAssets = this.assets.filter(asset => asset.type === this.types.find(type => type.id == Number(typeId))!.name);
       } else {
         this.filteredAssets = [];
       }
@@ -86,7 +91,7 @@ export class AddRequestComponent implements OnInit {
   loadAssets(): void {
     this.assetService.getAssets()
       .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe(data => this.assets = data);
+      .subscribe(data => this.assets = data.content);
   }
 
   loadTypes(): void {

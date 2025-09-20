@@ -4,6 +4,8 @@ import { Observable, of } from 'rxjs';
 import { Asset } from '../model/asset.model';
 import { AuthService } from './auth.service';
 import { AssetRequest } from '../model/asset.model';
+import { MiniAsset } from '../model/MiniAsset.model';
+import { Page } from '../model/Page.model';
 
 const BACKEND_URL = 'http://localhost:8080/assets';
 
@@ -21,8 +23,8 @@ export class AssetService {
     });
   }
 
-  getAssets(): Observable<Asset[]> {
-    return this.http.get<Asset[]>(`${BACKEND_URL}`, {
+  getAssets(): Observable<Page<MiniAsset>> {
+    return this.http.get<Page<MiniAsset>>(`${BACKEND_URL}`, {
       headers: this.getAuthHeaders()
     });
   }

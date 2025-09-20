@@ -7,6 +7,8 @@ import { AuthService } from '../../../services/auth.service';
 import { Role } from '../../../model/roles.enum';
 import { Router } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
+import { MiniAsset } from '../../../model/MiniAsset.model';
+import { Page } from '../../../model/Page.model';
 
 @Component({
   selector: 'app-asset-list',
@@ -16,18 +18,21 @@ import { MatButtonModule } from '@angular/material/button';
 })
 export class AssetList implements OnInit {
 
-  assets: Asset[] = [];
+  assets: MiniAsset[] = [];
   isAdmin = false;
   isLoading = true;
 
-  displayedColumns: string[] = [
-    'assetId',
-    'assetName',
-    'brand',
-    'category',
-    'type',
-    'quantity', 
-  ];
+displayedColumns: string[] = [
+  'id',
+  'name',
+  'brand',
+  'category',
+  'type',
+  'status',
+  'assignedUser',
+  'department'
+];
+
 
   constructor(
     private assetService: AssetService,
@@ -51,7 +56,8 @@ export class AssetList implements OnInit {
     this.isLoading = true;
     this.assetService.getAssets().subscribe({
       next: (data) => {
-        this.assets = data;
+        this.assets = data.content;
+        console.log('Assets loaded successfully', this.assets);
         this.isLoading = false;
       },
       error: (err) => {

@@ -31,7 +31,7 @@
             <label for="assetId">Asset</label>
             <select id="assetId" formControlName="assetId">
                 <option [ngValue]="null" disabled>Select an asset</option>
-                <option *ngFor="let asset of filteredAssets" [value]="asset.assetId">{{ asset.assetName }}</option>
+                <option *ngFor="let asset of filteredAssets" [value]="asset.id">{{ asset.name }}</option>
             </select>
         </div>
     </div>
