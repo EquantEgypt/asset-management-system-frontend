@@ -23,3 +23,10 @@ export interface AssetRequest {
   status: string; 
   imagePath?: string;
 }
+export interface AssetAssignment {
+  assetId: number;
+  userId: number;
+  assignmentDate: string; 
+  returnDate?: string;   
+  note?: string;
+}

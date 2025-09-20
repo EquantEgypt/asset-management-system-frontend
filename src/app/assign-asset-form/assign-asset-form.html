@@ -1,0 +1,26 @@
+<div class="assign-form-container">
+    <div class="top-form">
+        <h3>Assign Asset To {{userName}}</h3>
+        <i class="fa-solid fa-x" (click)="onClose()"></i>
+    </div>
+    <form [formGroup]="assignForm" (ngSubmit)="onSubmit()">
+        <div>
+            <select formControlName="assetId">
+                <option value="">Select Asset</option>
+                <option *ngFor="let asset of assets" [value]="asset.assetId">
+                    {{ asset.assetName }}
+                </option>
+            </select>
+        </div>
+        <div>
+            <input type="date" formControlName="assignmentDate" placeholder="Assignment Date" />
+            <input type="date" formControlName="returnDate" placeholder="Return Date" />
+        </div>
+
+        <div>
+            <textarea formControlName="note" placeholder="Notes"></textarea>
+        </div>
+        <button type="submit" [disabled]="assignForm.invalid">Assign</button>
+
+    </form>
+</div>
