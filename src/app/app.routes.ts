@@ -4,6 +4,7 @@ import { AuthGuard } from './guards/auth.guard';
 import { Dashboard } from './dashboard/dashboard';
 import { Role } from './model/roles.enum';
 import { AddAssetComponent } from './asset/add/add-asset';
+import { AddRequestComponent } from './request/add/add-request.component';
 export const routes: Routes = [
   { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
 
@@ -23,6 +24,12 @@ export const routes: Routes = [
     component: AddAssetComponent,
     canActivate: [AuthGuard],
     data: { roles: [Role.ADMIN] }
+  },
+  {
+    path: 'request/add',
+    component: AddRequestComponent,
+    canActivate: [AuthGuard],
+    data: { roles: [Role.ADMIN, Role.EMPLOYEE, Role.MANAGER, Role.IT] }
   },
 
   { path: '**', redirectTo: 'dashboard' }
