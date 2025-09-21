@@ -46,7 +46,7 @@ export class AddAssetComponent implements OnInit {
       serialNumber: ['', [Validators.required]],
       purchaseDate: ['', [Validators.required]],
       warrantyEndDate: ['', [Validators.required]],
-      status: [null, [Validators.required]],
+      status: ['AVAILABLE'],
       imagePath: ['']
     });
   }

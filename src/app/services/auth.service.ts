@@ -67,6 +67,15 @@ export class AuthService {
     return user?.username ?? null;
   }
 
+  getCurrentUserDepartment(): string | null {
+    const userStr = this.storage.getItem(USER);
+    if (!userStr) {
+      return null;
+    }
+    const user = JSON.parse(userStr);
+    return user?.departmentName ?? null;
+  }
+
   getAuthToken(): string | null {
     return this.storage.getItem(AUTH_TOKEN);
   }
