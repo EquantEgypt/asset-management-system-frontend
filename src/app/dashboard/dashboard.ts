@@ -15,6 +15,7 @@ import { Role } from '../model/roles.enum';
 })
 export class Dashboard {
   role: Role | null = null;
+  Role=Role;
   activeTab: any= 'assets'; 
 
   constructor(private auth: AuthService, private router: Router) { }

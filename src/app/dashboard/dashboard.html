@@ -11,9 +11,9 @@
            <h3>Assets</h3>
       </div>
 
-      <div class=" card-container assets-card-container"
+      <div class=" card-container assets-card-container" 
           [class.active]="activeTab === 'users'"
-
+          *ngIf=" role === Role.ADMIN || role === Role.MANAGER; else noAccess"
        (click)="setActive('users')">
        <i class="fa-solid fa-users"></i>
            <h3>Users</h3>
@@ -26,3 +26,6 @@
 </div>
 </div>
   <button (click)="logout()"></button>
+<ng-template #noAccess>
+ 
+</ng-template>

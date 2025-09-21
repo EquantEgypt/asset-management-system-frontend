@@ -38,9 +38,14 @@ export class UserList implements OnInit {
 
   displayedColumns: string[] = ['id', 'username', 'fullName','email', 'role', 'department'];
   ngOnInit() {
+    // this.loadUsers();
+    // this.userRole = this.auth.getRole();
+    // this.loadDepartments();
+      this.userRole = this.auth.getRole();
+  if (this.userRole === this.Role.ADMIN || this.userRole === this.Role.MANAGER) {
     this.loadUsers();
-    this.userRole = this.auth.getRole();
     this.loadDepartments();
+  }
   }
 
   loadUsers(): void {
