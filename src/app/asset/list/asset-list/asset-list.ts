@@ -17,6 +17,10 @@ import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
+import { Department } from '../../../model/department.model';
+import { DepartmentService } from '../../../services/departments.service';
+import { User } from '../../../model/user.model';
+import { UserService } from '../../../services/user.service';
 
 @Component({
   selector: 'app-asset-list',
@@ -39,12 +43,16 @@ export class AssetList implements OnInit {
   isLoading = true;
   categories: Category[] = [];
   types: Type[] = [];
+  departments: Department[] = [];
+  users: User[] = [];
   assetStatusOptions = ['AVAILABLE', 'ASSIGNED', 'UNDER_MAINTENANCE', 'RETIRED'];
 
   // Filter properties
   filteredCategory = '';
   filteredType = '';
   filteredStatus = '';
+  filteredDepartment = '';
+  filteredUser = '';
 
   displayedColumns: string[] = [
     'id',
@@ -62,7 +70,9 @@ export class AssetList implements OnInit {
     private authService: AuthService,
     private router: Router,
     private categoryService: CategoryService,
-    private typeService: TypeService
+    private typeService: TypeService,
+    private departmentService: DepartmentService,
+    private userService: UserService,
   ) {}
 
   ngOnInit(): void {
@@ -71,6 +81,8 @@ export class AssetList implements OnInit {
     if (this.isAdmin) {
       this.loadCategories();
       this.loadTypes();
+      this.loadDepartments();
+      this.loadUsers();
     }
   }
 
@@ -86,6 +98,8 @@ export class AssetList implements OnInit {
       if (this.filteredCategory) filters.category = this.filteredCategory;
       if (this.filteredType) filters.type = this.filteredType;
       if (this.filteredStatus) filters.status = this.filteredStatus;
+      if (this.filteredDepartment) filters.department = this.filteredDepartment;
+      if (this.filteredUser) filters.assignedUser = this.filteredUser;
     } else if (this.userRole === Role.MANAGER) {
       filters.department = this.authService.getCurrentUserDepartment();
     } else {
@@ -112,6 +126,14 @@ export class AssetList implements OnInit {
 
   loadTypes(): void {
     this.typeService.getTypes().subscribe((data) => (this.types = data));
+  }
+
+  loadDepartments(): void {
+    this.departmentService.getDepartmentsName().subscribe((data) => (this.departments = data));
+  }
+
+  loadUsers(): void {
+    this.userService.getUsers().subscribe((data) => (this.users = data.content));
   }
 
   applyFilters(): void {
