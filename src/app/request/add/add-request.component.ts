@@ -73,6 +73,12 @@ this.requestForm = this.fb.group({
     });
   }
 
+  onCancel(): void {
+  if (this.isLoading) return;
+  this.closeModal.emit();
+}
+
+
   updateValidators(requestType: string): void {
     const assetIdControl = this.requestForm.get('assetId');
     const assetTypeIdControl = this.requestForm.get('assetTypeId');
