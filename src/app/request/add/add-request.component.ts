@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -22,6 +22,9 @@ import { MiniAsset } from '../../model/MiniAsset.model';
   styleUrls: ['./add-request.component.css']
 })
 export class AddRequestComponent implements OnInit {
+      @Input() userId: number | null = null;
+//   @Input() userName: string | null = null;
+  @Output() closeModal = new EventEmitter<void>();
   requestForm: FormGroup;
   assets: MiniAsset[] = [];
   filteredAssets: MiniAsset[] = [];

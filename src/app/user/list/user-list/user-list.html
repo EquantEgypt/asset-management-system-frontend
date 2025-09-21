@@ -80,6 +80,12 @@
                     class="fa-solid fa-user-plus"></i>
             </td>
         </ng-container>
+         <ng-container matColumnDef="request" >
+            <th mat-header-cell *matHeaderCellDef>request</th>
+            <td mat-cell *matCellDef="let user" class="assignee-button" (click)="toggleModal2($event,user)"><i
+                    class="fa-solid fa-user-plus"></i>
+            </td>
+        </ng-container>
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
@@ -96,5 +102,9 @@
   <div *ngIf="formModal" class="modal-backdrop">
         <div class="modal-box">
     <app-assign-asset-form [userId]="userId" [userName]="userName"  (closeModal)="closeModal()"></app-assign-asset-form></div>
+  </div>
+    <div *ngIf="formModal2" class="modal-backdrop">
+        <div class="modal-box">
+    <app-add-request [userId]="userId"   (closeModal)="closeModal()"></app-add-request></div>
   </div>
 </div>
