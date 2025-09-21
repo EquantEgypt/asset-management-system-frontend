@@ -2,7 +2,7 @@
   <div class="table-nav">
     <h2 class="title">👥 Users</h2>
     <div class="filters-div">
-      <div class="filter-by-department" *ngIf="userRole=='IT'">
+      <div class="filter-by-department" *ngIf="userRole=='IT'||'ADMIN'">
         <mat-form-field appearance="fill" class="department-select">
           <mat-label>Filter by Department</mat-label>
           <mat-select [(value)]="filteredDepartment" (selectionChange)="filterByDepartment()">

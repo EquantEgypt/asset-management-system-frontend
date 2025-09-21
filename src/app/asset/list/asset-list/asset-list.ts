@@ -9,62 +9,135 @@ import { Router } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { MiniAsset } from '../../../model/MiniAsset.model';
 import { Page } from '../../../model/Page.model';
+import { Category } from '../../../model/categoryModel';
+import { Type } from '../../../model/AssetTypeModel';
+import { CategoryService } from '../../../services/category.service';
+import { TypeService } from '../../../services/assetType.service';
+import { FormsModule } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { Department } from '../../../model/department.model';
+import { DepartmentService } from '../../../services/departments.service';
+import { User } from '../../../model/user.model';
+import { UserService } from '../../../services/user.service';
 
 @Component({
   selector: 'app-asset-list',
-  imports: [CommonModule, MatTableModule, MatButtonModule],
+  standalone: true,
+  imports: [
+    CommonModule,
+    MatTableModule,
+    MatButtonModule,
+    FormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
+  ],
   templateUrl: './asset-list.html',
-  styleUrls: ['./asset-list.css']
+  styleUrls: ['./asset-list.css'],
 })
 export class AssetList implements OnInit {
-
   assets: MiniAsset[] = [];
-  isAdmin = false;
+  userRole: Role | null = null;
   isLoading = true;
+  categories: Category[] = [];
+  types: Type[] = [];
+  departments: Department[] = [];
+  users: User[] = [];
+  assetStatusOptions = ['AVAILABLE', 'ASSIGNED', 'UNDER_MAINTENANCE', 'RETIRED'];
 
-displayedColumns: string[] = [
-  'id',
-  'name',
-  'brand',
-  'category',
-  'type',
-  'status',
-  'assignedUser',
-  'department'
-];
+  // Filter properties
+  filteredCategory = '';
+  filteredType = '';
+  filteredStatus = '';
+  filteredDepartment = '';
+  filteredUser = '';
 
+  displayedColumns: string[] = [
+    'id',
+    'name',
+    'brand',
+    'category',
+    'type',
+    'status',
+    'assignedUser',
+    'department',
+  ];
 
   constructor(
     private assetService: AssetService,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private categoryService: CategoryService,
+    private typeService: TypeService,
+    private departmentService: DepartmentService,
+    private userService: UserService,
   ) {}
 
   ngOnInit(): void {
-    this.checkUserRole();
+    this.userRole = this.authService.getRole();
     this.loadAssets();
+    if (this.isAdmin) {
+      this.loadCategories();
+      this.loadTypes();
+      this.loadDepartments();
+      this.loadUsers();
+    }
   }
 
-  checkUserRole(): void {
-    const userRole = this.authService.getRole();
-    if (userRole && userRole === Role.ADMIN) {
-      this.isAdmin = true;
-    }
+  get isAdmin(): boolean {
+    return this.userRole === Role.ADMIN;
   }
 
   loadAssets(): void {
     this.isLoading = true;
-    this.assetService.getAssets().subscribe({
+    const filters: any = {};
+
+    if (this.isAdmin) {
+      if (this.filteredCategory) filters.category = this.filteredCategory;
+      if (this.filteredType) filters.type = this.filteredType;
+      if (this.filteredStatus) filters.status = this.filteredStatus;
+      if (this.filteredDepartment) filters.department = this.filteredDepartment;
+      if (this.filteredUser) filters.assignedUser = this.filteredUser;
+    } else if (this.userRole === Role.MANAGER) {
+      filters.department = this.authService.getCurrentUserDepartment();
+    } else {
+      filters.assignedUser = this.authService.getCurrentUsername();
+    }
+
+    this.assetService.getAssets(filters).subscribe({
       next: (data) => {
         this.assets = data.content;
-        console.log('Assets loaded successfully', this.assets);
         this.isLoading = false;
       },
       error: (err) => {
         console.error('Failed to load assets', err);
         this.isLoading = false;
-      }
+      },
     });
+  }
+
+  loadCategories(): void {
+    this.categoryService
+      .getCategories()
+      .subscribe((data) => (this.categories = data));
+  }
+
+  loadTypes(): void {
+    this.typeService.getTypes().subscribe((data) => (this.types = data));
+  }
+
+  loadDepartments(): void {
+    this.departmentService.getDepartmentsName().subscribe((data) => (this.departments = data));
+  }
+
+  loadUsers(): void {
+    this.userService.getUsers().subscribe((data) => (this.users = data.content));
+  }
+
+  applyFilters(): void {
+    this.loadAssets();
   }
 
   navigateToAddAsset(): void {
