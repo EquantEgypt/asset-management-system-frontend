@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { Asset } from '../model/asset.model';
 import { AuthService } from './auth.service';
@@ -23,11 +23,24 @@ export class AssetService {
     });
   }
 
-  getAssets(): Observable<Page<MiniAsset>> {
-    return this.http.get<Page<MiniAsset>>(`${BACKEND_URL}`, {
-      headers: this.getAuthHeaders()
+getAssets(filter?: any): Observable<Page<MiniAsset>> {
+  let params = new HttpParams();
+
+  if (filter) {
+    Object.keys(filter).forEach(key => {
+      const value = (filter as any)[key];
+      if (value !== null && value !== undefined && value !== '') {
+        params = params.set(key, value.toString());
+      }
     });
   }
+
+  return this.http.get<Page<MiniAsset>>(`${BACKEND_URL}`, {
+    headers: this.getAuthHeaders(),
+    params
+  });
+}
+
 
   addAsset(assetData: AssetRequest): Observable<Asset> {
     return this.http.post<Asset>(`${BACKEND_URL}`, assetData, {

@@ -23,7 +23,7 @@ import { MiniAsset } from '../../model/MiniAsset.model';
 })
 export class AddRequestComponent implements OnInit {
       @Input() userId: number | null = null;
-//   @Input() userName: string | null = null;
+  @Input() userName: string | null = null;
   @Output() closeModal = new EventEmitter<void>();
   requestForm: FormGroup;
   assets: MiniAsset[] = [];
@@ -55,7 +55,8 @@ this.requestForm = this.fb.group({
   ngOnInit(): void {
     this.loadAssets();
     this.loadTypes();
-
+    console.log(this.userId);
+    console.log(this.userName);
     this.requestForm.get('requestType')?.valueChanges.subscribe(type => {
       this.updateValidators(type);
     });
@@ -97,11 +98,20 @@ this.requestForm = this.fb.group({
     assetTypeIdControl?.updateValueAndValidity();
   }
 
-  loadAssets(): void {
-    this.assetService.getAssets()
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe(data => this.assets = data.content);
+loadAssets(): void {
+  const filter: any = {};
+
+  if (this.userName) {
+    filter.assignedUser = this.userName;
   }
+
+  this.assetService.getAssets(filter)
+    .pipe(takeUntilDestroyed(this.destroyRef))
+    .subscribe(data => {
+      this.assets = data.content;
+    });
+}
+
 
   loadTypes(): void {
     this.typeService.getTypes()
@@ -118,7 +128,7 @@ this.requestForm = this.fb.group({
     this.isLoading = true;
     this.errorMessage = null;
 
-    const currentUserId = this.authService.getCurrentUserId();
+    const currentUserId = this.userId;
     if (currentUserId === null) {
       this.errorMessage = 'Could not identify the current user. Please log in again.';
       this.toast.error(this.errorMessage);
