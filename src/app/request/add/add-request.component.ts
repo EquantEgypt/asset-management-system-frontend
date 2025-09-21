@@ -131,14 +131,12 @@ loadAssets(): void {
     this.isLoading = true;
     this.errorMessage = null;
 
-    const currentUserId = this.userId;
-    if (currentUserId === null) {
-      this.errorMessage = 'Could not identify the current user. Please log in again.';
-      this.toast.error(this.errorMessage);
-      this.isLoading = false;
-      return;
+    let currentUserId: number | null = null;
+    if (this.userId === null) {
+      currentUserId = this.authService.getCurrentUserId();
+    } else {
+      currentUserId = this.userId;
     }
-
     const formValue = this.requestForm.value;
     const requestData: Request = {
       ...formValue,

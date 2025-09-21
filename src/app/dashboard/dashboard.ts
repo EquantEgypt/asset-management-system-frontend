@@ -7,17 +7,19 @@ import { UserList } from '../user/list/user-list/user-list';
 import { AssetList } from '../asset/list/asset-list/asset-list';
 import { Role } from '../model/roles.enum';
 import { AddRequestComponent } from '../request/add/add-request.component';
+import { RequestListComponent } from '../request/list/request-list.component';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [UserList, AssetList, CommonModule, MatTableModule, AddRequestComponent],
+  imports: [UserList, AssetList, CommonModule, MatTableModule, AddRequestComponent, RequestListComponent],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css'
 })
 export class Dashboard implements OnInit {
   role: Role | null = null;
-  Role = Role; 
+  Role = Role;
   activeTab: 'assets' | 'users' | 'requests' = 'assets';
+  showRequestModal = false;
 
   constructor(private auth: AuthService, private router: Router) {}
 
@@ -27,6 +29,10 @@ export class Dashboard implements OnInit {
 
   setActive(tab: 'assets' | 'users' | 'requests') {
     this.activeTab = tab;
+  }
+
+  toggleRequestModal() {
+    this.showRequestModal = !this.showRequestModal;
   }
 
   logout() {

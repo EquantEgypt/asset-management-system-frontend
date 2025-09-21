@@ -1,8 +1,13 @@
 <div class="admin-dashboard-container">
   <div class="top-header">
-    <h2>Access</h2>
+    <div class="header-content">
+      <h2>Access</h2>
+      <button class="request-btn" (click)="toggleRequestModal()">
+        <i class="fa-solid fa-plus"></i> Make a Request
+      </button>
+    </div>
     <div class="card-selector">
-      <div class="card-container users-card-container" 
+      <div class="card-container users-card-container"
            [class.active]="activeTab === 'assets'"
            (click)="setActive('assets')">
         <i class="fa-solid fa-database"></i>
@@ -16,11 +21,25 @@
         <i class="fa-solid fa-users"></i>
         <h3>Users</h3>
       </div>
+
+      <div class="card-container requests-card-container"
+           [class.active]="activeTab === 'requests'"
+           (click)="setActive('requests')">
+        <i class="fa-solid fa-file-alt"></i>
+        <h3>Requests</h3>
+      </div>
     </div>
   </div>
 
   <div class="card-display">
     <app-asset-list *ngIf="activeTab === 'assets'"></app-asset-list>
     <app-user-list *ngIf="activeTab === 'users' && role === Role.ADMIN"></app-user-list>
+    <app-request-list *ngIf="activeTab === 'requests'"></app-request-list>
+  </div>
+</div>
+
+<div *ngIf="showRequestModal" class="modal-backdrop">
+  <div class="modal-box">
+    <app-add-request (closeModal)="toggleRequestModal()"></app-add-request>
   </div>
 </div>
