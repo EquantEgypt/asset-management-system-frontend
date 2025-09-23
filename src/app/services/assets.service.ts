@@ -24,7 +24,11 @@ export class AssetService {
   }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 getAssets(filter?: any): Observable<Page<AssetListDTO>> {
+=======
+getAssets(filter?: any): Observable<Page<MiniAsset>> {
+>>>>>>> needs pagination
 =======
 getAssets(filter?: any): Observable<Page<MiniAsset>> {
 >>>>>>> needs pagination
@@ -39,7 +43,11 @@ getAssets(filter?: any): Observable<Page<MiniAsset>> {
     });
   }
 
+<<<<<<< HEAD
   return this.http.get<Page<AssetListDTO>>(`${BACKEND_URL}`, {
+=======
+  return this.http.get<Page<MiniAsset>>(`${BACKEND_URL}`, {
+>>>>>>> needs pagination
     headers: this.getAuthHeaders(),
     params
   });

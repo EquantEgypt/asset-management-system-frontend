@@ -217,6 +217,28 @@ export class AssetList implements OnInit {
     this.pageSize = e.pageSize;
     this.pageIndex = e.pageIndex;
 
+=======
+    });
+  }
+
+  loadCategories(): void {
+    this.categoryService
+      .getCategories()
+      .subscribe((data) => (this.categories = data));
+  }
+
+  loadTypes(): void {
+    this.typeService.getTypes().subscribe((data) => (this.types = data));
+  }
+
+  loadDepartments(): void {
+    this.departmentService.getDepartmentsName().subscribe((data) => (this.departments = data));
+  }
+
+
+
+  applyFilters(): void {
+>>>>>>> needs pagination
     this.loadAssets();
   }
 
