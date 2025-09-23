@@ -183,6 +183,7 @@ export class AssetList implements OnInit {
   }
 
   loadDepartments(): void {
+<<<<<<< HEAD
     this.departmentService.getDepartmentsName().subscribe({
       next: (data) => {
         this.departments = data;
@@ -192,6 +193,12 @@ export class AssetList implements OnInit {
         this.departments = [];
       },
     });
+=======
+<<<<<<< HEAD
+    this.departmentService
+      .getDepartmentsName()
+      .subscribe((data) => (this.departments = data));
+>>>>>>> needs pagination
   }
 
   applyFilters(): void {
@@ -205,6 +212,14 @@ export class AssetList implements OnInit {
   handlePageEvent(e: PageEvent) {
     this.pageSize = e.pageSize;
     this.pageIndex = e.pageIndex;
+=======
+    this.departmentService.getDepartmentsName().subscribe((data) => (this.departments = data));
+  }
+
+
+
+  applyFilters(): void {
+>>>>>>> needs pagination
     this.loadAssets();
   }
 
