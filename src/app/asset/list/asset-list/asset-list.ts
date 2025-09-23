@@ -116,9 +116,13 @@ export class AssetList implements OnInit {
     filters.page = this.pageIndex;
     filters.size = this.pageSize;
 
+    filters.page = this.pageIndex;
+    filters.size = this.pageSize;
+
     this.assetService.getAssets(filters).subscribe({
       next: (data) => {
         this.assets = data.content;
+        this.totalElements = data.page.totalElements;
         this.totalElements = data.page.totalElements;
         this.isLoading = false;
       },
@@ -140,7 +144,6 @@ export class AssetList implements OnInit {
   }
 
   loadDepartments(): void {
-<<<<<<< HEAD
     this.departmentService
       .getDepartmentsName()
       .subscribe((data) => (this.departments = data));
@@ -154,14 +157,7 @@ export class AssetList implements OnInit {
   handlePageEvent(e: PageEvent) {
     this.pageSize = e.pageSize;
     this.pageIndex = e.pageIndex;
-=======
-    this.departmentService.getDepartmentsName().subscribe((data) => (this.departments = data));
-  }
 
-
-
-  applyFilters(): void {
->>>>>>> needs pagination
     this.loadAssets();
   }
 
