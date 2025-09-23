@@ -13,7 +13,10 @@
       </div>
       <div class="form-group">
         <label for="brand">Brand</label>
-        <input id="brand" type="text" formControlName="brand" placeholder="e.g., Apple">
+        <select id="brand" formControlName="brand">
+          <option [ngValue]="null" disabled>Select a brand</option>
+          <option *ngFor="let brand of brandOptions" [value]="brand">{{ brand }}</option>
+        </select>
       </div>
     </div>
 
@@ -42,7 +45,10 @@
     <div class="form-row">
       <div class="form-group">
         <label for="location">Location</label>
-        <input id="location" type="text" formControlName="location" placeholder="e.g., HQ - IT Department">
+        <select id="location" formControlName="location">
+          <option [ngValue]="null" disabled>Select a location</option>
+          <option *ngFor="let location of locationOptions" [value]="location">{{ location }}</option>
+        </select>
       </div>
       <div class="form-group">
         <label for="serialNumber">Serial Number</label>

@@ -23,6 +23,12 @@ export class AddAssetComponent implements OnInit {
   categories: Category[] = [];
   types: Type[] = [];
   assetStatusOptions = ['AVAILABLE', 'ASSIGNED', 'UNDER_MAINTENANCE', 'RETIRED'];
+  brandOptions = ['Apple', 'Dell', 'HP', 'Samsung', 'Canon', 'Epson', 'Fujitsu', 'IKEA', 'Herman Miller'];
+  locationOptions = [ 'Galleria40',
+    'Uptown Cairo Shop', 'Mivida Shop', 'Stone Park Shop', 'Granda El Sherouk Shop',
+    'Point 90 Shop', 'Layan Shop', 'New Giza Shop', 'October Park Shop',
+    'SODIC Shop', 'Wahet El Ryhan Shop', 'Hurghada Shop'
+  ];
   errorMessage: string | null = null;
   isLoading = false;
 
@@ -38,11 +44,11 @@ export class AddAssetComponent implements OnInit {
   ) {
     this.assetForm = this.fb.group({
       name: ['', [Validators.required]],
-      brand: ['', [Validators.required]],
+      brand: [null, [Validators.required]],
       assetDescription: [''],
       categoryId: [null, [Validators.required]],
       typeId: [null, [Validators.required]],
-      location: ['', [Validators.required]],
+      location: [null, [Validators.required]],
       serialNumber: ['', [Validators.required]],
       purchaseDate: ['', [Validators.required]],
       warrantyEndDate: ['', [Validators.required]],
@@ -53,19 +59,29 @@ export class AddAssetComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadCategories();
-    this.loadTypes();
+    this.onCategoryChange();
   }
 
   loadCategories(): void {
     this.categoryService.getCategories()
-      .pipe(takeUntilDestroyed(this.destroyRef)) 
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(data => this.categories = data);
   }
 
-  loadTypes(): void {
-    this.typeService.getTypes()
+  onCategoryChange(): void {
+    this.assetForm.get('categoryId')?.valueChanges
       .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe(data => this.types = data);
+      .subscribe(categoryId => {
+        this.assetForm.get('typeId')?.setValue(null);
+        this.types = [];
+        if (categoryId) {
+          this.typeService.getTypes(categoryId)
+            .pipe(takeUntilDestroyed(this.destroyRef))
+            .subscribe(data => {
+              this.types = data;
+            });
+        }
+      });
   }
 
   onSubmit(): void {
