@@ -104,6 +104,24 @@ export class AuthService {
     const user = JSON.parse(userStr);
     return user?.departmentName ?? null;
   }
+   
+
+  getCurrentUserId(): number | null {
+    const userStr = this.storage.getItem(USER);
+    if (!userStr) {
+      return null;
+    }
+    const user = JSON.parse(userStr);
+    return user?.id ?? null;
+  }
+  getCurrentUserDepartment(): string | null {
+    const userStr = this.storage.getItem(USER);
+    if (!userStr) {
+      return null;
+    }
+    const user = JSON.parse(userStr);
+    return user?.departmentName ?? null;
+  }
     getCurrentUsername(): string | null {
     const userStr = this.storage.getItem(USER);
     if (!userStr) {
@@ -143,6 +161,7 @@ export class AuthService {
   }
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 
   getUser(): any {
     const userStr = this.storage.getItem(USER);
@@ -161,6 +180,5 @@ export class AuthService {
   isManager(): boolean {
     return this.getRole() === Role.MANAGER;
   }
-=======
->>>>>>> needs pagination
+
 }

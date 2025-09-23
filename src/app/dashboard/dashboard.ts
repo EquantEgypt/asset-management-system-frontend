@@ -39,6 +39,9 @@ export class Dashboard {
   toggleRequestModal() {
     this.showRequestModal = !this.showRequestModal;
   }
+  toggleRequestModal() {
+    this.showRequestModal = !this.showRequestModal;
+  }
 
 
   logout() {

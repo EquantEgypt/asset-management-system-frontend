@@ -184,8 +184,7 @@ export class AssetList implements OnInit {
   }
 
   loadDepartments(): void {
-<<<<<<< HEAD
-<<<<<<< HEAD
+
     this.departmentService.getDepartmentsName().subscribe({
       next: (data) => {
         this.departments = data;
@@ -195,14 +194,9 @@ export class AssetList implements OnInit {
         this.departments = [];
       },
     });
-=======
-<<<<<<< HEAD
-=======
->>>>>>> pagenation for asset list
     this.departmentService
       .getDepartmentsName()
       .subscribe((data) => (this.departments = data));
->>>>>>> needs pagination
   }
 
   applyFilters(): void {
@@ -221,6 +215,11 @@ export class AssetList implements OnInit {
     });
   }
 
+=======
+    });
+  }
+
+>>>>>>> needs pagination
   loadCategories(): void {
     this.categoryService
       .getCategories()
@@ -238,7 +237,6 @@ export class AssetList implements OnInit {
 
 
   applyFilters(): void {
->>>>>>> needs pagination
     this.loadAssets();
   }
 
