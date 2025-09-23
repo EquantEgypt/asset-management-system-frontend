@@ -7,11 +7,12 @@ import { SharedModule } from '../../../shared/shared.module';
 import { UserService } from '../../../services/user.service';
 import { Department } from '../../../model/department.model';
 import { DepartmentService } from '../../../services/departments.service';
+import { AddRequestComponent } from '../../../request/add/add-request.component';
 
 
 @Component({
   selector: 'app-user-list',
-  imports: [SharedModule],
+  imports: [SharedModule,AddRequestComponent],
   templateUrl: './user-list.html',
   styleUrl: './user-list.css'
 })
@@ -29,6 +30,9 @@ export class UserList implements OnInit {
   Role=Role;
   users: User[] = [];
   isLoading = false;
+  requestModal: boolean = false;
+  userId: number | null = null;
+  userName: string | null = null;
   constructor(
     private userService: UserService,
     private departmentService: DepartmentService,
@@ -36,7 +40,7 @@ export class UserList implements OnInit {
 
   ) { }
 
-  displayedColumns: string[] = ['id', 'username', 'email', 'role', 'department'];
+  displayedColumns: string[] = ['id', 'username', 'email', 'role', 'department','request'];
   ngOnInit() {
     this.loadUsers();
     this.userRole = this.auth.getRole();
@@ -89,5 +93,16 @@ filterByRole(): void {
     this.pageIndex = 0;
     this.loadUsers();
   }
+toggleRequestModal(event: Event, user: User) {
+    event.stopPropagation();
+    this.userId = user.id;
+    this.userName = user.username;
+    this.requestModal = !this.requestModal;
+  }
+closeModal() {
+  this.requestModal = false;
+  this.userId = null;
+  this.userName = null;
+}
 
 }
