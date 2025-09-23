@@ -1,5 +1,6 @@
 export interface MiniAsset{
     id:number;
+    serialNumber: string;
     name:string;
     type:string;
     category:string;

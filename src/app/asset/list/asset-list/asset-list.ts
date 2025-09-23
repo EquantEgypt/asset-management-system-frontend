@@ -21,6 +21,7 @@ import { Department } from '../../../model/department.model';
 import { DepartmentService } from '../../../services/departments.service';
 import { User } from '../../../model/user.model';
 import { UserService } from '../../../services/user.service';
+import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-asset-list',
@@ -33,6 +34,7 @@ import { UserService } from '../../../services/user.service';
     MatFormFieldModule,
     MatInputModule,
     MatSelectModule,
+    MatPaginatorModule,
   ],
   templateUrl: './asset-list.html',
   styleUrls: ['./asset-list.css'],
@@ -54,8 +56,14 @@ export class AssetList implements OnInit {
   filteredDepartment = '';
   filteredUser = '';
 
+  // Pagination properties
+  totalElements = 0;
+  pageSize = 10;
+  pageIndex = 0;
+  pageSizeOptions = [5, 10, 25];
+
   displayedColumns: string[] = [
-    'id',
+    'serialNumber',
     'name',
     'brand',
     'category',
@@ -72,7 +80,7 @@ export class AssetList implements OnInit {
     private categoryService: CategoryService,
     private typeService: TypeService,
     private departmentService: DepartmentService,
-    private userService: UserService,
+    private userService: UserService
   ) {}
 
   ngOnInit(): void {
@@ -105,9 +113,13 @@ export class AssetList implements OnInit {
       filters.assignedUser = this.authService.getCurrentUsername();
     }
 
+    filters.page = this.pageIndex;
+    filters.size = this.pageSize;
+
     this.assetService.getAssets(filters).subscribe({
       next: (data) => {
         this.assets = data.content;
+        this.totalElements = data.page.totalElements;
         this.isLoading = false;
       },
       error: (err) => {
@@ -128,12 +140,19 @@ export class AssetList implements OnInit {
   }
 
   loadDepartments(): void {
-    this.departmentService.getDepartmentsName().subscribe((data) => (this.departments = data));
+    this.departmentService
+      .getDepartmentsName()
+      .subscribe((data) => (this.departments = data));
   }
 
-
-
   applyFilters(): void {
+    this.pageIndex = 0;
+    this.loadAssets();
+  }
+
+  handlePageEvent(e: PageEvent) {
+    this.pageSize = e.pageSize;
+    this.pageIndex = e.pageIndex;
     this.loadAssets();
   }
 
