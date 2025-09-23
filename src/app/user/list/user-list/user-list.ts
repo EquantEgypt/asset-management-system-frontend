@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {  Component, OnInit } from '@angular/core';
 import { User } from '../../../model/user.model';
 import { PageEvent } from '@angular/material/paginator';
 import { Role } from '../../../model/roles.enum';
@@ -27,8 +27,8 @@ export class UserList implements OnInit {
   departments: Department[] = [];
   userRole: Role | null = null;
   filteredDepartment: number | '' = '';
-  filteredRole: string | '' = ''
-  Role = Role;
+  filteredRole:string |''=''
+  Role=Role;
   users: User[] = [];
   isLoading = false;
   formModal: boolean = false;
@@ -38,8 +38,8 @@ export class UserList implements OnInit {
   constructor(
     private userService: UserService,
     private departmentService: DepartmentService,
-    private auth: AuthService,
-    private router: Router
+    private auth: AuthService
+
   ) { }
 
   displayedColumns: string[] = ['id', 'username', 'email', 'role', 'department', 'assign_asset', 'request'];
@@ -51,7 +51,7 @@ export class UserList implements OnInit {
 
   loadUsers(): void {
     this.isLoading = true;
-    this.userService.getUsers(this.pageIndex, this.pageSize, this.searchWord, this.filteredDepartment, this.filteredRole)
+    this.userService.getUsers(this.pageIndex, this.pageSize, this.searchWord, this.filteredDepartment,this.filteredRole)
       .subscribe(res => {
         this.users = res.content;
         this.totalElements = res.page?.totalElements || 0;
@@ -72,12 +72,14 @@ export class UserList implements OnInit {
     this.loadUsers();
   }
 
+  
   pageEvent: PageEvent | undefined;
+
+  
 
   loadDepartments(): void {
     this.departmentService.getDepartmentsName().subscribe({
       next: (res) => this.departments = res,
-
       error: (err) => console.error("can't load departments", err)
     });
   }
@@ -87,15 +89,17 @@ export class UserList implements OnInit {
   }
 
 
-  roles = Object.values(Role);
+roles = Object.values(Role);
 
-  filterByRole(): void {
+filterByRole(): void {
     this.pageIndex = 0;
     this.loadUsers();
   }
-  navigateToAssignAsset(user: User): void {
-    this.router.navigate(['/asset-assignments'], {
-state: { user }    });
+toggleRequestModal(event: Event, user: User) {
+    event.stopPropagation();
+    this.userId = user.id;
+    this.userName = user.username;
+    this.requestModal = !this.requestModal;
   }
 toggleRequestModal(event: Event, user: User) {
     event.stopPropagation();

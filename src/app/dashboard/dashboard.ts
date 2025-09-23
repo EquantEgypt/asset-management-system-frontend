@@ -11,6 +11,7 @@ import { AddRequestComponent } from '../request/add/add-request.component';
 @Component({
   selector: 'app-dashboard',
   imports: [UserList, AssetList, CommonModule, MatTableModule],
+  imports: [UserList,AssetList,CommonModule , MatTableModule,AddRequestComponent],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css'
 })
@@ -30,6 +31,9 @@ export class Dashboard {
     this.isAdmin = this.auth.isAdmin();
     this.isEmployee = this.auth.isEmployee();
 
+  }
+  toggleRequestModal() {
+    this.showRequestModal = !this.showRequestModal;
   }
 
 

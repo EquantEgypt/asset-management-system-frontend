@@ -23,7 +23,11 @@ export class AssetService {
     });
   }
 
+<<<<<<< HEAD
 getAssets(filter?: any): Observable<Page<AssetListDTO>> {
+=======
+getAssets(filter?: any): Observable<Page<MiniAsset>> {
+>>>>>>> needs pagination
   let params = new HttpParams();
 
   if (filter) {
