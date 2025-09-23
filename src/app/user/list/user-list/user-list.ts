@@ -7,12 +7,12 @@ import { SharedModule } from '../../../shared/shared.module';
 import { UserService } from '../../../services/user.service';
 import { Department } from '../../../model/department.model';
 import { DepartmentService } from '../../../services/departments.service';
-import { AssignAssetForm } from '../../../assign-asset-form/assign-asset-form';
+import { Router } from '@angular/router';
 
 
 @Component({
   selector: 'app-user-list',
-  imports: [AssignAssetForm, SharedModule],
+  imports: [SharedModule],
   templateUrl: './user-list.html',
   styleUrl: './user-list.css'
 })
@@ -37,8 +37,8 @@ export class UserList implements OnInit {
   constructor(
     private userService: UserService,
     private departmentService: DepartmentService,
-    private auth: AuthService
-
+    private auth: AuthService,
+    private router: Router
   ) { }
 
   displayedColumns: string[] = ['id', 'username', 'email', 'role', 'department', 'assign_asset'];
@@ -95,15 +95,10 @@ export class UserList implements OnInit {
     this.pageIndex = 0;
     this.loadUsers();
   }
-  toggleModal(event: Event, user: User) {
-    event.stopPropagation();
-    this.userId = user.id;
-    this.userName = user.username;
-    this.formModal = !this.formModal;
+  navigateToAssignAsset(user: User): void {
+    this.router.navigate(['/asset-assignments'], {
+      state: { id: user.id, name: user.username }
+    });
+
   }
-closeModal() {
-  this.formModal = false;
-  this.userId = null;
-  this.userName = null;
-}
 }

@@ -1,26 +1,83 @@
-<div class="assign-form-container">
-    <div class="top-form">
-        <h3>Assign Asset To {{userName}}</h3>
-        <i class="fa-solid fa-x" (click)="onClose()"></i>
+<div class="container">
+    <div class="assign-form-container"  *ngIf="!showConfirmationModal">
+      
+        <form [formGroup]="assignForm" (ngSubmit)="onSubmit()" >
+              <h3>Assign Asset </h3>
+            <div class="input-component">
+                <label>User</label>
+
+                <div class="users-dropdown" >
+                    <div class="dropdown-selected"  (click)="toggleDropdown()"> 
+                         <div class="dropdown-selected">
+                        {{ userName }}
+                    </div>
+                        <i class="fa-solid fa-caret-down" (click)="toggleDropdown()"></i>
+                    </div>
+                   
+
+                    <div class="dropdown-menu" *ngIf="isDropdownOpen">
+                        <div class="dropdown-selected">
+                            <input type="text" placeholder="Search user..." (input)="searchByName(searchInput.value)" class="search-bar" #searchInput  />
+                            <i class="fa-solid fa-x"  (click)="toggleDropdown()"></i>
+                        </div>
+
+                        <div class="dropdown-item" *ngFor="let user of users" (click)="selectUser(user)">
+                            {{ user.username }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="categoryId">Category</label>
+                    <select id="categoryId" formControlName="categoryId" (ngModelChange)="displayTypesField($event)">
+                        <option [ngValue]="null" disabled>Select a category</option>
+                        <option *ngFor="let category of categories" [value]="category.id">{{ category.name }}</option>
+                    </select>
+                </div>
+                <div class="form-group" *ngIf="showTypesField">
+                    <label for="typeId">Type</label>
+                    <select id="typeId" formControlName="typeId" (ngModelChange)="displayAssetsField($event)">
+                        <option [ngValue]="null" disabled>Select a type</option>
+                        <option *ngFor="let type of types" [value]="type.name">{{ type.name }}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="input-component" *ngIf="showAssetsField">
+                <label for="asset">Asset</label>
+                <select id="asset" formControlName="assetId">
+                    <option value="">Select Asset</option>
+                    <option *ngFor="let asset of assets" [value]="asset.assetId">
+                        {{ asset.assetName }} (SN: {{ asset.serialNumber }})
+                    </option>
+                </select>
+            </div>
+            <div class="input-component">
+                <label for="note">Notes</label>
+                <textarea id="note" formControlName="note" placeholder="Notes"></textarea>
+            </div>
+                <div class="form-actions">
+                     <button type="submit"  [disabled]="assignForm.invalid">Assign</button>
+      <button type="button" class="cancel-btn"  routerLink="/dashboard" >Cancel</button>
+
+                </div>
+           
+        </form>
     </div>
-    <form [formGroup]="assignForm" (ngSubmit)="onSubmit()">
-        <div>
-            <select formControlName="assetId">
-                <option value="">Select Asset</option>
-                <option *ngFor="let asset of assets" [value]="asset.assetId">
-                    {{ asset.assetName }}
-                </option>
-            </select>
-        </div>
-        <div>
-            <input type="date" formControlName="assignmentDate" placeholder="Assignment Date" />
-            <input type="date" formControlName="returnDate" placeholder="Return Date" />
-        </div>
+    <div *ngIf="showConfirmationModal" class="confirmation-modal">
+      <h4>Confirm Assignment</h4>
 
-        <div>
-            <textarea formControlName="note" placeholder="Notes"></textarea>
-        </div>
-        <button type="submit" [disabled]="assignForm.invalid">Assign</button>
+      <p><strong>User:</strong> {{ selectedUser?.username }}</p>
+      <p><strong>Email:</strong> {{ selectedUser?.email }}</p>
+      <p><strong>Asset:</strong> {{ selectedAsset?.assetName }} (SN: {{ selectedAsset?.serialNumber }})</p>
+      <p><strong>Assignment Date:</strong> {{ assignForm.value.assignmentDate }}</p>
+      <p *ngIf="assignForm.value.returnDate"><strong>Return Date:</strong> {{ assignForm.value.returnDate }}</p>
+      <p *ngIf="assignForm.value.note"><strong>Note:</strong> {{ assignForm.value.note }}</p>
 
-    </form>
-</div>
+      <div class="form-actions">
+        <button type="button" (click)="confirmAssignment()">Confirm</button>
+        <button type="button" class="cancel-btn" (click)="toggleConfirmationModal()">Back</button>
+      </div>
+    </div>
+  </div>
+  

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { AuthService } from './auth.service';
@@ -12,7 +12,7 @@ const BACKEND_URL = 'http://localhost:8080/assets';
 })
 export class TypeService {
 
-  constructor(private http: HttpClient, private authService: AuthService) {}
+  constructor(private http: HttpClient, private authService: AuthService) { }
 
   private getAuthHeaders(): HttpHeaders {
     const token = this.authService.getAuthToken();
@@ -21,9 +21,14 @@ export class TypeService {
     });
   }
 
-  getTypes(): Observable<Type[]> {
+  getTypes(categoryId?: number): Observable<Type[]> {
+    let params = new HttpParams();
+    if (categoryId !== null && categoryId !== undefined) {
+      params = params.set('categoryId', categoryId);
+    }
     return this.http.get<Type[]>(`${BACKEND_URL}/types`, {
-      headers: this.getAuthHeaders()
+      headers: this.getAuthHeaders(),
+      params
     });
   }
 }

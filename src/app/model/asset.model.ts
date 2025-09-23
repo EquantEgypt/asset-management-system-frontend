@@ -8,6 +8,7 @@ export interface Asset {
   assetDescription: string;
   category: Category;
   type: Type;
+  serialNumber?:string;
 }
 
 export interface AssetRequest {
