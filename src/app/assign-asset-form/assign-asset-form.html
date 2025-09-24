@@ -1,83 +1,78 @@
-<div class="container">
-    <div class="assign-form-container"  *ngIf="!showConfirmationModal">
-      
-        <form [formGroup]="assignForm" (ngSubmit)="onSubmit()" >
-              <h3>Assign Asset </h3>
-            <div class="input-component">
-                <label>User</label>
-
-                <div class="users-dropdown" >
-                    <div class="dropdown-selected"  (click)="toggleDropdown()"> 
-                         <div class="dropdown-selected">
-                        {{ userName }}
-                    </div>
-                        <i class="fa-solid fa-caret-down" (click)="toggleDropdown()"></i>
-                    </div>
-                   
-
-                    <div class="dropdown-menu" *ngIf="isDropdownOpen">
-                        <div class="dropdown-selected">
-                            <input type="text" placeholder="Search user..." (input)="searchByName(searchInput.value)" class="search-bar" #searchInput  />
-                            <i class="fa-solid fa-x"  (click)="toggleDropdown()"></i>
-                        </div>
-
-                        <div class="dropdown-item" *ngFor="let user of users" (click)="selectUser(user)">
-                            {{ user.username }}
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="categoryId">Category</label>
-                    <select id="categoryId" formControlName="categoryId" (ngModelChange)="displayTypesField($event)">
-                        <option [ngValue]="null" disabled>Select a category</option>
-                        <option *ngFor="let category of categories" [value]="category.id">{{ category.name }}</option>
-                    </select>
-                </div>
-                <div class="form-group" *ngIf="showTypesField">
-                    <label for="typeId">Type</label>
-                    <select id="typeId" formControlName="typeId" (ngModelChange)="displayAssetsField($event)">
-                        <option [ngValue]="null" disabled>Select a type</option>
-                        <option *ngFor="let type of types" [value]="type.name">{{ type.name }}</option>
-                    </select>
-                </div>
-            </div>
-            <div class="input-component" *ngIf="showAssetsField">
-                <label for="asset">Asset</label>
-                <select id="asset" formControlName="assetId">
-                    <option value="">Select Asset</option>
-                    <option *ngFor="let asset of assets" [value]="asset.assetId">
-                        {{ asset.assetName }} (SN: {{ asset.serialNumber }})
-                    </option>
-                </select>
-            </div>
-            <div class="input-component">
-                <label for="note">Notes</label>
-                <textarea id="note" formControlName="note" placeholder="Notes"></textarea>
-            </div>
-                <div class="form-actions">
-                     <button type="submit"  [disabled]="assignForm.invalid">Assign</button>
-      <button type="button" class="cancel-btn"  routerLink="/dashboard" >Cancel</button>
-
-                </div>
-           
-        </form>
-    </div>
-    <div *ngIf="showConfirmationModal" class="confirmation-modal">
-      <h4>Confirm Assignment</h4>
-
-      <p><strong>User:</strong> {{ selectedUser?.username }}</p>
-      <p><strong>Email:</strong> {{ selectedUser?.email }}</p>
-      <p><strong>Asset:</strong> {{ selectedAsset?.assetName }} (SN: {{ selectedAsset?.serialNumber }})</p>
-      <p><strong>Assignment Date:</strong> {{ assignForm.value.assignmentDate }}</p>
-      <p *ngIf="assignForm.value.returnDate"><strong>Return Date:</strong> {{ assignForm.value.returnDate }}</p>
-      <p *ngIf="assignForm.value.note"><strong>Note:</strong> {{ assignForm.value.note }}</p>
-
-      <div class="form-actions">
-        <button type="button" (click)="confirmAssignment()">Confirm</button>
-        <button type="button" class="cancel-btn" (click)="toggleConfirmationModal()">Back</button>
-      </div>
-    </div>
-  </div>
+<mat-card class="assign-card">
+    <mat-card-title>Assign Asset</mat-card-title>
+    <mat-card-content>
+      <form [formGroup]="assignForm" (ngSubmit)="onSubmit()" class="form-grid">
+  
+        <!-- User Autocomplete -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>User</mat-label>
+          <input type="text"
+                 matInput
+                 [formControl]="userSearch"
+                 [matAutocomplete]="auto">
+          <mat-autocomplete #auto="matAutocomplete"
+                            [displayWith]="displayUser"
+                            (optionSelected)="onUserSelected($event.option.value)">
+            @for (user of filteredUsers$ | async; track user.id) {
+              <mat-option [value]="user">
+                {{ user.username }} ({{ user.email }})
+              </mat-option>
+            }
+          </mat-autocomplete>
+        </mat-form-field>
+  
+        <!-- Category -->
+        <mat-form-field appearance="outline">
+          <mat-label>Category</mat-label>
+          <mat-select formControlName="categoryId" (selectionChange)="onCategoryChange($event.value)">
+            @for (category of categories; track category.id) {
+              <mat-option [value]="category.id">{{ category.name }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+  
+        <!-- Type -->
+        @if (showTypesField) {
+          <mat-form-field appearance="outline">
+            <mat-label>Type</mat-label>
+            <mat-select formControlName="typeId" (selectionChange)="onTypeChange($event.value)">
+              @for (type of types; track type.name) {
+                <mat-option [value]="type.name">{{ type.name }}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+        }
+  
+        <!-- Asset -->
+        @if (showAssetsField) {
+          <mat-form-field appearance="outline">
+            <mat-label>Asset</mat-label>
+            <mat-select formControlName="assetId">
+              @for (asset of assets; track asset.assetId) {
+                <mat-option [value]="asset.assetId">
+                  {{ asset.assetName }} (SN: {{ asset.serialNumber }})
+                </mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+        }
+  
+        <!-- Notes -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Notes</mat-label>
+          <textarea matInput formControlName="note" placeholder="Optional notes"></textarea>
+        </mat-form-field>
+  
+        <!-- Actions -->
+        <div class="form-actions full-width">
+          <button mat-raised-button color="primary" type="submit" [disabled]="assignForm.invalid">
+            Assign
+          </button>
+          <button mat-stroked-button color="warn" type="button" routerLink="/dashboard">
+            Cancel
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
   
