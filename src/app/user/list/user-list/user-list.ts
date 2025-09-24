@@ -1,4 +1,4 @@
-import {  Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { User } from '../../../model/user.model';
 import { PageEvent } from '@angular/material/paginator';
 import { Role } from '../../../model/roles.enum';
@@ -7,6 +7,7 @@ import { SharedModule } from '../../../shared/shared.module';
 import { UserService } from '../../../services/user.service';
 import { Department } from '../../../model/department.model';
 import { DepartmentService } from '../../../services/departments.service';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -25,18 +26,22 @@ export class UserList implements OnInit {
   departments: Department[] = [];
   userRole: Role | null = null;
   filteredDepartment: number | '' = '';
-  filteredRole:string |''=''
-  Role=Role;
+  filteredRole: string | '' = ''
+  Role = Role;
   users: User[] = [];
   isLoading = false;
+  formModal: boolean = false;
+  userId: number | null = null;
+  userName: string | null = null;
+
   constructor(
     private userService: UserService,
     private departmentService: DepartmentService,
-    private auth: AuthService
-
+    private auth: AuthService,
+    private router: Router
   ) { }
 
-  displayedColumns: string[] = ['id', 'username', 'email', 'role', 'department'];
+  displayedColumns: string[] = ['id', 'username', 'email', 'role', 'department', 'assign_asset'];
   ngOnInit() {
     this.loadUsers();
     this.userRole = this.auth.getRole();
@@ -45,7 +50,7 @@ export class UserList implements OnInit {
 
   loadUsers(): void {
     this.isLoading = true;
-    this.userService.getUsers(this.pageIndex, this.pageSize, this.searchWord, this.filteredDepartment,this.filteredRole)
+    this.userService.getUsers(this.pageIndex, this.pageSize, this.searchWord, this.filteredDepartment, this.filteredRole)
       .subscribe(res => {
         this.users = res.content;
         this.totalElements = res.page?.totalElements || 0;
@@ -66,14 +71,12 @@ export class UserList implements OnInit {
     this.loadUsers();
   }
 
-  
   pageEvent: PageEvent | undefined;
-
-  
 
   loadDepartments(): void {
     this.departmentService.getDepartmentsName().subscribe({
       next: (res) => this.departments = res,
+
       error: (err) => console.error("can't load departments", err)
     });
   }
@@ -83,11 +86,14 @@ export class UserList implements OnInit {
   }
 
 
-roles = Object.values(Role);
+  roles = Object.values(Role);
 
-filterByRole(): void {
+  filterByRole(): void {
     this.pageIndex = 0;
     this.loadUsers();
   }
-
+  navigateToAssignAsset(user: User): void {
+    this.router.navigate(['/asset-assignments'], {
+state: { user }    });
+  }
 }

@@ -20,11 +20,15 @@ interface Page<T> {
 })
 export class UserService {
 
-  constructor(private http: HttpClient, private auth: AuthService,) { }
-  getUsers(page: number, size: number, searchWord?: string, departmentId?: number | '', filteredRole?: string | ''): Observable<Page<User>> {
+  constructor(private http: HttpClient, private auth: AuthService) { }
+  getUsers(page?: number| '', size?: number| '', searchWord?: string, departmentId?: number | '', filteredRole?: string | ''): Observable<Page<User>> {
     const token = this.auth.getAuthToken();
 
-    let params = new HttpParams().set('page', page).set('size', size);
+    let params = new HttpParams();
+   
+     if (size !== '' && size !== undefined && page !== '' && page !== undefined) {
+      params = params.set('page', page).set('size', size);
+    }
     if (searchWord && searchWord.trim() !== '') {
       params = params.set('search', searchWord);
     }

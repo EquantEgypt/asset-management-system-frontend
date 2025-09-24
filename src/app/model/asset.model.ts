@@ -8,6 +8,7 @@ export interface Asset {
   assetDescription: string;
   category: Category;
   type: Type;
+  serialNumber?:string;
 }
 
 export interface AssetRequest {
@@ -22,4 +23,11 @@ export interface AssetRequest {
   warrantyEndDate: string; 
   status: string; 
   imagePath?: string;
+}
+export interface AssetAssignment {
+  assetId: number;
+  userId: number;
+  note?: string;
+  typeId:number ; 
+  categoryId:number;
 }

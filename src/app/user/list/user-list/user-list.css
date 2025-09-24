@@ -96,3 +96,14 @@ button {
   justify-content: center;
   padding: 4px;
 }
+
+.assignee-button {
+    cursor: pointer;
+}
+.assignee-button:hover {
+    border: 2px solid #1E88E5;
+    color: #1E88E5;
+}
+.assignee-button {
+    position: relative;
+}
