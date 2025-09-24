@@ -9,6 +9,23 @@
                 <h3>Assets</h3>
             </div>
 
+  <div class="top-header">
+    
+    <div class="header-content">
+
+      <div class="header-actions">
+        <button class="request-btn" (click)="toggleRequestModal()">
+          <i class="fa-solid fa-plus"></i> Make a Request
+        </button>
+        <button class="request-btn" (click)="logout()">logout</button>
+      </div>
+    </div>
+    <div class="card-selector">
+      <div class=" card-container users-card-container " 
+      [class.active]="activeTab === 'assets'"
+      (click)="setActive('assets')">
+                <i class="fa-solid fa-database "></i>
+
             <div class="card-container assets-card-container"
                  [class.active]="activeTab === 'users'"
                  (click)="setActive('users')">
@@ -20,8 +37,21 @@
         </div>
     </div>
 
-    <div class="card-display">
-        <app-asset-list *ngIf="activeTab === 'assets'"></app-asset-list>
-        <app-user-list *ngIf="activeTab === 'users'"></app-user-list>
-    </div>
+      <div class=" card-container assets-card-container"
+          [class.active]="activeTab === 'users'"
+
+       (click)="setActive('users')">
+       <i class="fa-solid fa-users"></i>
+           <h3>Users</h3>
+      </div>
+  </div>
+</div>
+<div class="card-display">
+    <app-asset-list *ngIf="activeTab === 'assets'"></app-asset-list>
+<app-user-list *ngIf="activeTab === 'users'"></app-user-list>
+</div>
+<div *ngIf="showRequestModal" class="modal-backdrop">
+  <div class="modal-box">
+    <app-add-request (closeModal)="toggleRequestModal()"></app-add-request>
+  </div>
 </div>
