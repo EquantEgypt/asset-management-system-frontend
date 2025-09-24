@@ -2,77 +2,78 @@
     <mat-card-title>Assign Asset</mat-card-title>
     <mat-card-content>
       <form [formGroup]="assignForm" (ngSubmit)="onSubmit()" class="form-grid">
+
   
-        <!-- User Autocomplete -->
-        <mat-form-field appearance="outline" class="full-width">
-          <mat-label>User</mat-label>
-          <input type="text"
-                 matInput
-                 [formControl]="userSearch"
-                 [matAutocomplete]="auto">
-          <mat-autocomplete #auto="matAutocomplete"
-                            [displayWith]="displayUser"
-                            (optionSelected)="onUserSelected($event.option.value)">
-            @for (user of filteredUsers$ | async; track user.id) {
-              <mat-option [value]="user">
-                {{ user.username }} ({{ user.email }})
-              </mat-option>
-            }
-          </mat-autocomplete>
-        </mat-form-field>
-  
-        <!-- Category -->
-        <mat-form-field appearance="outline">
-          <mat-label>Category</mat-label>
-          <mat-select formControlName="categoryId" (selectionChange)="onCategoryChange($event.value)">
-            @for (category of categories; track category.id) {
-              <mat-option [value]="category.id">{{ category.name }}</mat-option>
-            }
-          </mat-select>
-        </mat-form-field>
-  
-        <!-- Type -->
-        @if (showTypesField) {
-          <mat-form-field appearance="outline">
-            <mat-label>Type</mat-label>
-            <mat-select formControlName="typeId" (selectionChange)="onTypeChange($event.value)">
-              @for (type of types; track type.name) {
-                <mat-option [value]="type.name">{{ type.name }}</mat-option>
-              }
-            </mat-select>
-          </mat-form-field>
+    <!-- User Autocomplete -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>User</mat-label>
+      <input type="text"
+             matInput
+             [formControl]="userSearch"
+             [matAutocomplete]="auto">
+      <mat-autocomplete #auto="matAutocomplete"
+                        [displayWith]="displayUser"
+                        (optionSelected)="onUserSelected($event.option.value)">
+        @for (user of filteredUsers$ | async; track user.id) {
+          <mat-option [value]="user">
+            {{ user.username }} ({{ user.email }})
+          </mat-option>
         }
+      </mat-autocomplete>
+    </mat-form-field>
   
-        <!-- Asset -->
-        @if (showAssetsField) {
-          <mat-form-field appearance="outline">
-            <mat-label>Asset</mat-label>
-            <mat-select formControlName="assetId">
-              @for (asset of assets; track asset.assetId) {
-                <mat-option [value]="asset.assetId">
-                  {{ asset.assetName }} (SN: {{ asset.serialNumber }})
-                </mat-option>
-              }
-            </mat-select>
-          </mat-form-field>
+    <!-- Category -->
+    <mat-form-field appearance="outline">
+      <mat-label>Category</mat-label>
+      <mat-select formControlName="categoryId" (selectionChange)="onCategoryChange($event.value)">
+        @for (category of categories; track category.id) {
+          <mat-option [value]="category.id">{{ category.name }}</mat-option>
         }
+      </mat-select>
+    </mat-form-field>
   
-        <!-- Notes -->
-        <mat-form-field appearance="outline" class="full-width">
-          <mat-label>Notes</mat-label>
-          <textarea matInput formControlName="note" placeholder="Optional notes"></textarea>
-        </mat-form-field>
+    <!-- Type (disabled until category is chosen) -->
+    <mat-form-field appearance="outline">
+      <mat-label>Type</mat-label>
+      <mat-select formControlName="typeId"
+                  (selectionChange)="onTypeChange($event.value)"
+                  [disabled]="!assignForm.get('categoryId')?.value">
+        @for (type of types; track type.id) {
+          <mat-option [value]="type.name">{{ type.name }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
   
-        <!-- Actions -->
-        <div class="form-actions full-width">
-          <button mat-raised-button color="primary" type="submit" [disabled]="assignForm.invalid">
-            Assign
-          </button>
-          <button mat-stroked-button color="warn" type="button" routerLink="/dashboard">
-            Cancel
-          </button>
-        </div>
-      </form>
+    <!-- Asset (disabled until type is chosen) -->
+    <mat-form-field appearance="outline">
+      <mat-label>Asset</mat-label>
+      <mat-select formControlName="assetId"
+                  [disabled]="!assignForm.get('typeId')?.value">
+        @for (asset of assets; track asset.assetId) {
+          <mat-option [value]="asset.assetId">
+            {{ asset.assetName }} (SN: {{ asset.serialNumber }})
+          </mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+  
+    <!-- Notes -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Notes</mat-label>
+      <textarea matInput formControlName="note" placeholder="Optional notes"></textarea>
+    </mat-form-field>
+  
+    <!-- Actions -->
+    <div class="form-actions">
+      <button mat-raised-button color="primary" type="submit" [disabled]="assignForm.invalid">
+        Assign
+      </button>
+      <button mat-stroked-button color="warn" type="button" routerLink="/dashboard">
+        Cancel
+      </button>
+    </div>
+  
+  </form>
     </mat-card-content>
   </mat-card>
   

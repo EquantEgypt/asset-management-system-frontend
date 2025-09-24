@@ -27,7 +27,5 @@ export interface AssetRequest {
 export interface AssetAssignment {
   assetId: number;
   userId: number;
-  assignmentDate: string; 
-  returnDate?: string;   
   note?: string;
 }

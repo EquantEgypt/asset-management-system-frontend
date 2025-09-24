@@ -144,13 +144,11 @@ export class AssignAssetForm implements OnInit {
   }
 
   confirmAssignment(): void {
-    const { assetId, userId, assignmentDate, returnDate, note } = this.assignForm.value;
+    const { assetId, userId, note } = this.assignForm.value;
 
     this.assignService.assignAsset({
       assetId: assetId!,
       userId: userId!,
-      assignmentDate: assignmentDate!,
-      returnDate: returnDate || undefined,
       note: note || undefined
     }).subscribe({
       next: () => {
