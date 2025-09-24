@@ -5,19 +5,10 @@ import { Router, RouterLink } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
-
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatSelectModule } from '@angular/material/select';
-import { MatButtonModule } from '@angular/material/button';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { MatCardModule } from '@angular/material/card';
-
 import { Asset } from '../model/asset.model';
 import { Category } from '../model/categoryModel';
 import { Type } from '../model/AssetTypeModel';
 import { User } from '../model/user.model';
-
 import { AssetService } from '../services/assets.service';
 import { AssignAssetService } from '../services/assign.asset.service';
 import { CategoryService } from '../services/category.service';
@@ -39,7 +30,7 @@ export class AssignAssetForm implements OnInit {
   assignForm = new FormGroup({
     userId: new FormControl<number | null>(null, Validators.required),
     categoryId: new FormControl<number | null>(null, Validators.required),
-    typeId: new FormControl<number | null>(null, Validators.required),   // for request
+    typeId: new FormControl<number | null>(null, Validators.required),
     typeName: new FormControl<string | null>(null),
     assetId: new FormControl<number | null>(null, Validators.required),
     note: new FormControl<string | null>(null)
@@ -132,9 +123,7 @@ export class AssignAssetForm implements OnInit {
 
   onSubmit(): void {
     if (!this.assignForm.valid) return;
-    const { userId, note,typeId, categoryId } = this.assignForm.value;
- console.log("the type id is ",typeId);
-        console.log("the categoryId id is ",categoryId)
+    const { userId, note } = this.assignForm.value;
     const assetId = this.assignForm.value.assetId!;
     this.selectedAsset = this.assets.find(a => a.assetId === assetId) || null;
     console.log(assetId, userId, note)
@@ -155,7 +144,7 @@ export class AssignAssetForm implements OnInit {
 
   confirmAssignment(): void {
     const { assetId, userId, note, typeId, categoryId } = this.assignForm.value;
-   
+
 
     this.assignService.assignAsset({
       assetId: assetId!,
