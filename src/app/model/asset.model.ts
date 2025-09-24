@@ -28,4 +28,6 @@ export interface AssetAssignment {
   assetId: number;
   userId: number;
   note?: string;
+  typeId:number ; 
+  categoryId:number;
 }

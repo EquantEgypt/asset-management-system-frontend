@@ -1,7 +1,7 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
@@ -30,18 +30,7 @@ import { SharedModule } from '../shared/shared.module';
 @Component({
   selector: 'app-assign-asset-form',
   standalone: true,
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatSelectModule,
-    MatButtonModule,
-    MatAutocompleteModule,
-    MatCardModule,
-    SharedModule
-    
-  ],
+  imports: [SharedModule],
   templateUrl: './assign-asset-form.html',
   styleUrl: './assign-asset-form.css'
 })
@@ -50,7 +39,8 @@ export class AssignAssetForm implements OnInit {
   assignForm = new FormGroup({
     userId: new FormControl<number | null>(null, Validators.required),
     categoryId: new FormControl<number | null>(null, Validators.required),
-    typeId: new FormControl<string | null>(null, Validators.required),
+    typeId: new FormControl<number | null>(null, Validators.required),   // for request
+    typeName: new FormControl<string | null>(null),
     assetId: new FormControl<number | null>(null, Validators.required),
     note: new FormControl<string | null>(null)
   });
@@ -65,9 +55,11 @@ export class AssignAssetForm implements OnInit {
 
   selectedUser: User | null = null;
   selectedAsset: Asset | null = null;
-
+  defaultUserName: string = '';
+  defaultUserId: number | null = null;
+  typeId: number | null = null;
   // Autocomplete
-  userSearch = new FormControl('');
+  userSearch = new FormControl<User | string>('');
   filteredUsers$: Observable<User[]> = of([]);
 
   // Inject services
@@ -83,6 +75,13 @@ export class AssignAssetForm implements OnInit {
   ngOnInit(): void {
     this.loadCategories();
     this.initUserSearch();
+    const navigationState = history.state;
+    if (navigationState?.user) {
+      this.selectedUser = navigationState.user as User;
+      this.assignForm.patchValue({ userId: this.selectedUser.id });
+      this.userSearch.setValue(this.selectedUser);
+    }
+
   }
 
   private initUserSearch(): void {
@@ -92,16 +91,15 @@ export class AssignAssetForm implements OnInit {
       switchMap(value =>
         typeof value === 'string'
           ? this.userService.getUsers('', '', value).pipe(
-              // assuming response: { content: User[] }
-              switchMap(res => of(res.content))
-            )
+            switchMap(res => of(res.content))
+          )
           : of([])
       )
     );
   }
 
   displayUser(user: User): string {
-    return user && user.username ? user.username : '';
+    return user ? user.username : '';
   }
 
   onUserSelected(user: User): void {
@@ -116,18 +114,30 @@ export class AssignAssetForm implements OnInit {
     });
   }
 
-  onTypeChange(type: string): void {
-    this.assetService.getAvAssets(type).subscribe(assets => {
+
+  onTypeChange(type: Type): void {
+    if (!type) return;
+
+    this.assignForm.patchValue({
+      typeId: type.id,
+      typeName: type.name
+    });
+
+    this.assetService.getAvAssets(type.name).subscribe(assets => {
       this.assets = assets;
       this.showAssetsField = true;
     });
   }
 
+
   onSubmit(): void {
     if (!this.assignForm.valid) return;
-
+    const { userId, note,typeId, categoryId } = this.assignForm.value;
+ console.log("the type id is ",typeId);
+        console.log("the categoryId id is ",categoryId)
     const assetId = this.assignForm.value.assetId!;
     this.selectedAsset = this.assets.find(a => a.assetId === assetId) || null;
+    console.log(assetId, userId, note)
 
     this.dialog.open(ConfirmationModalComponent, {
       width: '400px',
@@ -144,12 +154,15 @@ export class AssignAssetForm implements OnInit {
   }
 
   confirmAssignment(): void {
-    const { assetId, userId, note } = this.assignForm.value;
+    const { assetId, userId, note, typeId, categoryId } = this.assignForm.value;
+   
 
     this.assignService.assignAsset({
       assetId: assetId!,
       userId: userId!,
-      note: note || undefined
+      note: note || undefined,
+      typeId: typeId!,
+      categoryId: categoryId!,
     }).subscribe({
       next: () => {
         this.toast.success('Asset assigned successfully');

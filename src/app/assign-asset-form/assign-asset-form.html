@@ -32,17 +32,19 @@
       </mat-select>
     </mat-form-field>
   
-    <!-- Type (disabled until category is chosen) -->
-    <mat-form-field appearance="outline">
-      <mat-label>Type</mat-label>
-      <mat-select formControlName="typeId"
-                  (selectionChange)="onTypeChange($event.value)"
-                  [disabled]="!assignForm.get('categoryId')?.value">
-        @for (type of types; track type.id) {
-          <mat-option [value]="type.name">{{ type.name }}</mat-option>
-        }
-      </mat-select>
-    </mat-form-field>
+   <!-- Type -->
+<mat-form-field appearance="outline">
+  <mat-label>Type</mat-label>
+  <mat-select (selectionChange)="onTypeChange($event.value)"
+              [disabled]="!assignForm.get('categoryId')?.value">
+    @for (type of types; track type.id) {
+      <mat-option [value]="type">
+        {{ type.name }}
+      </mat-option>
+    }
+  </mat-select>
+</mat-form-field>
+
   
     <!-- Asset (disabled until type is chosen) -->
     <mat-form-field appearance="outline">

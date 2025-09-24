@@ -71,10 +71,7 @@ export class UserList implements OnInit {
     this.loadUsers();
   }
 
-
   pageEvent: PageEvent | undefined;
-
-
 
   loadDepartments(): void {
     this.departmentService.getDepartmentsName().subscribe({
@@ -97,8 +94,6 @@ export class UserList implements OnInit {
   }
   navigateToAssignAsset(user: User): void {
     this.router.navigate(['/asset-assignments'], {
-      state: { id: user.id, name: user.username }
-    });
-
+state: { user }    });
   }
 }
