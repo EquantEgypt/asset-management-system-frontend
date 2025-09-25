@@ -15,17 +15,17 @@
   <div *ngIf="isAdmin" class="filters-container">
     <mat-form-field>
       <mat-label>Category</mat-label>
-      <mat-select [(value)]="filteredCategory" (selectionChange)="applyFilters()">
+      <mat-select [(value)]="category" (selectionChange)="applyFilters()">
         <mat-option value="">All</mat-option>
-        <mat-option *ngFor="let category of categories" [value]="category.name">
+        <mat-option *ngFor="let category of categories" [value]="category">
           {{ category.name }}
         </mat-option>
       </mat-select>
     </mat-form-field>
 
-    <mat-form-field>
+    <mat-form-field >
       <mat-label>Type</mat-label>
-      <mat-select [(value)]="filteredType" (selectionChange)="applyFilters()">
+      <mat-select [(value)]="filteredType" (selectionChange)="applyFilters()" [disabled]="!showTypesField">
         <mat-option value="">All</mat-option>
         <mat-option *ngFor="let type of types" [value]="type.name">
           {{ type.name }}
@@ -95,7 +95,7 @@
 
     <ng-container matColumnDef="category">
       <th mat-header-cell *matHeaderCellDef>Category</th>
-      <td mat-cell *matCellDef="let asset">{{ asset.category }}</td>
+      <td mat-cell *matCellDef="let asset">{{ asset.category.name }}</td>
     </ng-container>
 
     <ng-container matColumnDef="type">
