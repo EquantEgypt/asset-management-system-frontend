@@ -3,9 +3,13 @@ export interface MiniAsset{
     serialNumber: string;
     name:string;
     type:string;
-    category:string;
+    category:AssetCategory;
     brand:string;
     status:string;
     assignedUser:string;
     department:string;
+}
+export interface AssetCategory{
+    id:number;
+    name:string;
 }

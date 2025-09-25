@@ -42,7 +42,7 @@ export class UserList implements OnInit {
     private router: Router
   ) { }
 
-  displayedColumns: string[] = ['id', 'username', 'email', 'role', 'department', 'assign_asset', 'requests'];
+  displayedColumns: string[] = ['id', 'username', 'email', 'role', 'department', 'assign_asset', 'request'];
   ngOnInit() {
     this.loadUsers();
     this.userRole = this.auth.getRole();
