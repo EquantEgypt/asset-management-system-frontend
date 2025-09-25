@@ -4,6 +4,8 @@ import { AuthGuard } from './guards/auth.guard';
 import { Dashboard } from './dashboard/dashboard';
 import { Role } from './model/roles.enum';
 import { AddAssetComponent } from './asset/add/add-asset';
+import { UpdateAssetComponent } from './asset/update/update-asset';
+
 export const routes: Routes = [
   { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
 
@@ -21,6 +23,12 @@ export const routes: Routes = [
   {
     path: 'assets/add',
     component: AddAssetComponent,
+    canActivate: [AuthGuard],
+    data: { roles: [Role.ADMIN] }
+  },
+  {
+    path: 'assets/update/:id',
+    component: UpdateAssetComponent,
     canActivate: [AuthGuard],
     data: { roles: [Role.ADMIN] }
   },

@@ -22,13 +22,25 @@ export class AssetService {
   }
 
   getAssets(): Observable<Asset[]> {
-    return this.http.get<Asset[]>(`${BACKEND_URL}`, {
+    return this.http.get<Asset[]>(`${BACKEND_URL}/all`, {
+      headers: this.getAuthHeaders()
+    });
+  }
+
+  getAssetById(id: number): Observable<Asset> {
+    return this.http.get<Asset>(`${BACKEND_URL}/${id}`, {
       headers: this.getAuthHeaders()
     });
   }
 
   addAsset(assetData: AssetRequest): Observable<Asset> {
     return this.http.post<Asset>(`${BACKEND_URL}`, assetData, {
+      headers: this.getAuthHeaders()
+    });
+  }
+
+  updateAsset(id: number, assetData: AssetRequest): Observable<Asset> {
+    return this.http.put<Asset>(`${BACKEND_URL}/${id}`, assetData, {
       headers: this.getAuthHeaders()
     });
   }
