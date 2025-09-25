@@ -7,7 +7,7 @@ import { AuthService } from '../../../services/auth.service';
 import { Role } from '../../../model/roles.enum';
 import { Router } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
-import { MiniAsset } from '../../../model/MiniAsset.model';
+import { AssetCategory, MiniAsset } from '../../../model/MiniAsset.model';
 import { Page } from '../../../model/Page.model';
 import { Category } from '../../../model/categoryModel';
 import { Type } from '../../../model/AssetTypeModel';
@@ -50,12 +50,13 @@ export class AssetList implements OnInit {
   assetStatusOptions = ['AVAILABLE', 'ASSIGNED', 'UNDER_MAINTENANCE', 'RETIRED'];
 
   // Filter properties
-  filteredCategory = '';
+  category: AssetCategory = {id:-1,name:''};
   filteredType = '';
   filteredStatus = '';
   filteredDepartment = '';
   filteredUser = '';
-
+  showTypesField = false;
+  showAssetsField = false;
   // Pagination properties
   totalElements = 0;
   pageSize = 10;
@@ -92,6 +93,12 @@ export class AssetList implements OnInit {
       this.loadDepartments();
     }
   }
+  onCategoryChange(categoryId: number): void {
+    this.typeService.getTypes(categoryId).subscribe(types => {
+      this.types = types;
+      this.showTypesField = true;
+    });
+  }
 
   get isAdmin(): boolean {
     return this.userRole === Role.ADMIN;
@@ -102,7 +109,7 @@ export class AssetList implements OnInit {
     const filters: any = {};
 
     if (this.isAdmin) {
-      if (this.filteredCategory) filters.category = this.filteredCategory;
+      if (this.category.name) filters.category = this.category.name;
       if (this.filteredType) filters.type = this.filteredType;
       if (this.filteredStatus) filters.status = this.filteredStatus;
       if (this.filteredDepartment) filters.department = this.filteredDepartment;
@@ -146,6 +153,8 @@ export class AssetList implements OnInit {
   }
 
   applyFilters(): void {
+    if(this.category.id != -1){
+    this.onCategoryChange(this.category.id);}
     this.pageIndex = 0;
     this.loadAssets();
   }
