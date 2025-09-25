@@ -1,0 +1,71 @@
+<form [formGroup]="requestForm" (ngSubmit)="onSubmit()" class="request-form">
+  <h2 class="form-title">Add New Request</h2>
+
+  <div *ngIf="errorMessage" class="error-banner">
+    {{ errorMessage }}
+  </div>
+
+  <div class="form-row">
+    <div class="form-group">
+      <label for="requestType">Request Type</label>
+      <select id="requestType" formControlName="requestType">
+        <option [ngValue]="null" disabled>Select a request type</option>
+        <option *ngFor="let type of requestTypes" [value]="type">{{ type }}</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="form-row" *ngIf="requestForm.get('requestType')?.value">
+    <div class="form-group">
+      <label for="assetTypeId">Asset Type</label>
+      <select id="assetTypeId" formControlName="assetTypeId">
+        <option [ngValue]="null" disabled>Select an asset type</option>
+        <option *ngFor="let type of types" [value]="type.id">{{ type.name }}</option>
+      </select>
+    </div>
+  </div>
+
+  <div
+    class="form-row"
+    *ngIf="requestForm.get('requestType')?.value === 'MAINTENANCE' && requestForm.get('assetTypeId')?.value"
+  >
+    <div class="form-group">
+      <label for="assetId">Asset</label>
+      <select id="assetId" formControlName="assetId">
+        <option [ngValue]="null" disabled>Select an asset</option>
+        <option *ngFor="let asset of filteredAssets" [value]="asset.id">{{ asset.name }}</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="form-row" *ngIf="requestForm.get('assetTypeId')?.value">
+    <div class="form-group">
+      <label for="notes">Notes</label>
+      <input 
+        type="text" 
+        id="notes" 
+        formControlName="notes" 
+        placeholder="Enter notes here"
+      />
+    </div>
+  </div>
+
+  <div class="form-actions">
+    <button
+      type="button"
+      class="cancel-btn"
+      (click)="onCancel()"
+      [disabled]="isLoading">
+      Cancel
+    </button>
+
+    <button
+      type="submit"
+      class="submit-btn"
+      [disabled]="requestForm.invalid || isLoading"
+    >
+      <span *ngIf="!isLoading">Add Request</span>
+      <span *ngIf="isLoading">Adding...</span>
+    </button>
+  </div>
+</form>

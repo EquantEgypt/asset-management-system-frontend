@@ -8,11 +8,12 @@ import { UserService } from '../../../services/user.service';
 import { Department } from '../../../model/department.model';
 import { DepartmentService } from '../../../services/departments.service';
 import { Router } from '@angular/router';
+import { AddRequestComponent } from '../../../request/add/add-request.component';
 
 
 @Component({
   selector: 'app-user-list',
-  imports: [SharedModule],
+  imports: [SharedModule,AddRequestComponent],
   templateUrl: './user-list.html',
   styleUrl: './user-list.css'
 })
@@ -31,9 +32,9 @@ export class UserList implements OnInit {
   users: User[] = [];
   isLoading = false;
   formModal: boolean = false;
+  requestModal: boolean = false;
   userId: number | null = null;
   userName: string | null = null;
-
   constructor(
     private userService: UserService,
     private departmentService: DepartmentService,
@@ -41,7 +42,7 @@ export class UserList implements OnInit {
     private router: Router
   ) { }
 
-  displayedColumns: string[] = ['id', 'username', 'email', 'role', 'department', 'assign_asset'];
+  displayedColumns: string[] = ['id', 'username', 'email', 'role', 'department', 'assign_asset', 'request'];
   ngOnInit() {
     this.loadUsers();
     this.userRole = this.auth.getRole();
@@ -96,4 +97,16 @@ export class UserList implements OnInit {
     this.router.navigate(['/asset-assignments'], {
 state: { user }    });
   }
+toggleRequestModal(event: Event, user: User) {
+    event.stopPropagation();
+    this.userId = user.id;
+    this.userName = user.username;
+    this.requestModal = !this.requestModal;
+  }
+closeModal() {
+  this.requestModal = false;
+  this.userId = null;
+  this.userName = null;
+}
+
 }
