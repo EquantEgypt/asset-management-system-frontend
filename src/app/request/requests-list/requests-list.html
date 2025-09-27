@@ -1,28 +1,28 @@
 <div class="requests-container">
     <div class="top-container">
         <h2>Asset Requests</h2>
-         <div class="filters">
-  <mat-form-field appearance="outline">
-    <mat-label>Request Status</mat-label>
-    <mat-select [(value)]="selectedStatus" (selectionChange)="loadRequests()">
-      <mat-option [value]="null">All</mat-option>
-      <mat-option value="APPROVED">APPROVED</mat-option>
-      <mat-option value="REJECTED">REJECTED</mat-option>
-      <mat-option value="PENDING">PENDING</mat-option>
-    </mat-select>
-  </mat-form-field>
+        <div class="filters">
+            <mat-form-field appearance="outline">
+                <mat-label>Request Status</mat-label>
+                <mat-select [(value)]="selectedStatus" (selectionChange)="loadRequests()">
+                    <mat-option [value]="''">All Status</mat-option>
+                    <mat-option value="APPROVED">APPROVED</mat-option>
+                    <mat-option value="REJECTED">REJECTED</mat-option>
+                    <mat-option value="PENDING">PENDING</mat-option>
+                </mat-select>
+            </mat-form-field>
 
-  @if(role === 'ADMIN') {
-    <mat-form-field appearance="outline">
-      <mat-label>Request Type</mat-label>
-      <mat-select [(value)]="selectedType" (selectionChange)="loadRequests()">
-        <mat-option [value]="null">All</mat-option>
-        <mat-option value="NEW">NEW</mat-option>
-        <mat-option value="MAINTENANCE">MAINTENANCE</mat-option>
-      </mat-select>
-    </mat-form-field>
-  }
-</div>
+            @if(role === 'ADMIN') {
+            <mat-form-field appearance="outline">
+                <mat-label>Request Type</mat-label>
+                <mat-select [(value)]="selectedType" (selectionChange)="loadRequests()">
+                    <mat-option [value]="''">All Types</mat-option>
+                    <mat-option value="NEW">NEW</mat-option>
+                    <mat-option value="MAINTENANCE">MAINTENANCE</mat-option>
+                </mat-select>
+            </mat-form-field>
+            }
+        </div>
     </div>
 
     <div *ngIf="isLoading" class="loading-spinner">
