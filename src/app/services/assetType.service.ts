@@ -20,7 +20,6 @@ export class TypeService {
       'Authorization': `Basic ${token}`
     });
   }
-
   getTypes(categoryId?: number): Observable<Type[]> {
     let params = new HttpParams();
     if (categoryId !== null && categoryId !== undefined) {
