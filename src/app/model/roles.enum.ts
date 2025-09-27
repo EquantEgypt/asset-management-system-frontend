@@ -1,9 +1,6 @@
-
-
-
 export enum Role {
-EMPLOYEE = 'Employee',
-MANAGER = 'Department_Manager',
+EMPLOYEE = 'EMPLOYEE',
+MANAGER = 'DEPARTMENT_MANAGER',
 ADMIN = 'ADMIN',
 IT = 'IT'
 }

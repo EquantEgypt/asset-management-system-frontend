@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { Observable, of } from 'rxjs';
 import { Asset } from '../model/asset.model';
 import { AuthService } from './auth.service';
 import { AssetRequest } from '../model/asset.model';
@@ -42,6 +42,18 @@ export class AssetService {
   updateAsset(id: number, assetData: AssetRequest): Observable<Asset> {
     return this.http.put<Asset>(`${BACKEND_URL}/${id}`, assetData, {
       headers: this.getAuthHeaders()
+    });
+    }
+    
+ getAvAssets(assetType?:string): Observable<Asset[]> {
+  let params = new HttpParams();
+  if (assetType && assetType.trim() !== '') {
+      params = params.set('type', assetType);
+    }
+   return this.http.get<Asset[]>(`${BACKEND_URL}/available`,{
+      headers: this.getAuthHeaders(),
+      params
+
     });
   }
 }

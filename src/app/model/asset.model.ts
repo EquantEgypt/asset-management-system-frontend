@@ -11,6 +11,7 @@ export interface Asset {
   purchaseDate: string;
   warrantyEndDate: string;
   serialNumber: string;
+  serialNumber?:string;
 }
 
 export interface AssetRequest {
@@ -25,4 +26,11 @@ export interface AssetRequest {
   warrantyEndDate: string; 
   status: string; 
   imagePath?: string;
+}
+export interface AssetAssignment {
+  assetId: number;
+  userId: number;
+  note?: string;
+  typeId:number ; 
+  categoryId:number;
 }

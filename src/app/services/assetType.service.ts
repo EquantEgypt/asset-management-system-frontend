@@ -12,7 +12,7 @@ const BACKEND_URL = 'http://localhost:8080/assets';
 })
 export class TypeService {
 
-  constructor(private http: HttpClient, private authService: AuthService) {}
+  constructor(private http: HttpClient, private authService: AuthService) { }
 
   private getAuthHeaders(): HttpHeaders {
     const token = this.authService.getAuthToken();
