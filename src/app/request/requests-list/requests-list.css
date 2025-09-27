@@ -140,7 +140,6 @@ td.mat-cell {
     align-items: center;
     gap: 4px;
 }
-
 .modal-overlay {
     position: fixed;
     top: 0;
@@ -172,7 +171,6 @@ td.mat-cell {
         opacity: 0;
         transform: scale(0.9) translateY(-20px);
     }
-
     to {
         opacity: 1;
         transform: scale(1) translateY(0);

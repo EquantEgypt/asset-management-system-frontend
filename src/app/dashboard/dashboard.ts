@@ -11,7 +11,6 @@ import { RequestsList } from '../request/requests-list/requests-list';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [UserList, AssetList, CommonModule, MatTableModule],
   imports: [UserList,AssetList,CommonModule , MatTableModule,AddRequestComponent],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css'
@@ -36,12 +35,7 @@ export class Dashboard {
   toggleRequestModal() {
     this.showRequestModal = !this.showRequestModal;
   }
-  toggleRequestModal() {
-    this.showRequestModal = !this.showRequestModal;
-  }
-  toggleRequestModal() {
-    this.showRequestModal = !this.showRequestModal;
-  }
+  
 
 
   logout() {

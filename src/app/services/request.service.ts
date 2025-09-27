@@ -62,4 +62,13 @@ export class RequestService {
       { headers: this.getAuthHeaders() }
     );
   }
+ respondToRequest(requestId: number, requestType: string, accepted: string): Observable<RequestView> {
+  console.log(requestId,requestType);
+  const url =`${BACKEND_URL}/response`;
+  return this.http.put<RequestView>(
+    url,
+    { id: requestId, status: accepted =='APPROVED'?'APPROVED' : 'REJECTED' },
+    { headers: this.getAuthHeaders() }
+  );
+}
 }
