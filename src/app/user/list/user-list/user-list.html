@@ -3,7 +3,7 @@
     <h2 class="title">👥 Users</h2>
     <div class="filters-div">
       <div class="filter-by-department" *ngIf="userRole=='ADMIN'">
-        <mat-form-field appearance="fill" class="department-select">
+        <mat-form-field appearance="outline" class="department-select">
           <mat-label>Filter by Department</mat-label>
           <mat-select [(value)]="filteredDepartment" (selectionChange)="filterByDepartment()">
             <mat-option [value]="''">All Departments</mat-option>
@@ -13,8 +13,9 @@
           </mat-select>
         </mat-form-field>
       </div>
+
       <div class="filter-by-role">
-        <mat-form-field appearance="fill" class="role-select">
+        <mat-form-field appearance="outline" class="role-select">
           <mat-label>Filter by Role</mat-label>
           <mat-select [(value)]="filteredRole" (selectionChange)="filterByRole()">
             <mat-option [value]="''">All Roles</mat-option>
@@ -74,18 +75,16 @@
       </ng-container>
       <ng-container matColumnDef="assign_asset">
         <th mat-header-cell *matHeaderCellDef>Assign</th>
-        <td mat-cell *matCellDef="let user" class="assignee-button"
-         (click)="navigateToAssignAsset(user)"
-         ><i
+        <td mat-cell *matCellDef="let user" class="assignee-button" (click)="navigateToAssignAsset(user)"><i
             class="fa-solid fa-user-plus"></i>
         </td>
       </ng-container>
-               <ng-container matColumnDef="request" >
-            <th mat-header-cell *matHeaderCellDef>request</th>
-            <td mat-cell *matCellDef="let user" class="assignee-button" (click)="toggleRequestModal($event,user)"><i
-                    class="fa-solid fa-user-plus"></i>
-            </td>
-        </ng-container>
+      <ng-container matColumnDef="request">
+        <th mat-header-cell *matHeaderCellDef>request</th>
+        <td mat-cell *matCellDef="let user" class="assignee-button" (click)="toggleRequestModal($event,user)"><i
+            class="fa-solid fa-user-plus"></i>
+        </td>
+      </ng-container>
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
@@ -100,9 +99,9 @@
   <div *ngIf="!isLoading && users.length == 0">
     <h2>No users available.</h2>
   </div>
-      <div *ngIf="requestModal" class="modal-backdrop">
-        <div class="modal-box">
-    <app-add-request [userId]="userId" [userName]="userName"   (closeModal)="closeModal()"></app-add-request></div>
+  <div *ngIf="requestModal" class="modal-backdrop">
+    <div class="modal-box">
+      <app-add-request [userId]="userId" [userName]="userName" (closeModal)="closeModal()"></app-add-request>
+    </div>
   </div>
 </div>
-
