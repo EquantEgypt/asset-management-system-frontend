@@ -17,8 +17,8 @@ import { MatDialog } from '@angular/material/dialog';
 export class RequestsList {
   requests: RequestView[] = [];
   role: Role | null = null;
-  selectedStatus: string | null = null;
-  selectedType: string | null = null;
+  selectedStatus: string | '' = '';
+  selectedType: string | '' = '';
   dataToAssign: AssignPerRequest | null = null;
 
   isLoading = true;
