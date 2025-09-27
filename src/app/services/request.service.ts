@@ -27,14 +27,30 @@ export class RequestService {
     });
   }
 
-  getRequests(page: number, size: number): Observable<Page<RequestView>> {
-    const params = new HttpParams()
+  getRequests(page: number, size: number,status?: string | null,
+  type?: string | null): Observable<Page<RequestView>> {
+    let params = new HttpParams()
       .set('page', page.toString())
       .set('size', size.toString());
+ if (status) {
+    params = params.set('status', status);
+  }
+  if (type) {
+    params = params.set('type', type);
+  }
 
     return this.http.get<Page<RequestView>>(`${BACKEND_URL}`, {
       headers: this.getAuthHeaders(),
       params
     });
   }
+ respondToRequest(requestId: number, requestType: string, accepted: string): Observable<RequestView> {
+  console.log(requestId,requestType);
+  const url =`${BACKEND_URL}/response`;
+  return this.http.put<RequestView>(
+    url,
+    { id: requestId, status: accepted =='APPROVED'?'APPROVED' : 'REJECTED' },
+    { headers: this.getAuthHeaders() }
+  );
+}
 }

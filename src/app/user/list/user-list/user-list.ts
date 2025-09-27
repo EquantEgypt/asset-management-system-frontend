@@ -12,6 +12,7 @@ import { Router } from '@angular/router';
 =======
 >>>>>>> needs pagination
 import { AddRequestComponent } from '../../../request/add/add-request.component';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -23,9 +24,9 @@ import { AddRequestComponent } from '../../../request/add/add-request.component'
 
 export class UserList implements OnInit {
   totalElements = 0;
-  pageSize = 3;
+  pageSize = 10;
   pageIndex = 0;
-  pageSizeOptions = [3, 5, 7];
+  pageSizeOptions = [10, 15, 20];
   searchWord: string = "";
   departments: Department[] = [];
   userRole: Role | null = null;
@@ -41,7 +42,9 @@ export class UserList implements OnInit {
   constructor(
     private userService: UserService,
     private departmentService: DepartmentService,
-    private auth: AuthService
+    private auth: AuthService,
+        private router: Router
+
 
   ) { }
 
@@ -115,5 +118,9 @@ closeModal() {
   this.userId = null;
   this.userName = null;
 }
+ navigateToAssignAsset(user: User): void {
+    this.router.navigate(['/asset-assignments'], {
+state: { user }    });
+  }
 
 }
