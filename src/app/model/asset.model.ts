@@ -8,6 +8,9 @@ export interface Asset {
   assetDescription: string;
   category: Category;
   type: Type;
+  purchaseDate: string;
+  warrantyEndDate: string;
+  serialNumber: string;
   serialNumber?:string;
 }
 

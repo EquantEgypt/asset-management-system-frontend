@@ -21,12 +21,12 @@ export class AssetList implements OnInit {
   isLoading = true;
 
   displayedColumns: string[] = [
-    'assetId',
+    'serialNumber',
     'assetName',
     'brand',
     'category',
     'type',
-    'quantity', 
+    'actions'
   ];
 
   constructor(
@@ -63,5 +63,9 @@ export class AssetList implements OnInit {
 
   navigateToAddAsset(): void {
     this.router.navigate(['/assets/add']);
+  }
+
+  navigateToUpdateAsset(id: number): void {
+    this.router.navigate(['/assets/update', id]);
   }
 }

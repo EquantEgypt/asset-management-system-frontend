@@ -22,7 +22,13 @@ export class AssetService {
   }
 
   getAssets(): Observable<Asset[]> {
-    return this.http.get<Asset[]>(`${BACKEND_URL}`, {
+    return this.http.get<Asset[]>(`${BACKEND_URL}/all`, {
+      headers: this.getAuthHeaders()
+    });
+  }
+
+  getAssetById(id: number): Observable<Asset> {
+    return this.http.get<Asset>(`${BACKEND_URL}/${id}`, {
       headers: this.getAuthHeaders()
     });
   }
@@ -32,6 +38,13 @@ export class AssetService {
       headers: this.getAuthHeaders()
     });
   }
+
+  updateAsset(id: number, assetData: AssetRequest): Observable<Asset> {
+    return this.http.put<Asset>(`${BACKEND_URL}/${id}`, assetData, {
+      headers: this.getAuthHeaders()
+    });
+    }
+    
  getAvAssets(assetType?:string): Observable<Asset[]> {
   let params = new HttpParams();
   if (assetType && assetType.trim() !== '') {
@@ -40,6 +53,7 @@ export class AssetService {
    return this.http.get<Asset[]>(`${BACKEND_URL}/available`,{
       headers: this.getAuthHeaders(),
       params
+
     });
   }
 }
