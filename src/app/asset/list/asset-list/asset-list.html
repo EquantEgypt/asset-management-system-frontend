@@ -120,6 +120,16 @@
     <ng-container matColumnDef="department">
       <th mat-header-cell *matHeaderCellDef>Department</th>
       <td mat-cell *matCellDef="let asset">{{ asset.department }}</td>
+      <td mat-cell *matCellDef="let asset">{{ asset.type.name }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef> edit </th>
+      <td mat-cell *matCellDef="let asset">
+        <button mat-icon-button color="primary" (click)="navigateToUpdateAsset(asset.assetId)">
+          <i class="fa-solid fa-pen"></i>
+        </button>
+      </td>
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

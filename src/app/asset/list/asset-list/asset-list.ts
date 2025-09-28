@@ -58,6 +58,7 @@ export class AssetList implements OnInit {
     'status',
     'assignedUser',
     'department',
+    'actions'
   ];
 
   constructor(
@@ -166,5 +167,9 @@ export class AssetList implements OnInit {
 
   navigateToAddAsset(): void {
     this.router.navigate(['/assets/add']);
+  }
+
+  navigateToUpdateAsset(id: number): void {
+    this.router.navigate(['/assets/update', id]);
   }
 }

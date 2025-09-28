@@ -40,6 +40,11 @@ getAssets(filter?: any): Observable<Page<AssetListDTO>> {
     params
   });
 }
+getAssetById(id: number): Observable<Asset> {
+    return this.http.get<Asset>(`${BACKEND_URL}/${id}`, {
+      headers: this.getAuthHeaders()
+    });
+  }
 
 
   addAsset(assetData: AssetRequest): Observable<Asset> {
@@ -47,6 +52,13 @@ getAssets(filter?: any): Observable<Page<AssetListDTO>> {
       headers: this.getAuthHeaders()
     });
   }
+
+  updateAsset(id: number, assetData: AssetRequest): Observable<Asset> {
+    return this.http.put<Asset>(`${BACKEND_URL}/${id}`, assetData, {
+      headers: this.getAuthHeaders()
+    });
+    }
+    
  getAvAssets(assetType?:string): Observable<Asset[]> {
   let params = new HttpParams();
   if (assetType && assetType.trim() !== '') {
@@ -55,6 +67,7 @@ getAssets(filter?: any): Observable<Page<AssetListDTO>> {
    return this.http.get<Asset[]>(`${BACKEND_URL}/available`,{
       headers: this.getAuthHeaders(),
       params
+
     });
   }
 }

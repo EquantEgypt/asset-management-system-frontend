@@ -1,6 +1,6 @@
 <div class="form-container">
   <form [formGroup]="assetForm" (ngSubmit)="onSubmit()" class="asset-form">
-    <h2 class="form-title">Add New Asset</h2>
+    <h2 class="form-title">Update Asset</h2>
 
     <div *ngIf="errorMessage" class="error-banner">
       {{ errorMessage }}
@@ -36,7 +36,7 @@
         </select>
       </div>
     </div>
-    
+
     <div class="form-group">
       <label for="assetDescription">Description</label>
       <textarea id="assetDescription" formControlName="assetDescription" rows="3" placeholder="Enter a brief description"></textarea>
@@ -66,8 +66,8 @@
         <input id="warrantyEndDate" type="date" formControlName="warrantyEndDate">
       </div>
     </div>
-    
-    
+
+
         <div class="form-group">
             <label for="status">Status</label>
             <select id="status" formControlName="status">
@@ -75,13 +75,13 @@
                 <option *ngFor="let status of assetStatusOptions" [value]="status">{{ status }}</option>
             </select>
         </div>
-    
+
 
     <div class="form-actions">
       <button type="button" class="cancel-btn" routerLink="/dashboard" [disabled]="isLoading">Cancel</button>
       <button type="submit" class="submit-btn" [disabled]="assetForm.invalid || isLoading">
-        <span *ngIf="!isLoading">Add Asset</span>
-        <span *ngIf="isLoading">Adding...</span>
+        <span *ngIf="!isLoading">Update Asset</span>
+        <span *ngIf="isLoading">Updating...</span>
       </button>
     </div>
   </form>
