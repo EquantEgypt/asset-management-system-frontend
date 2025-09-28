@@ -7,6 +7,8 @@ import { Role } from '../../model/roles.enum';
 import { AuthService } from '../../services/auth.service';
 import { AssignAssetForm } from '../../assign-asset-form/assign-asset-form';
 import { MatDialog } from '@angular/material/dialog';
+import { FormControl } from '@angular/forms';
+import { debounceTime, distinctUntilChanged } from 'rxjs';
 
 @Component({
   selector: 'app-requests-list',
@@ -20,19 +22,22 @@ export class RequestsList {
   selectedStatus: string | '' = '';
   selectedType: string | '' = '';
   dataToAssign: AssignPerRequest | null = null;
+  searchWord: string = "";
 
   isLoading = true;
   showAssignModal = false;
   totalElements = 0;
   pageSize = 10;
   pageIndex = 0;
+  searchControl = new FormControl('');
+
   displayedColumns: string[] = [
     'id',
     'requester',
     'requestType',
     'assetName',
-    'assetType', // Added column
-    'status',    // Added column
+    'assetType',
+    'status',
     'requestDate',
     'action'
   ];
@@ -44,16 +49,24 @@ export class RequestsList {
     this.loadRequests();
     this.role = this.auth.getRole();
 
+
+
   }
 
-
+ searchBar(text: string) {
+          this.searchWord= text.toLowerCase().trim();
+    this.pageIndex = 0;
+    this.loadRequests();
+  }
   loadRequests(): void {
     this.isLoading = true;
     this.requestService.getRequests(
       this.pageIndex,
       this.pageSize,
       this.selectedStatus,
-      this.selectedType
+      this.selectedType,
+      this.searchWord
+
     ).subscribe({
       next: (data) => {
         this.requests = data.content;
@@ -76,8 +89,11 @@ export class RequestsList {
     this.showAssignModal = false;
 
     if (success) {
-      this.loadRequests(); // ✅ re-fetch the list so actions update
+      this.loadRequests();
     }
+  }
+  clearSearch(): void {
+    this.searchControl.setValue('');
   }
 
   updateStatus(request: RequestView, newStatus: 'APPROVED' | 'REJECTED'): void {
