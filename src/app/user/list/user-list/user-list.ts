@@ -7,8 +7,10 @@ import { SharedModule } from '../../../shared/shared.module';
 import { UserService } from '../../../services/user.service';
 import { Department } from '../../../model/department.model';
 import { DepartmentService } from '../../../services/departments.service';
-import { AddRequestComponent } from '../../../request/add/add-request.component';
+
 import { Router } from '@angular/router';
+
+import { AddRequestComponent } from '../../../request/add/add-request.component';
 
 
 @Component({
@@ -97,12 +99,19 @@ filterByRole(): void {
     this.pageIndex = 0;
     this.loadUsers();
   }
+
 toggleRequestModal(event: Event, user: User) {
     event.stopPropagation();
     this.userId = user.id;
     this.userName = user.username;
     this.requestModal = !this.requestModal;
   }
+// toggleRequestModal(event: Event, user: User) {
+//     event.stopPropagation();
+//     this.userId = user.id;
+//     this.userName = user.username;
+//     this.requestModal = !this.requestModal;
+//   }
 closeModal() {
   this.requestModal = false;
   this.userId = null;
