@@ -103,12 +103,6 @@ toggleRequestModal(event: Event, user: User) {
     this.userName = user.username;
     this.requestModal = !this.requestModal;
   }
-toggleRequestModal(event: Event, user: User) {
-    event.stopPropagation();
-    this.userId = user.id;
-    this.userName = user.username;
-    this.requestModal = !this.requestModal;
-  }
 closeModal() {
   this.requestModal = false;
   this.userId = null;
