@@ -150,9 +150,6 @@ export class AssetList implements OnInit {
       this.displayedColumns = this.allColumns;
     }
 
-    filters.page = this.pageIndex;
-    filters.size = this.pageSize;
-
     this.assetService.getAssets(filters).subscribe({
       next: (data) => {
         this.assets = data.content;
