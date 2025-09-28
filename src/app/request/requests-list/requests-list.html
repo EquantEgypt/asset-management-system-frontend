@@ -2,6 +2,11 @@
     <div class="top-container">
         <h2>Asset Requests</h2>
         <div class="filters">
+            <mat-form-field appearance="outline" class="search-field">
+                <mat-label>Search</mat-label>
+                <input matInput  (input)="searchBar(searchInput.value)"  #searchInput> 
+            </mat-form-field>
+
             <mat-form-field appearance="outline">
                 <mat-label>Request Status</mat-label>
                 <mat-select [(value)]="selectedStatus" (selectionChange)="loadRequests()">
