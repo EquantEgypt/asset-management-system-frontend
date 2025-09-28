@@ -33,7 +33,7 @@ export class AssetList implements OnInit {
   types: Type[] = [];
   departments: Department[] = [];
   users: User[] = [];
-  assetStatusOptions: AssetStatus | undefined;
+  assetStatusOptions: AssetStatus[] =[AssetStatus.ASSIGNED,AssetStatus.AVAILABLE,AssetStatus.UNDER_MAINTENANCE,AssetStatus.RETIRED];
 
   // Filter properties
   category: Category = { id: -1, name: '' };
@@ -103,16 +103,7 @@ export class AssetList implements OnInit {
       if (this.filteredStatus) filters.status = this.filteredStatus;
       if (this.filteredDepartment) filters.department = this.filteredDepartment;
       if (this.filteredUser) filters.assignedUser = this.filteredUser;
-    } else if (this.authService.isManager()) {
-      const department = this.authService.getCurrentUserDepartment();
-      if (department !== null) {
-        filters.department = department;
-      }
-    } else {
-      const username = this.authService.getCurrentUsername();
-      if (username !== null) {
-        filters.assignedUser = username;
-      }
+    
     }
 
     this.assetService.getAssets(filters).subscribe({

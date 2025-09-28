@@ -20,6 +20,7 @@ export interface RequestView {
 }
 export interface AssignPerRequest {
   requestId: number;
+  
   userId: number;
   categoryId: number;
   userName: string;
