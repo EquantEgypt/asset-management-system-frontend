@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AssignAssetForm } from './assign-asset-form';
+import { AssetDetails } from './asset-details';
 
-describe('AssignAssetForm', () => {
-  let component: AssignAssetForm;
-  let fixture: ComponentFixture<AssignAssetForm>;
+describe('AssetDetails', () => {
+  let component: AssetDetails;
+  let fixture: ComponentFixture<AssetDetails>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AssignAssetForm]
+      imports: [AssetDetails]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(AssignAssetForm);
+    fixture = TestBed.createComponent(AssetDetails);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

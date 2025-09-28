@@ -1,0 +1,46 @@
+
+<div class="asset-details-container" *ngIf="!isLoading && asset">
+  <h2 class="title">{{ asset.assetName}}</h2>
+
+  <div class="asset-header">
+    <div class="asset-meta">
+      <p><strong>Brand:</strong> {{ asset.brand }}</p>
+      <p><strong>Category:</strong> {{asset.categoryName}}</p>
+      <p><strong>Type:</strong> {{ asset.typeName}}</p>
+      <p><strong>Status:</strong> {{ asset.status }}</p>
+      <p><strong>Location:</strong> {{ asset.location}}</p>
+      <p><strong>Serial Number:</strong> {{ asset.serialNumber }}</p>
+    </div>
+  </div>
+
+  <div class="asset-dates">
+    <p><strong>Purchase Date:</strong> {{ asset.purchaseDate }}</p>
+    <p><strong>Warranty End Date:</strong> {{ asset.warrantyEndDate }}</p>
+  </div>
+
+  <div class="asset-assignment" *ngIf="userRole!== Role.EMPLOYEE">
+    <p><strong>Assigned to Username :</strong> {{ asset.assignedToName || "N/A" }}</p>
+    <p><strong>Assigned to Email :</strong> {{ asset.assignedToEmail || "N/A" }}</p>
+  </div>
+
+  <div class="asset-description" *ngIf="asset.assetDescription">
+    <h3>Description</h3>
+    <p>{{ asset.assetDescription }}</p>
+  </div>
+
+ 
+  <div class="asset-actions" *ngIf="userRole!== Role.EMPLOYEE" >
+    <button mat-raised-button color="accent" (click)="goToHistory(asset.assetId)">
+      View History ➡
+    </button>
+  </div>
+
+<div class="back-button-container">
+  <button class="back-btn "(click)="goBackToDashboard()">
+    ⬅ Back to Dashboard
+  </button>
+</div>
+
+<div *ngIf="isLoading" class="loading-spinner">
+  <p>Loading asset details...</p>
+</div>

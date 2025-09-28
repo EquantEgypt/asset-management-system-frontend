@@ -6,10 +6,12 @@ import { Role } from './model/roles.enum';
 import { AddAssetComponent } from './asset/add/add-asset';
 import { AddRequestComponent } from './request/add/add-request.component';
 import { RequestListComponent } from './request/list/request-list.component';
-
+import { AssetDetails } from './asset-details/asset-details';
+import { AssetHistory } from './asset-history/asset-history';
 export const routes: Routes = [
-  { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
-
+  { path: '', 
+    redirectTo: 'dashboard', 
+    pathMatch: 'full' },
   {
     path: 'login',
     component: Login,
@@ -39,6 +41,16 @@ export const routes: Routes = [
     canActivate: [AuthGuard],
     data: { roles: [Role.ADMIN, Role.EMPLOYEE, Role.MANAGER, Role.IT] }
   },
+  { path: 'assets/:id', 
+    component: AssetDetails,
+    canActivate: [AuthGuard],
+    data: { roles: [Role.ADMIN, Role.EMPLOYEE, Role.MANAGER, Role.IT] }
+  },
+   { path: 'history/:id', 
+    component: AssetHistory,
+    canActivate: [AuthGuard],
+    data: { roles: [Role.ADMIN, Role.MANAGER, Role.IT] }
 
-  { path: '**', redirectTo: 'dashboard' }
+  },
+  { path: '**', redirectTo: 'dashboard' },
 ];
