@@ -7,10 +7,6 @@ import { SharedModule } from '../../../shared/shared.module';
 import { UserService } from '../../../services/user.service';
 import { Department } from '../../../model/department.model';
 import { DepartmentService } from '../../../services/departments.service';
-<<<<<<< HEAD
-import { Router } from '@angular/router';
-=======
->>>>>>> needs pagination
 import { AddRequestComponent } from '../../../request/add/add-request.component';
 import { Router } from '@angular/router';
 
