@@ -7,6 +7,8 @@ import { AddAssetComponent } from './asset/add/add-asset';
 import { AddRequestComponent } from './request/add/add-request.component';
 import { RequestListComponent } from './request/list/request-list.component';
 
+import { UserDetailsComponent } from './user-details/user-details';
+
 export const routes: Routes = [
   { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
 
@@ -38,6 +40,14 @@ export const routes: Routes = [
     component: RequestListComponent,
     canActivate: [AuthGuard],
     data: { roles: [Role.ADMIN, Role.EMPLOYEE, Role.MANAGER, Role.IT] }
+  },
+
+  // ✅ User Details Route
+  {
+    path: 'user-details/:id',
+    component: UserDetailsComponent,
+    canActivate: [AuthGuard],
+    data: { roles: [Role.ADMIN, Role.MANAGER, Role.IT] }
   },
 
   { path: '**', redirectTo: 'dashboard' }

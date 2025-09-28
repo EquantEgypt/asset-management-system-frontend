@@ -9,16 +9,15 @@ import { Department } from '../../../model/department.model';
 import { DepartmentService } from '../../../services/departments.service';
 import { AssignAssetForm } from '../../../assign-asset-form/assign-asset-form';
 import { AddRequestComponent } from '../../../request/add/add-request.component';
-
+import { RouterModule } from '@angular/router'
 
 @Component({
   selector: 'app-user-list',
   standalone: true,
-  imports: [AssignAssetForm, SharedModule, AddRequestComponent],
+  imports: [AssignAssetForm, SharedModule, AddRequestComponent, RouterModule],
   templateUrl: './user-list.html',
   styleUrls: ['./user-list.css']
 })
-
 export class UserList implements OnInit {
   totalElements = 0;
   pageSize = 3;
@@ -32,19 +31,34 @@ export class UserList implements OnInit {
   Role = Role;
   users: User[] = [];
   isLoading = false;
+
+  // modals
   formModal: boolean = false;
-    formModal2: boolean = false;
+  formModal2: boolean = false;
+  formModalDetails: boolean = false;
+
+  // selected user
   userId: number | null = null;
   userName: string | null = null;
+  selectedUser: User | null = null;
 
   constructor(
     private userService: UserService,
     private departmentService: DepartmentService,
     private auth: AuthService
-
   ) { }
 
-  displayedColumns: string[] = ['id', 'username', 'email', 'role', 'department', 'assign_asset','request'];
+  displayedColumns: string[] = [
+    'id',
+    'username',
+    'email',
+    'role',
+    'department',
+    'assign_asset',
+    'request',
+    'details'
+  ];
+
   ngOnInit() {
     this.loadUsers();
     this.userRole = this.auth.getRole();
@@ -53,19 +67,23 @@ export class UserList implements OnInit {
 
   loadUsers(): void {
     this.isLoading = true;
-    this.userService.getUsers(this.pageIndex, this.pageSize, this.searchWord, this.filteredDepartment, this.filteredRole)
-      .subscribe(res => {
-        this.users = res.content;
-        this.totalElements = res.page?.totalElements || 0;
-        this.isLoading = false;
-
-      });
+    this.userService.getUsers(
+      this.pageIndex,
+      this.pageSize,
+      this.searchWord,
+      this.filteredDepartment,
+      this.filteredRole
+    ).subscribe(res => {
+      this.users = res.content;
+      this.totalElements = res.page?.totalElements || 0;
+      this.isLoading = false;
+    });
   }
+
   handlePageEvent(e: PageEvent) {
     this.pageSize = e.pageSize;
     this.pageIndex = e.pageIndex;
     this.loadUsers();
-
   }
 
   searchByNameOrEmail(text: string) {
@@ -74,23 +92,17 @@ export class UserList implements OnInit {
     this.loadUsers();
   }
 
-
-  pageEvent: PageEvent | undefined;
-
-
-
   loadDepartments(): void {
     this.departmentService.getDepartmentsName().subscribe({
       next: (res) => this.departments = res,
-
       error: (err) => console.error("can't load departments", err)
     });
   }
+
   filterByDepartment(): void {
     this.pageIndex = 0;
     this.loadUsers();
   }
-
 
   roles = Object.values(Role);
 
@@ -98,22 +110,34 @@ export class UserList implements OnInit {
     this.pageIndex = 0;
     this.loadUsers();
   }
+
   toggleModal(event: Event, user: User) {
     event.stopPropagation();
     this.userId = user.id;
     this.userName = user.username;
     this.formModal = !this.formModal;
   }
-    toggleModal2(event: Event, user: User) {
+
+  toggleModal2(event: Event, user: User) {
     event.stopPropagation();
     this.userId = user.id;
     this.userName = user.username;
     this.formModal2 = !this.formModal2;
   }
-closeModal() {
-  this.formModal = false;
-    this.formModal2 = false;
-  this.userId = null;
-  this.userName = null;
+
+  openDetails(event: Event, user: User) {
+  event.stopPropagation();  
+  this.selectedUser = user;
+  this.formModalDetails = true;
 }
+
+
+  closeModal() {
+    this.formModal = false;
+    this.formModal2 = false;
+    this.formModalDetails = false;
+    this.userId = null;
+    this.userName = null;
+    this.selectedUser = null;
+  }
 }
