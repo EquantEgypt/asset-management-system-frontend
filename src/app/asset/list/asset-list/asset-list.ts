@@ -1,56 +1,42 @@
 import { Component, OnInit } from '@angular/core';
 import { AssetService } from '../../../services/assets.service';
-import { Asset } from '../../../model/asset.model';
-import { MatTableModule } from '@angular/material/table';
-import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../services/auth.service';
 import { Role } from '../../../model/roles.enum';
 import { Router } from '@angular/router';
-import { MatButtonModule } from '@angular/material/button';
-import { AssetCategory, MiniAsset } from '../../../model/MiniAsset.model';
-import { Page } from '../../../model/Page.model';
+import { AssetListDTO } from '../../../model/asset-list-dto.model';
 import { Category } from '../../../model/categoryModel';
 import { Type } from '../../../model/AssetTypeModel';
 import { CategoryService } from '../../../services/category.service';
 import { TypeService } from '../../../services/assetType.service';
-import { FormsModule } from '@angular/forms';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatSelectModule } from '@angular/material/select';
 import { Department } from '../../../model/department.model';
 import { DepartmentService } from '../../../services/departments.service';
 import { User } from '../../../model/user.model';
 import { UserService } from '../../../services/user.service';
-import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
-
+import { PageEvent } from '@angular/material/paginator';
+import { SharedModule } from '../../../shared/shared.module';
+import { FormsModule } from '@angular/forms';
+import { AssetFilter } from '../../../model/asset-filter.model';
+import { AssetStatus } from '../../../model/asset-status.enum';
 @Component({
   selector: 'app-asset-list',
   standalone: true,
-  imports: [
-    CommonModule,
-    MatTableModule,
-    MatButtonModule,
-    FormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatSelectModule,
-    MatPaginatorModule,
-  ],
+  imports: [SharedModule, FormsModule],
   templateUrl: './asset-list.html',
   styleUrls: ['./asset-list.css'],
 })
 export class AssetList implements OnInit {
-  assets: MiniAsset[] = [];
-  userRole: Role | null = null;
+  assets: AssetListDTO[] = [];
+  isAdmin: boolean = false;
+  isIT: boolean = false;
   isLoading = true;
   categories: Category[] = [];
   types: Type[] = [];
   departments: Department[] = [];
   users: User[] = [];
-  assetStatusOptions = ['AVAILABLE', 'ASSIGNED', 'UNDER_MAINTENANCE', 'RETIRED'];
+  assetStatusOptions: AssetStatus | undefined;
 
   // Filter properties
-  category: AssetCategory = {id:-1,name:''};
+  category: Category = { id: -1, name: '' };
   filteredType = '';
   filteredStatus = '';
   filteredDepartment = '';
@@ -80,48 +66,54 @@ export class AssetList implements OnInit {
     private router: Router,
     private categoryService: CategoryService,
     private typeService: TypeService,
-    private departmentService: DepartmentService,
-    private userService: UserService
+    private departmentService: DepartmentService
   ) {}
 
   ngOnInit(): void {
-    this.userRole = this.authService.getRole();
     this.loadAssets();
-    if (this.isAdmin) {
+    if (this.authService.isAdmin() || this.authService.isIT()) {
       this.loadCategories();
       this.loadTypes();
       this.loadDepartments();
     }
+    if (this.authService.isIT()) {
+      this.isIT = true;
+    }
+    if (this.authService.isAdmin()) {
+      this.isAdmin = true;
+    }
   }
   onCategoryChange(categoryId: number): void {
-    this.typeService.getTypes(categoryId).subscribe(types => {
+    this.typeService.getTypes(categoryId).subscribe((types) => {
       this.types = types;
       this.showTypesField = true;
     });
   }
 
-  get isAdmin(): boolean {
-    return this.userRole === Role.ADMIN;
-  }
-
   loadAssets(): void {
     this.isLoading = true;
-    const filters: any = {};
+    const filters: AssetFilter = {
+      page: this.pageIndex,
+      size: this.pageSize,
+    };
 
-    if (this.isAdmin) {
+    if (this.authService.isAdmin()) {
       if (this.category.name) filters.category = this.category.name;
       if (this.filteredType) filters.type = this.filteredType;
       if (this.filteredStatus) filters.status = this.filteredStatus;
       if (this.filteredDepartment) filters.department = this.filteredDepartment;
       if (this.filteredUser) filters.assignedUser = this.filteredUser;
-    } else if (this.userRole === Role.MANAGER) {
-      filters.department = this.authService.getCurrentUserDepartment();
+    } else if (this.authService.isManager()) {
+      const department = this.authService.getCurrentUserDepartment();
+      if (department !== null) {
+        filters.department = department;
+      }
     } else {
-      filters.assignedUser = this.authService.getCurrentUsername();
+      const username = this.authService.getCurrentUsername();
+      if (username !== null) {
+        filters.assignedUser = username;
+      }
     }
-
-    filters.page = this.pageIndex;
-    filters.size = this.pageSize;
 
     this.assetService.getAssets(filters).subscribe({
       next: (data) => {
@@ -137,24 +129,40 @@ export class AssetList implements OnInit {
   }
 
   loadCategories(): void {
-    this.categoryService
-      .getCategories()
-      .subscribe((data) => (this.categories = data));
+    this.categoryService.getCategories().subscribe({
+      next: (data) => (this.categories = data),
+      error: (err) => console.error('Failed to load categories', err),
+    });
   }
 
   loadTypes(): void {
-    this.typeService.getTypes().subscribe((data) => (this.types = data));
+    this.typeService.getTypes().subscribe({
+      next: (data) => {
+        this.types = data;
+      },
+      error: (err) => {
+        console.error('Failed to load types', err);
+        this.types = [];
+      },
+    });
   }
 
   loadDepartments(): void {
-    this.departmentService
-      .getDepartmentsName()
-      .subscribe((data) => (this.departments = data));
+    this.departmentService.getDepartmentsName().subscribe({
+      next: (data) => {
+        this.departments = data;
+      },
+      error: (err) => {
+        console.error('Failed to load departments', err);
+        this.departments = [];
+      },
+    });
   }
 
   applyFilters(): void {
-    if(this.category.id != -1){
-    this.onCategoryChange(this.category.id);}
+    if (this.category.id != -1) {
+      this.onCategoryChange(this.category.id);
+    }
     this.pageIndex = 0;
     this.loadAssets();
   }
