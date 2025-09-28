@@ -42,7 +42,10 @@ td.mat-cell {
 .status.retired {
   background: #757575;
 }
-
+.filters-container{
+  display: flex;
+  gap:5px;
+}
 /* New styles */
 .header {
   display: flex;

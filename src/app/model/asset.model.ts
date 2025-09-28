@@ -11,7 +11,6 @@ export interface Asset {
   purchaseDate: string;
   warrantyEndDate: string;
   serialNumber: string;
-  serialNumber?:string;
 }
 
 export interface AssetRequest {

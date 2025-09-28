@@ -170,6 +170,7 @@ export class AssetList implements OnInit {
   }
 
   navigateToUpdateAsset(id: number): void {
+    console.log('ello')
     this.router.navigate(['/assets/update', id]);
   }
 }

@@ -33,7 +33,7 @@ export const routes: Routes = [
     data: { roles: [Role.ADMIN] }
   },
 
-
+{
     path: 'asset-assignments',
     component: AssignAssetForm,
     canActivate: [AuthGuard],
