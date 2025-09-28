@@ -173,4 +173,13 @@ export class AssetList implements OnInit {
     console.log('ello')
     this.router.navigate(['/assets/update', id]);
   }
+  onRowClick(asset: any) {
+  console.log("Row clicked:", asset);
+
+  this.router.navigate(['/assets', asset.id]);
+
 }
+
+}
+   
+
