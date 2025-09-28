@@ -7,32 +7,33 @@ import { AssetService } from '../../services/assets.service';
 import { TypeService } from '../../services/assetType.service';
 import { Request } from '../../model/request.model';
 import { ToastService } from 'angular-toastify';
-import { Asset } from '../../model/asset.model';
+import { AssetListDTO } from '../../model/asset-list-dto.model';
 import { Type } from '../../model/AssetTypeModel';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { DestroyRef, inject } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
-import { MiniAsset } from '../../model/MiniAsset.model';
+import { RequestType } from '../../model/request-type.enum';
 
 @Component({
   selector: 'app-add-request',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './add-request.component.html',
-  styleUrls: ['./add-request.component.css']
+  styleUrls: ['./add-request.component.css'],
 })
 export class AddRequestComponent implements OnInit {
-      @Input() userId: number | null = null;
+  @Input() userId: number | null = null;
   @Input() userName: string | null = null;
   @Output() closeModal = new EventEmitter<void>();
   requestForm: FormGroup;
-  assets: MiniAsset[] = [];
-  filteredAssets: MiniAsset[] = [];
+  assets: AssetListDTO[] = [];
+  filteredAssets: AssetListDTO[] = [];
   types: Type[] = [];
-  requestTypes = ['NEW', 'MAINTENANCE'];
-  errorMessage: string | null = null;
-  note:string |null = null;
+  errorMessage: string = '';
+  note: string | null = null;
   isLoading = false;
+  requestTypes = Object.values(RequestType);
+  
 
   private destroyRef = inject(DestroyRef);
 
@@ -45,42 +46,47 @@ export class AddRequestComponent implements OnInit {
     private toast: ToastService,
     private authService: AuthService
   ) {
-this.requestForm = this.fb.group({
-  assetId: this.fb.control<number | null>(null),
-  assetTypeId: this.fb.control<number | null>(null, { validators: Validators.required }),
-  requestType: this.fb.control<'NEW' | 'MAINTENANCE' | null>(null, { validators: Validators.required }),
-  note: this.fb.control<string | null>(null),
-});
-
+    this.requestForm = this.fb.group({
+      assetId: this.fb.control<number | null>(null),
+      assetTypeId: this.fb.control<number | null>(null, { validators: Validators.required }),
+      requestType: this.fb.control<RequestType | null>(null, { validators: Validators.required }),
+      note: this.fb.control<string | null>(null),
+    });
   }
 
   ngOnInit(): void {
     this.loadAssets();
     this.loadTypes();
-    console.log(this.userId);
-    console.log(this.userName);
-    this.requestForm.get('requestType')?.valueChanges.subscribe(type => {
+
+    this.requestForm.get('requestType')?.valueChanges.subscribe((type) => {
       this.updateValidators(type);
     });
 
-    this.requestForm.get('assetTypeId')?.valueChanges.subscribe(typeId => {
-      if (typeId && this.requestForm.get('requestType')?.value === 'MAINTENANCE') {
-        console.log(typeId);
-        console.log(this.types)
-        console.log(this.types.find(type => type.id == Number(typeId))!.name);
-        this.filteredAssets = this.assets.filter(asset => asset.type === this.types.find(type => type.id == Number(typeId))!.name);
+    this.requestForm.get('assetTypeId')?.valueChanges.subscribe((typeId) => {
+      const requestType = this.requestForm.get('requestType')?.value;
+
+      if (typeId && requestType === 'MAINTENANCE') {
+        const selectedType = this.types.find((t) => t.id === Number(typeId));
+
+        if (selectedType) {
+          this.filteredAssets = this.assets.filter(
+            (asset) => asset.type?.toLowerCase() === selectedType.name?.toLowerCase()
+          );
+        } else {
+          this.filteredAssets = [];
+        }
       } else {
         this.filteredAssets = [];
       }
+
       this.requestForm.get('assetId')?.reset();
     });
   }
 
   onCancel(): void {
-  if (this.isLoading) return;
-  this.closeModal.emit();
-}
-
+    if (this.isLoading) return;
+    this.closeModal.emit();
+  }
 
   updateValidators(requestType: string): void {
     const assetIdControl = this.requestForm.get('assetId');
@@ -100,28 +106,41 @@ this.requestForm = this.fb.group({
     assetTypeIdControl?.updateValueAndValidity();
   }
 
-loadAssets(): void {
-  const filter: any = {};
+  loadAssets(): void {
+    const filter: any = {};
+    if (this.userName) {
+      filter.assignedUser = this.userName;
+    }
 
-  if (this.userName) {
-    filter.assignedUser = this.userName;
-    console.log(this.userName);
+    this.assetService
+      .getAssets(filter)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: (data) => {
+          this.assets = data?.content ?? [];
+        },
+        error: (err) => {
+          console.error('Failed to load assets:', err);
+          this.assets = [];
+          this.toast.error('Could not load assets. Please try again later.');
+        },
+      });
   }
 
-  this.assetService.getAssets(filter)
-    .pipe(takeUntilDestroyed(this.destroyRef))
-    .subscribe(data => {
-      console.log(filter);
-      console.log(data);
-      this.assets = data.content;
-    });
-}
-
-
   loadTypes(): void {
-    this.typeService.getTypes()
+    this.typeService
+      .getTypes()
       .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe(data => this.types = data);
+      .subscribe({
+        next: (data) => {
+          this.types = data ?? [];
+        },
+        error: (err) => {
+          console.error('Failed to load asset types:', err);
+          this.types = [];
+          this.toast.error('Could not load asset types. Please try again later.');
+        },
+      });
   }
 
   onSubmit(): void {
@@ -131,7 +150,6 @@ loadAssets(): void {
     }
 
     this.isLoading = true;
-    this.errorMessage = null;
 
     let currentUserId: number | null = null;
     if (this.userId === null) {
@@ -139,10 +157,11 @@ loadAssets(): void {
     } else {
       currentUserId = this.userId;
     }
+
     const formValue = this.requestForm.value;
     const requestData: Request = {
       ...formValue,
-      requesterId: currentUserId
+      requesterId: currentUserId,
     };
 
     this.requestService.addRequest(requestData).subscribe({
@@ -154,11 +173,9 @@ loadAssets(): void {
       error: (err: any) => {
         this.isLoading = false;
         this.errorMessage = err.error?.message || 'Failed to add request. Please try again.';
-        if (this.errorMessage) {
-          this.toast.error(this.errorMessage);
-        }
-        console.error(err);
-      }
+        this.toast.error(this.errorMessage);
+        console.error('Request submission failed:', err);
+      },
     });
   }
 }
