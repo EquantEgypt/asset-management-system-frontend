@@ -4,7 +4,7 @@ import { Observable, of } from 'rxjs';
 import { Asset } from '../model/asset.model';
 import { AuthService } from './auth.service';
 import { AssetRequest } from '../model/asset.model';
-import { AssetList } from '../model/asset-list-dto.model';
+import { AssetListDTO } from '../model/asset-list-dto.model';
 import { Page } from '../model/Page.model';
 
 const BACKEND_URL = 'http://localhost:8080/assets';
@@ -23,7 +23,7 @@ export class AssetService {
     });
   }
 
-getAssets(filter?: any): Observable<Page<AssetList>> {
+getAssets(filter?: any): Observable<Page<AssetListDTO>> {
   let params = new HttpParams();
 
   if (filter) {
@@ -35,7 +35,7 @@ getAssets(filter?: any): Observable<Page<AssetList>> {
     });
   }
 
-  return this.http.get<Page<AssetList>>(`${BACKEND_URL}`, {
+  return this.http.get<Page<AssetListDTO>>(`${BACKEND_URL}`, {
     headers: this.getAuthHeaders(),
     params
   });

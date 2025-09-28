@@ -11,63 +11,63 @@
       <i class="fa-solid fa-plus"></i> Add Asset
     </button>
   </div>
-  <fieldset [disabled]="isLoading">
-    <div *ngIf="isAdmin || isIT" class="filters-container">
-      <mat-form-field>
-        <mat-label>Category</mat-label>
-        <mat-select [(value)]="category" (selectionChange)="applyFilters()">
-          <mat-option value="">All</mat-option>
-          <mat-option *ngFor="let category of categories" [value]="category">
-            {{ category.name }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
 
-      <mat-form-field>
-        <mat-label>Type</mat-label>
-        <mat-select
-          [(value)]="filteredType"
-          (selectionChange)="applyFilters()"
-          [disabled]="!showTypesField"
-        >
-          <mat-option value="">All</mat-option>
-          <mat-option *ngFor="let type of types" [value]="type.name">
-            {{ type.name }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
+  <div *ngIf="isAdmin || isIT" class="filters-container">
+    <mat-form-field>
+      <mat-label>Category</mat-label>
+      <mat-select [(value)]="category" (selectionChange)="applyFilters()">
+        <mat-option value="">All</mat-option>
+        <mat-option *ngFor="let category of categories" [value]="category">
+          {{ category.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
 
-      <mat-form-field>
-        <mat-label>Status</mat-label>
-        <mat-select [(value)]="filteredStatus" (selectionChange)="applyFilters()">
-          <mat-option value="">All</mat-option>
-          <mat-option *ngFor="let status of assetStatusOptions" [value]="status">
-            {{ status }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
+    <mat-form-field>
+      <mat-label>Type</mat-label>
+      <mat-select
+        [(value)]="filteredType"
+        (selectionChange)="applyFilters()"
+        [disabled]="!showTypesField"
+      >
+        <mat-option value="">All</mat-option>
+        <mat-option *ngFor="let type of types" [value]="type.name">
+          {{ type.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
 
-      <mat-form-field>
-        <mat-label>Department</mat-label>
-        <mat-select [(value)]="filteredDepartment" (selectionChange)="applyFilters()">
-          <mat-option value="">All</mat-option>
-          <mat-option *ngFor="let department of departments" [value]="department">
-            {{ department }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
+    <mat-form-field>
+      <mat-label>Status</mat-label>
+      <mat-select [(value)]="filteredStatus" (selectionChange)="applyFilters()">
+        <mat-option value="">All</mat-option>
+        <mat-option *ngFor="let status of assetStatusOptions" [value]="status">
+          {{ status }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
 
-      <mat-form-field appearance="fill">
-        <mat-label>Assigned User</mat-label>
-        <input
-          matInput
-          placeholder="Type a username"
-          [(ngModel)]="filteredUser"
-          (input)="applyFilters()"
-        />
-      </mat-form-field>
-    </div>
-  </fieldset>
+    <mat-form-field>
+      <mat-label>Department</mat-label>
+      <mat-select [(value)]="filteredDepartment" (selectionChange)="applyFilters()">
+        <mat-option value="">All</mat-option>
+        <mat-option *ngFor="let department of departments" [value]="department">
+          {{ department }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Assigned User</mat-label>
+      <input
+        matInput
+        placeholder="Type a username"
+        [(ngModel)]="filteredUser"
+        (input)="applyFilters()"
+      />
+    </mat-form-field>
+  </div>
+
   <div *ngIf="isLoading" class="loading-spinner">
     <p>Loading assets...</p>
   </div>
