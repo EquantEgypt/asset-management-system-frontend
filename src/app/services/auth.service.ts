@@ -10,7 +10,7 @@ const USER = 'User';
 const BACKEND_URL = 'http://localhost:8080';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
   private storage: Storage = sessionStorage;
@@ -81,7 +81,7 @@ export class AuthService {
     const user = JSON.parse(userStr);
     return user?.departmentName ?? null;
   }
-    getCurrentUsername(): string | null {
+  getCurrentUsername(): string | null {
     const userStr = this.storage.getItem(USER);
     if (!userStr) return null;
     const user = JSON.parse(userStr);

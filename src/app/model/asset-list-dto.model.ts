@@ -1,15 +1,13 @@
-export interface MiniAsset{
+import { Category } from "./categoryModel";
+
+export interface AssetListDTO{
     id:number;
     serialNumber: string;
     name:string;
     type:string;
-    category:AssetCategory;
+    category:Category;
     brand:string;
     status:string;
     assignedUser:string;
     department:string;
-}
-export interface AssetCategory{
-    id:number;
-    name:string;
 }
