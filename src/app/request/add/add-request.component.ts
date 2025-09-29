@@ -102,12 +102,10 @@ this.requestForm = this.fb.group({
 
 loadAssets(): void {
   const filter: any = {};
-
   if (this.userName) {
     filter.assignedUser = this.userName;
     console.log(this.userName);
   }
-
   this.assetService.getAssets(filter)
     .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe(data => {
