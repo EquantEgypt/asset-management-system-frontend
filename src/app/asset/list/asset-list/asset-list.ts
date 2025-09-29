@@ -33,7 +33,7 @@ export class AssetList implements OnInit {
   types: Type[] = [];
   departments: Department[] = [];
   users: User[] = [];
-  assetStatusOptions: AssetStatus | undefined;
+  assetStatusOptions: AssetStatus[] = Object.values(AssetStatus);
 
   // Filter properties
   category: Category = { id: -1, name: '' };
