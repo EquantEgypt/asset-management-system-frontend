@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { AssetService } from '../../../services/assets.service';
 import { AuthService } from '../../../services/auth.service';
 import { Role } from '../../../model/roles.enum';
@@ -48,6 +48,7 @@ export class AssetList implements OnInit {
   pageSize = 10;
   pageIndex = 0;
   pageSizeOptions = [5, 10, 25];
+  @Input() mine: boolean = false;
 
   displayedColumns: string[] = [
     'serialNumber',
@@ -70,7 +71,11 @@ export class AssetList implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.loadAssets();
+    if (this.mine == true) {
+      this.loadMyAssets();
+    } else {
+      this.loadAssets();
+    }
     if (this.authService.isAdmin() || this.authService.isIT()) {
       this.loadCategories();
       this.loadTypes();
@@ -89,18 +94,39 @@ export class AssetList implements OnInit {
       this.showTypesField = true;
     });
   }
-
+  loadMyAssets(): void {
+    this.isLoading = true;
+    const filters: AssetFilter = {
+      page: this.pageIndex,
+      size: this.pageSize,
+    };
+    const username = this.authService.getCurrentUsername();
+    if (username !== null) {
+      filters.assignedUser = username;
+    }
+    this.assetService.getAssets(filters).subscribe({
+      next: (data) => {
+        this.assets = data.content;
+        this.totalElements = data.page.totalElements;
+        this.isLoading = false;
+      },
+      error: (err) => {
+        console.error('Failed to load assets', err);
+        this.isLoading = false;
+      },
+    });
+  }
   loadAssets(): void {
     this.isLoading = true;
     const filters: AssetFilter = {
       page: this.pageIndex,
       size: this.pageSize,
     };
+    if (this.category.name) filters.category = this.category.name;
+    if (this.filteredType) filters.type = this.filteredType;
+    if (this.filteredStatus) filters.status = this.filteredStatus;
 
     if (this.authService.isAdmin()) {
-      if (this.category.name) filters.category = this.category.name;
-      if (this.filteredType) filters.type = this.filteredType;
-      if (this.filteredStatus) filters.status = this.filteredStatus;
       if (this.filteredDepartment) filters.department = this.filteredDepartment;
       if (this.filteredUser) filters.assignedUser = this.filteredUser;
     } else if (this.authService.isManager()) {
@@ -108,7 +134,8 @@ export class AssetList implements OnInit {
       if (department !== null) {
         filters.department = department;
       }
-    } else {
+      if (this.filteredUser) filters.assignedUser = this.filteredUser;
+    } else if (this.authService.isEmployee()) {
       const username = this.authService.getCurrentUsername();
       if (username !== null) {
         filters.assignedUser = username;
