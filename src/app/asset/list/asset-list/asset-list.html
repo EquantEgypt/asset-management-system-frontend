@@ -12,7 +12,7 @@
     </button>
   </div>
 
-  <div *ngIf="isAdmin || isIT" class="filters-container">
+  <div class="filters-container">
     <mat-form-field>
       <mat-label>Category</mat-label>
       <mat-select [(value)]="category" (selectionChange)="applyFilters()">
@@ -37,7 +37,7 @@
       </mat-select>
     </mat-form-field>
 
-    <mat-form-field>
+    <mat-form-field *ngIf="mine || !isIT">
       <mat-label>Status</mat-label>
       <mat-select [(value)]="filteredStatus" (selectionChange)="applyFilters()">
         <mat-option value="">All</mat-option>
@@ -47,7 +47,7 @@
       </mat-select>
     </mat-form-field>
 
-    <mat-form-field>
+    <mat-form-field *ngIf="isAdmin && !mine">
       <mat-label>Department</mat-label>
       <mat-select [(value)]="filteredDepartment" (selectionChange)="applyFilters()">
         <mat-option value="">All</mat-option>
@@ -57,7 +57,7 @@
       </mat-select>
     </mat-form-field>
 
-    <mat-form-field appearance="fill">
+    <mat-form-field appearance="fill" *ngIf="isAdmin && !mine">
       <mat-label>Assigned User</mat-label>
       <input
         matInput

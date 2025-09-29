@@ -16,8 +16,10 @@ import { AddRequestComponent } from '../request/add/add-request.component';
 })
 export class Dashboard {
   role: Role | null = null;
-  activeTab: any= 'assets'; 
+  activeTab: any= 'myAssets'; 
   showRequestModal = false;
+  isAdmin :boolean = false;
+  isEmployee : boolean = false;
 
   constructor(private auth: AuthService, private router: Router) { }
 
@@ -26,6 +28,9 @@ setActive(tab: 'allAssets' | 'users'| 'myAssets') {
 }
 ngOnInit() {
     this.role = this.auth.getRole();
+    this.isAdmin = this.auth.isAdmin();
+    this.isEmployee = this.auth.isEmployee();
+    
   }
   toggleRequestModal() {
     this.showRequestModal = !this.showRequestModal;
