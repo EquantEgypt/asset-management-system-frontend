@@ -101,9 +101,7 @@ export class AssetList implements OnInit {
       size: this.pageSize,
     };
     const username = this.authService.getCurrentUsername();
-    if (username !== null) {
-      filters.assignedUser = username;
-    }
+    filters.myAssetsFlag = true;
     this.assetService.getAssets(filters).subscribe({
       next: (data) => {
         this.assets = data.content;

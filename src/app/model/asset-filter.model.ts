@@ -6,4 +6,5 @@ export interface AssetFilter {
   assignedUser?: string;
   page: number;
   size: number;
+  myAssetsFlag?: boolean;
 }
