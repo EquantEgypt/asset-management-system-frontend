@@ -32,13 +32,17 @@ td.mat-cell {
 }
 
 .status.available {
-  background: #43a047; 
+  background: #43a047;
 }
+
 .status.assigned {
   background: #1e88e5;
 }
+
 .status.maintenance {
-  background: #fb8c00;}
+  background: #fb8c00;
+}
+
 .status.retired {
   background: #757575;
 }
@@ -62,8 +66,42 @@ td.mat-cell {
   gap: 8px;
 }
 
-.no-assets, .loading-spinner {
+.no-assets,
+.loading-spinner {
   text-align: center;
   padding: 2rem;
   color: #666;
+}
+
+.filters-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+
+}
+
+.filters-container mat-form-field {
+  margin-right: 16px;
+  margin-bottom: -1.25em;
+}
+::ng-deep .mat-mdc-slide-toggle.mat-mdc-slide-toggle-checked:not(.mat-disabled) .mdc-switch__track::after {
+  background-color:#ff7900 !important;
+}
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.modal-box {
+  background: #fff;
+  padding: 14px 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }

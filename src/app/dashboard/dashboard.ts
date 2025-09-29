@@ -18,6 +18,9 @@ export class Dashboard {
   role: Role | null = null;
   activeTab: string = 'assets';
   isCollapsed = false;
+  isAdmin = false;
+  isEmployee = false;
+
 
   constructor(private auth: AuthService, private router: Router) { }
 
@@ -26,11 +29,9 @@ export class Dashboard {
     this.role = this.auth.getRole();
     this.isAdmin = this.auth.isAdmin();
     this.isEmployee = this.auth.isEmployee();
-    
+
   }
-  toggleRequestModal() {
-    this.showRequestModal = !this.showRequestModal;
-  }
+
 
   logout() {
     this.auth.logout();

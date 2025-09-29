@@ -17,10 +17,14 @@ import { SharedModule } from '../../../shared/shared.module';
 import { FormsModule } from '@angular/forms';
 import { AssetFilter } from '../../../model/asset-filter.model';
 import { AssetStatus } from '../../../model/asset-status.enum';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { AddAssetComponent } from '../../add/add-asset';
+import { AddRequestComponent } from "../../../request/add/add-request.component";
+
 @Component({
   selector: 'app-asset-list',
   standalone: true,
-  imports: [SharedModule, FormsModule],
+  imports: [SharedModule, FormsModule, MatSlideToggleModule, AddRequestComponent],
   templateUrl: './asset-list.html',
   styleUrls: ['./asset-list.css'],
 })
@@ -28,6 +32,8 @@ export class AssetList implements OnInit {
   assets: AssetListDTO[] = [];
   isAdmin: boolean = false;
   isIT: boolean = false;
+  isManager: boolean = false;
+  isEmployee: boolean = false;
   isLoading = true;
   categories: Category[] = [];
   types: Type[] = [];
@@ -48,9 +54,9 @@ export class AssetList implements OnInit {
   pageSize = 10;
   pageIndex = 0;
   pageSizeOptions = [5, 10, 25];
-  @Input() mine: boolean = false;
-
-  displayedColumns: string[] = [
+  mine: boolean = false;
+  showRequestModal = false;
+  allColumns: string[] = [
     'serialNumber',
     'name',
     'brand',
@@ -60,6 +66,16 @@ export class AssetList implements OnInit {
     'assignedUser',
     'department',
   ];
+  myAssetsColumns: string[] = [
+    'serialNumber',
+    'name',
+    'brand',
+    'category',
+    'type',
+    'status',
+  ];
+
+  displayedColumns: string[] = this.allColumns;
 
   constructor(
     private assetService: AssetService,
@@ -68,14 +84,15 @@ export class AssetList implements OnInit {
     private categoryService: CategoryService,
     private typeService: TypeService,
     private departmentService: DepartmentService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     if (this.mine == true) {
-      this.loadMyAssets();
+      this.displayedColumns = this.myAssetsColumns;
     } else {
-      this.loadAssets();
+      this.displayedColumns = this.allColumns;
     }
+    this.loadAssets();
     if (this.authService.isAdmin() || this.authService.isIT()) {
       this.loadCategories();
       this.loadTypes();
@@ -83,35 +100,21 @@ export class AssetList implements OnInit {
     }
     if (this.authService.isIT()) {
       this.isIT = true;
-    }
-    if (this.authService.isAdmin()) {
-      this.isAdmin = true;
-    }
+    } else
+      if (this.authService.isAdmin()) {
+        this.isAdmin = true;
+      } else
+        if (this.authService.isManager()) {
+          this.isManager = true;
+        } else
+          if (this.authService.isEmployee()) {
+            this.isEmployee = true;
+          }
   }
   onCategoryChange(categoryId: number): void {
     this.typeService.getTypes(categoryId).subscribe((types) => {
       this.types = types;
       this.showTypesField = true;
-    });
-  }
-  loadMyAssets(): void {
-    this.isLoading = true;
-    const filters: AssetFilter = {
-      page: this.pageIndex,
-      size: this.pageSize,
-    };
-    const username = this.authService.getCurrentUsername();
-    filters.myAssetsFlag = true;
-    this.assetService.getAssets(filters).subscribe({
-      next: (data) => {
-        this.assets = data.content;
-        this.totalElements = data.page.totalElements;
-        this.isLoading = false;
-      },
-      error: (err) => {
-        console.error('Failed to load assets', err);
-        this.isLoading = false;
-      },
     });
   }
   loadAssets(): void {
@@ -137,7 +140,14 @@ export class AssetList implements OnInit {
       const username = this.authService.getCurrentUsername();
       if (username !== null) {
         filters.assignedUser = username;
+        filters.myAssetsFlag = true;
       }
+    }
+    if (this.mine) {
+      filters.myAssetsFlag = true;
+      this.displayedColumns = this.myAssetsColumns;
+    } else {
+      this.displayedColumns = this.allColumns;
     }
 
     this.assetService.getAssets(filters).subscribe({
@@ -200,5 +210,8 @@ export class AssetList implements OnInit {
 
   navigateToAddAsset(): void {
     this.router.navigate(['/assets/add']);
+  }
+  toggleRequestModal() {
+    this.showRequestModal = !this.showRequestModal;
   }
 }

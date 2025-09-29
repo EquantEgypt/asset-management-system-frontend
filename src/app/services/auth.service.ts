@@ -96,4 +96,16 @@ export class AuthService {
     const userStr = this.storage.getItem(USER);
     return userStr ? JSON.parse(userStr) : null;
   }
+  isAdmin(): boolean {
+    return this.getRole() === Role.ADMIN;
+  } 
+  isIT(): boolean {
+    return this.getRole() === Role.IT;
+  }
+  isEmployee(): boolean {
+    return this.getRole() === Role.EMPLOYEE;
+  }
+  isManager(): boolean {
+    return this.getRole() === Role.MANAGER;
+  }
 }
