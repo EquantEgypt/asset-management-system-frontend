@@ -4,7 +4,7 @@ import { HttpClient, HttpParams } from "@angular/common/http";
 import { Observable } from "rxjs";
 import { User } from "../model/user.model";
 
-const BACKEND_URL = 'http://192.168.1.2:8080/api/users';
+const BACKEND_URL = 'http://localhost:8080/api/users';
 interface Page<T> {
   content: T[];
   page: {
