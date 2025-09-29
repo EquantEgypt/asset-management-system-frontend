@@ -5,7 +5,7 @@ import { Request, RequestView } from '../model/request.model';
 import { AuthService } from './auth.service';
 import { Page } from '../model/Page.model';
 
-const BACKEND_URL = 'http://localhost:8080/request';
+const BACKEND_URL = 'http://192.168.1.2:8080/request';
 
 @Injectable({
   providedIn: 'root'
