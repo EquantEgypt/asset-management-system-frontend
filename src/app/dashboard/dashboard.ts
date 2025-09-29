@@ -24,6 +24,9 @@ export class Dashboard {
 
   ngOnInit() {
     this.role = this.auth.getRole();
+    this.isAdmin = this.auth.isAdmin();
+    this.isEmployee = this.auth.isEmployee();
+    
   }
   toggleRequestModal() {
     this.showRequestModal = !this.showRequestModal;
