@@ -35,7 +35,7 @@ export class RequestsList {
     'id',
     'requester',
     'requestType',
-    'assetName',
+    // 'assetName',
     'assetType',
     'status',
     'requestDate',
@@ -123,5 +123,47 @@ export class RequestsList {
         });
     }
   }
+  
+selectedRequest: any = null;
 
+
+openRejectModal(request: any) {
+  this.selectedRequest = request;
+  const modal = new (window as any).bootstrap.Modal(document.getElementById('rejectConfirmationModal'));
+  modal.show();
+}
+
+confirmReject() {
+  if (this.selectedRequest) {
+    this.updateStatus(this.selectedRequest, 'REJECTED');
+    this.closeModal();
+  }
+}
+
+closeModal() {
+  const modal = (window as any).bootstrap.Modal.getInstance(document.getElementById('rejectConfirmationModal'));
+  if (modal) {
+    modal.hide();
+  }
+  this.selectedRequest = null;
+}
+
+showRejectModal: boolean = false;
+
+openRejectModalSimple(request: any) {
+  this.selectedRequest = request;
+  this.showRejectModal = true;
+}
+
+closeRejectModal() {
+  this.showRejectModal = false;
+  this.selectedRequest = null;
+}
+
+confirmRejectSimple() {
+  if (this.selectedRequest) {
+    this.updateStatus(this.selectedRequest, 'REJECTED');
+    this.closeRejectModal();
+  }
+}
 }

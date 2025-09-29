@@ -1,10 +1,17 @@
 <div class="requests-container">
     <div class="top-container">
-        <h2>Asset Requests</h2>
+        @if(role === 'EMPLOYEE') {
+        <h2>My Requests</h2>
+
+        }@else if(role === 'ADMIN') {        <h2>All Requests</h2>
+}@else{
+        <h2>Maintenance Requests</h2>
+
+        }
         <div class="filters">
             <mat-form-field appearance="outline" class="search-field">
                 <mat-label>Search</mat-label>
-                <input matInput  (input)="searchBar(searchInput.value)"  #searchInput> 
+                <input matInput (input)="searchBar(searchInput.value)" #searchInput>
             </mat-form-field>
 
             <mat-form-field appearance="outline">
@@ -54,10 +61,10 @@
             <td mat-cell *matCellDef="let request">{{ request.requestType }}</td>
         </ng-container>
 
-        <ng-container matColumnDef="assetName">
+        <!-- <ng-container matColumnDef="assetName">
             <th mat-header-cell *matHeaderCellDef>Asset Name</th>
             <td mat-cell *matCellDef="let request">{{ request.assetName|| 'N/A' }}</td>
-        </ng-container>
+        </ng-container> -->
 
         <ng-container matColumnDef="assetType">
             <th mat-header-cell *matHeaderCellDef>Asset Type</th>
@@ -88,12 +95,18 @@
                     }@else if (role === 'EMPLOYEE'){
                     <p>Waiting for a Response</p>
                     } @else {
-                    <button class="reject-btn" (click)="updateStatus(request, 'REJECTED')">
-                        <i class="fa-solid fa-xmark"></i>
-
+                    <button class="reject-btn" (click)="openRejectModalSimple(request)">
+                        REJECT
                     </button>
+
                     <button class="approve-btn" (click)="updateStatus(request, 'APPROVED')">
-                        Approve
+                                            @if(request.requestType === 'MAINTENANCE') {
+                                                                 send to Maintenance
+
+                                            }@else{
+Approve
+                                            }
+                                             
                     </button>
 
                     }
@@ -126,5 +139,23 @@
         <app-assign-asset-form [receivedData]="dataToAssign" (closeModal)="handleClose($event)">
         </app-assign-asset-form>
 
+    </div>
+</div>
+<div class="modal-overlay" *ngIf="showRejectModal" (click)="closeRejectModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+            <h3>Confirm Rejection</h3>
+            <button class="close-btn" (click)="closeRejectModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <p>Are you sure you want to reject this request?</p>
+            <div class="warning">
+                <strong>Warning:</strong> This action cannot be undone.
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="cancel-btn" (click)="closeRejectModal()">Cancel</button>
+            <button class="confirm-btn" (click)="confirmRejectSimple()">Yes, Reject</button>
+        </div>
     </div>
 </div>
