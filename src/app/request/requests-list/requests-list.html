@@ -58,6 +58,11 @@
             <td mat-cell *matCellDef="let request">{{ request.requestType }}</td>
         </ng-container>
 
+        <!-- <ng-container matColumnDef="assetName">
+            <th mat-header-cell *matHeaderCellDef>Asset Name</th>
+            <td mat-cell *matCellDef="let request">{{ request.assetName|| 'N/A' }}</td>
+        </ng-container> -->
+
         <ng-container matColumnDef="assetType">
             <th mat-header-cell *matHeaderCellDef>Asset Type</th>
             <td mat-cell *matCellDef="let request">{{ request.assetTypeName || 'N/A' }}</td>
@@ -153,6 +158,9 @@
         <div class="modal-footer">
             <button class="cancel-btn" (click)="closeRejectModal()">Cancel</button>
             <button class="confirm-btn" (click)="confirmReject()">Yes, Reject</button>
+        <div class="modal-footer">
+            <button class="cancel-btn" (click)="closeRejectModal()">Cancel</button>
+            <button class="confirm-btn" (click)="confirmRejectSimple()">Yes, Reject</button>
         </div>
     </div>
 </div>
