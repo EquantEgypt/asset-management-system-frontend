@@ -4,7 +4,7 @@ import { HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs";
 import { Department } from "../model/department.model";
 
-const BACKEND_URL = 'http://192.168.1.2:8080/api/departments';
+const BACKEND_URL = 'http://localhost:8080/api/departments';
 
 @Injectable({
   providedIn: 'root'
