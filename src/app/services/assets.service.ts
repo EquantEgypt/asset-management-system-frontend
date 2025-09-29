@@ -7,7 +7,7 @@ import { AssetRequest } from '../model/asset.model';
 import { AssetListDTO } from '../model/asset-list-dto.model';
 import { Page } from '../model/Page.model';
 
-const BACKEND_URL = 'http://192.168.1.2:8080/assets';
+const BACKEND_URL = 'http://localhost:8080/assets';
 
 @Injectable({
   providedIn: 'root'

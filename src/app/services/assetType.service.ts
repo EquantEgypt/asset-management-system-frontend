@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { AuthService } from './auth.service';
 import { Type } from '../model/AssetTypeModel';
 
-const BACKEND_URL = 'http://192.168.1.2:8080/assets';
+const BACKEND_URL = 'http://localhost:8080/assets';
 
 @Injectable({
   providedIn: 'root'
