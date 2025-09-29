@@ -15,7 +15,6 @@ const BACKEND_URL = 'http://localhost:8080';
 export class AuthService {
   private storage: Storage = sessionStorage;
 
-  // 🔑 Reactive state
   private userSubject = new BehaviorSubject<any | null>(this.getUser());
   private loggedInSubject = new BehaviorSubject<boolean>(this.isAuthenticated());
 
@@ -36,7 +35,6 @@ export class AuthService {
         this.storage.setItem(AUTH_TOKEN, basicAuthToken);
         this.storage.setItem(USER, JSON.stringify(response));
 
-        // ✅ Push updates
         this.userSubject.next(response);
         this.loggedInSubject.next(true);
 
@@ -50,7 +48,6 @@ export class AuthService {
     this.storage.removeItem(ROLES);
     this.storage.removeItem(USER);
 
-    // ✅ Push logout updates
     this.userSubject.next(null);
     this.loggedInSubject.next(false);
 
