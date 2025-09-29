@@ -13,10 +13,16 @@
     </div>
     <div class="card-selector">
       <div class=" card-container users-card-container "
-      [class.active]="activeTab === 'assets'"
-      (click)="setActive('assets')">
+      [class.active]="activeTab === 'allAssets'"
+      (click)="setActive('allAssets')">
                 <i class="fa-solid fa-database "></i>
-                <h3>Assets</h3>
+                <h3>AllAssets</h3>
+            </div>
+                        <div class="card-container assets-card-container"
+                 [class.active]="activeTab === 'myAssets'"
+                 (click)="setActive('myAssets')">
+                <i class="fa-solid fa-database"></i>
+                <h3>MyAssets</h3>
             </div>
             <div class="card-container assets-card-container"
                  [class.active]="activeTab === 'users'"
@@ -31,8 +37,10 @@
 
 </div>
 <div class="card-display">
-    <app-asset-list *ngIf="activeTab === 'assets'"></app-asset-list>
+<app-asset-list [mine]="false" *ngIf="activeTab === 'allAssets'"></app-asset-list>
+<app-asset-list [mine]="true" *ngIf="activeTab === 'myAssets'"></app-asset-list>
 <app-user-list *ngIf="activeTab === 'users'"></app-user-list>
+
 </div>
 <div *ngIf="showRequestModal" class="modal-backdrop">
   <div class="modal-box">

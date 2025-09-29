@@ -21,7 +21,7 @@ export class Dashboard {
 
   constructor(private auth: AuthService, private router: Router) { }
 
-setActive(tab: 'assets' | 'users') {
+setActive(tab: 'allAssets' | 'users'| 'myAssets') {
     this.activeTab = tab;
 }
 ngOnInit() {

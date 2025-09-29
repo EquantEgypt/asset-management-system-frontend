@@ -51,8 +51,8 @@
       <mat-label>Department</mat-label>
       <mat-select [(value)]="filteredDepartment" (selectionChange)="applyFilters()">
         <mat-option value="">All</mat-option>
-        <mat-option *ngFor="let department of departments" [value]="department">
-          {{ department }}
+        <mat-option *ngFor="let department of departments" [value]="department.name">
+          {{ department.name }}
         </mat-option>
       </mat-select>
     </mat-form-field>
