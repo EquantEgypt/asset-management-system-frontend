@@ -6,7 +6,6 @@ import { MatTableModule } from '@angular/material/table';
 import { UserList } from '../user/list/user-list/user-list';
 import { AssetList } from '../asset/list/asset-list/asset-list';
 import { Role } from '../model/roles.enum';
-import { AddRequestComponent } from '../request/add/add-request.component';
 import { RequestsList } from '../request/requests-list/requests-list';
 
 @Component({
