@@ -130,8 +130,6 @@ export class RequestsList {
         });
     }
   }
-  
-selectedRequest: any = null;
 
 
 

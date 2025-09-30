@@ -67,7 +67,7 @@ export class RequestService {
     const url = `${BACKEND_URL}/response`;
     return this.http.put<RequestView>(
       url,
-      { id: requestId, status: accepted == 'APPROVED' ? 'APPROVED' : 'REJECTED' },
+      { id: requestId, status: accepted == 'APPROVED' ? 'APPROVED' : 'REJECTED',rejectionNote },
       { headers: this.getAuthHeaders() }
     );
   }
