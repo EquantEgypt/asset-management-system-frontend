@@ -3,11 +3,14 @@ import { Observable, tap, BehaviorSubject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Role } from '../model/roles.enum';
+
 const AUTH_TOKEN = 'AUTH_TOKEN';
 const ROLES = 'ROLES';
 const USER = 'User';
 const BACKEND_URL = 'http://localhost:8080';
+
 @Injectable({
+  providedIn: 'root',
   providedIn: 'root',
 })
 export class AuthService {
@@ -53,6 +56,7 @@ export class AuthService {
   }
 
   isAuthenticated(): boolean {
+    return !!this.storage.getItem(AUTH_TOKEN);
     return !!this.storage.getItem(AUTH_TOKEN);
   }
 
