@@ -11,7 +11,6 @@ const BACKEND_URL = 'http://localhost:8080';
 
 @Injectable({
   providedIn: 'root',
-  providedIn: 'root',
 })
 export class AuthService {
   private storage: Storage = sessionStorage;
@@ -56,7 +55,6 @@ export class AuthService {
   }
 
   isAuthenticated(): boolean {
-    return !!this.storage.getItem(AUTH_TOKEN);
     return !!this.storage.getItem(AUTH_TOKEN);
   }
 
