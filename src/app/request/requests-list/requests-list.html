@@ -1,33 +1,30 @@
 <div class="requests-container">
     <div class="top-container">
-        @if(role === 'EMPLOYEE') {
-        <h2>My Requests</h2>
+        <div class="requests-options">
+            <h2 (click)="loadRequests('pending')" [class.active]="activeTab === 'pending'">
+                Pending Requests
+            </h2>
 
-        }@else if(role === 'ADMIN') {        <h2>All Requests</h2>
-}@else{
-        <h2>Maintenance Requests</h2>
+            @if(role !== 'EMPLOYEE') {
+            <h2 (click)="loadRequests('my-requests')" [class.active]="activeTab === 'my-requests'">
+                My Requests
+            </h2>
+            }
 
-        }
+            <h2 (click)="loadRequests('history')" [class.active]="activeTab === 'history'">
+                Requests History
+            </h2>
+        </div>
         <div class="filters">
             <mat-form-field appearance="outline" class="search-field">
                 <mat-label>Search</mat-label>
                 <input matInput (input)="searchBar(searchInput.value)" #searchInput>
             </mat-form-field>
 
-            <mat-form-field appearance="outline">
-                <mat-label>Request Status</mat-label>
-                <mat-select [(value)]="selectedStatus" (selectionChange)="loadRequests()">
-                    <mat-option [value]="''">All Status</mat-option>
-                    <mat-option value="APPROVED">APPROVED</mat-option>
-                    <mat-option value="REJECTED">REJECTED</mat-option>
-                    <mat-option value="PENDING">PENDING</mat-option>
-                </mat-select>
-            </mat-form-field>
-
             @if(role === 'ADMIN') {
             <mat-form-field appearance="outline">
                 <mat-label>Request Type</mat-label>
-                <mat-select [(value)]="selectedType" (selectionChange)="loadRequests()">
+                <mat-select [(value)]="selectedType" (selectionChange)="loadRequests(activeTab)">
                     <mat-option [value]="''">All Types</mat-option>
                     <mat-option value="NEW">NEW</mat-option>
                     <mat-option value="MAINTENANCE">MAINTENANCE</mat-option>
@@ -61,11 +58,6 @@
             <td mat-cell *matCellDef="let request">{{ request.requestType }}</td>
         </ng-container>
 
-        <!-- <ng-container matColumnDef="assetName">
-            <th mat-header-cell *matHeaderCellDef>Asset Name</th>
-            <td mat-cell *matCellDef="let request">{{ request.assetName|| 'N/A' }}</td>
-        </ng-container> -->
-
         <ng-container matColumnDef="assetType">
             <th mat-header-cell *matHeaderCellDef>Asset Type</th>
             <td mat-cell *matCellDef="let request">{{ request.assetTypeName || 'N/A' }}</td>
@@ -92,21 +84,21 @@
                     <div class="waiting-approval">
                         <span class="waiting-text">Waiting for IT approval</span>
                     </div>
-                    }@else if (role === 'EMPLOYEE'){
+                    }@else if (role === 'EMPLOYEE' || (role === 'IT' && request.requestType === 'NEW')){
                     <p>Waiting for a Response</p>
-                    } @else {
+                    }
+                    @else {
                     <button class="reject-btn" (click)="openRejectModalSimple(request)">
                         REJECT
                     </button>
 
                     <button class="approve-btn" (click)="updateStatus(request, 'APPROVED')">
-                                            @if(request.requestType === 'MAINTENANCE') {
-                                                                 send to Maintenance
+                        @if(request.requestType === 'MAINTENANCE') {
+                        send to Maintenance
+                        }@else{
+                        Approve
+                        }
 
-                                            }@else{
-Approve
-                                            }
-                                             
                     </button>
 
                     }
@@ -141,8 +133,8 @@ Approve
 
     </div>
 </div>
-<div class="modal-overlay" *ngIf="showRejectModal" (click)="closeRejectModal()">
-    <div class="modal-content" (click)="$event.stopPropagation()">
+<div class="modal-overlay " *ngIf="showRejectModal" (click)="closeRejectModal()">
+    <div class="modal-content reject-modal" (click)="$event.stopPropagation()">
         <div class="modal-header">
             <h3>Confirm Rejection</h3>
             <button class="close-btn" (click)="closeRejectModal()">&times;</button>
@@ -153,9 +145,14 @@ Approve
                 <strong>Warning:</strong> This action cannot be undone.
             </div>
         </div>
+        <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Rejection Note</mat-label>
+            <textarea matInput [formControl]="rejectionNoteControl" placeholder="Optional notes"></textarea>
+        </mat-form-field>
+
         <div class="modal-footer">
             <button class="cancel-btn" (click)="closeRejectModal()">Cancel</button>
-            <button class="confirm-btn" (click)="confirmRejectSimple()">Yes, Reject</button>
+            <button class="confirm-btn" (click)="confirmReject()">Yes, Reject</button>
         </div>
     </div>
 </div>
