@@ -3,11 +3,14 @@ import { Observable, tap } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Role } from '../model/roles.enum';
+
 const AUTH_TOKEN = 'AUTH_TOKEN';
 const ROLES = 'ROLES';
 const USER = 'User';
 const BACKEND_URL = 'http://localhost:8080';
+
 @Injectable({
+  providedIn: 'root',
   providedIn: 'root',
 })
 export class AuthService {
@@ -15,7 +18,6 @@ export class AuthService {
 
   constructor(private http: HttpClient, private router: Router) {}
   login(email: string, password: string, keepLoggedIn: boolean): Observable<any> {
-    // Encode email:password into Base64
     const basicAuthToken = btoa(`${email}:${password}`);
     // Make a request with the Authorization header
     return this.http
@@ -35,13 +37,23 @@ export class AuthService {
         })
       );
   }
+
   logout(): void {
     this.storage.removeItem(AUTH_TOKEN);
     this.storage.removeItem(ROLES);
+    this.storage.removeItem(USER);
+
+    this.userSubject.next(null);
+    this.loggedInSubject.next(false);
+
+    this.router.navigate(['/login']);
   }
+
   isAuthenticated(): boolean {
     return !!this.storage.getItem(AUTH_TOKEN);
+    return !!this.storage.getItem(AUTH_TOKEN);
   }
+
   getRole(): Role | null {
     const userStr = this.storage.getItem(USER);
     if (!userStr) {

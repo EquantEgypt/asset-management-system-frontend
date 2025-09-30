@@ -1,0 +1,62 @@
+/* Reset default spacing */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+}
+
+/* Header styling */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #2e3b4e; /* lighter grey */
+    padding: 20px 30px;
+    color: white;
+    font-size: 16px;
+    position: relative;
+    width: 100%; /* make it stretch full width */
+}
+
+.logo img {
+    height: 60px;
+}
+
+.user-section {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    position: relative;
+}
+
+.dropdown {
+    position: absolute;
+    right: 0;
+    top: 100%;
+    background-color: white;
+    color: black;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    min-width: 140px;
+    box-shadow: 0px 2px 8px rgba(0,0,0,0.2);
+    margin-top: 5px;
+    z-index: 10;
+}
+
+.dropdown button {
+    width: 100%;
+    padding: 10px 14px;
+    background: none;
+    border: none;
+    text-align: left;
+    cursor: pointer;
+}
+
+.dropdown button:hover {
+    background-color: #f0f0f0;
+}

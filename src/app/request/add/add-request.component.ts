@@ -13,6 +13,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { DestroyRef, inject } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { RequestType } from '../../model/request-type.enum';
+import { AssetFilter } from '../../model/asset-filter.model';
 
 @Component({
   selector: 'app-add-request',
@@ -33,7 +34,7 @@ export class AddRequestComponent implements OnInit {
   note: string | null = null;
   isLoading = false;
   requestTypes = Object.values(RequestType);
-  
+
 
   private destroyRef = inject(DestroyRef);
 
@@ -50,7 +51,7 @@ export class AddRequestComponent implements OnInit {
       assetId: this.fb.control<number | null>(null),
       assetTypeId: this.fb.control<number | null>(null, { validators: Validators.required }),
       requestType: this.fb.control<RequestType | null>(null, { validators: Validators.required }),
-      note: this.fb.control<string | null>(null),
+      notes: this.fb.control<string | null>(null),
     });
   }
 
@@ -107,10 +108,11 @@ export class AddRequestComponent implements OnInit {
   }
 
   loadAssets(): void {
-    const filter: any = {};
-    if (this.userName) {
-      filter.assignedUser = this.userName;
-    }
+    const filter: AssetFilter = {
+      page: 0,
+      size: 100,
+    };
+    filter.myAssetsFlag = true;
 
     this.assetService
       .getAssets(filter)

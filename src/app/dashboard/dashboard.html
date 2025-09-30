@@ -1,49 +1,33 @@
 <div class="admin-dashboard-container">
-
-  <div class="top-header">
-
-    <div class="header-content">
-
-      <div class="header-actions">
-        <button class="request-btn" (click)="toggleRequestModal()">
-          <i class="fa-solid fa-plus"></i> Make a Request
-        </button>
-        <button class="request-btn" (click)="logout()">logout</button>
-      </div>
+  <!-- Sidebar -->
+  <div class="sidebar" [class.collapsed]="isCollapsed">
+    <div class="sidebar-header">
+      <h2 *ngIf="!isCollapsed">Resources</h2>
+      <button class="toggle-btn" (click)="toggleSidebar()">
+        <i class="fa" [ngClass]="isCollapsed ? 'fa-chevron-right' : 'fa-chevron-left'"></i>
+      </button>
     </div>
-    <div class="card-selector">
-      <div class=" card-container users-card-container " [class.active]="activeTab === 'allAssets'"
-        (click)="setActive('allAssets')"
-        *ngIf="!isEmployee">
-        <i class="fa-solid fa-database "></i>
-        <h3>AllAssets</h3>
-      </div>
-      <div class="card-container assets-card-container" [class.active]="activeTab === 'myAssets'"
-        (click)="setActive('myAssets')">
+
+    <ul class="menu-list">
+      <li [class.active]="activeTab === 'requests'" (click)="setActive('requests')">
+        <i class="fa-solid fa-envelope-open-text"></i>
+        <span *ngIf="!isCollapsed">Requests</span>
+      </li>
+      <li [class.active]="activeTab === 'assets'" (click)="setActive('assets')">
         <i class="fa-solid fa-database"></i>
-        <h3>MyAssets</h3>
-      </div>
-      <div class="card-container assets-card-container" [class.active]="activeTab === 'users'"
-        (click)="setActive('users')"
-        *ngIf="isAdmin">
+        <span *ngIf="!isCollapsed">Assets</span>
+      </li>
+      <li [class.active]="activeTab === 'users'" (click)="setActive('users')">
         <i class="fa-solid fa-users"></i>
-        <h3>Users</h3>
-      </div>
-
-
-
-    </div>
-
+        <span *ngIf="!isCollapsed">Users</span>
+      </li>
+    </ul>
   </div>
+
+  <!-- Main Content -->
   <div class="card-display">
-    <app-asset-list [mine]="false" *ngIf="activeTab === 'allAssets'"></app-asset-list>
-    <app-asset-list [mine]="true" *ngIf="activeTab === 'myAssets'"></app-asset-list>
+    <!-- <app-request-list *ngIf="activeTab === 'requests'"></app-request-list> -->
+    <app-asset-list *ngIf="activeTab === 'assets'"></app-asset-list>
     <app-user-list *ngIf="activeTab === 'users'"></app-user-list>
-
   </div>
-  <div *ngIf="showRequestModal" class="modal-backdrop">
-    <div class="modal-box">
-      <app-add-request (closeModal)="toggleRequestModal()"></app-add-request>
-    </div>
-  </div>
-  <button (click)="logout()"></button>
+</div>
