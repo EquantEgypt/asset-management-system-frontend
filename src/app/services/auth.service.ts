@@ -89,20 +89,20 @@ export class AuthService {
   getAuthToken(): string | null {
     return this.storage.getItem(AUTH_TOKEN);
   }
+  getUser(): any {
+    const userStr = this.storage.getItem(USER);
+    return userStr ? JSON.parse(userStr) : null;
+  }
   isAdmin(): boolean {
-  return this.getRole() === Role.ADMIN;
-}
-
-isManager(): boolean {
-  return this.getRole() === Role.MANAGER;
-}
-
-isIT(): boolean {
-  return this.getRole() === Role.IT;
-}
-
-isEmployee(): boolean {
-  return this.getRole() === Role.EMPLOYEE;
-}
-
+    return this.getRole() === Role.ADMIN;
+  } 
+  isIT(): boolean {
+    return this.getRole() === Role.IT;
+  }
+  isEmployee(): boolean {
+    return this.getRole() === Role.EMPLOYEE;
+  }
+  isManager(): boolean {
+    return this.getRole() === Role.MANAGER;
+  }
 }
