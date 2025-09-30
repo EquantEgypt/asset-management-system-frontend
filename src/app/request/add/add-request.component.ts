@@ -133,7 +133,7 @@ loadAssets(): void {
 
     let currentUserId: number | null = null;
     if (this.userId === null) {
-      currentUserId = this.authService.getCurrentUserId();
+      // currentUserId = this.authService.getCurrentUserId();
     } else {
       currentUserId = this.userId;
     }

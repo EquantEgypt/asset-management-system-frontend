@@ -28,37 +28,37 @@ export class RequestService {
   }
 
   getRequests(
-  endpoint: 'pending' | 'history' | 'my-requests' | '', 
-  page: number,
-  size: number,
-  type?: string | null,
-  search?: string,
-  status?: string | null,
-  personal?: boolean
-): Observable<Page<RequestView>> {
-  let params = new HttpParams()
-    .set('page', page.toString())
-    .set('size', size.toString());
+    endpoint: 'pending' | 'history' | 'my-requests' | '',
+    page: number,
+    size: number,
+    type?: string | null,
+    search?: string,
+    status?: string | null,
+    personal?: boolean
+  ): Observable<Page<RequestView>> {
+    let params = new HttpParams()
+      .set('page', page.toString())
+      .set('size', size.toString());
 
-  if (status)   params = params.set('status', status);
-  if (type)     params = params.set('type', type);
-  if (search)   params = params.set('search', search);
-  if (personal) params = params.set('personal', String(personal));
+    if (status) params = params.set('status', status);
+    if (type) params = params.set('type', type);
+    if (search) params = params.set('search', search);
+    if (personal) params = params.set('personal', String(personal));
 
-  const url = endpoint ? `${BACKEND_URL}/${endpoint}` : BACKEND_URL;
+    const url = endpoint ? `${BACKEND_URL}/${endpoint}` : BACKEND_URL;
 
-  return this.http.get<Page<RequestView>>(url, {
-    headers: this.getAuthHeaders(),
-    params
-  });
-}
+    return this.http.get<Page<RequestView>>(url, {
+      headers: this.getAuthHeaders(),
+      params
+    });
+  }
 
-  respondToRequest(requestId: number, requestType: string, accepted: string,rejectionNote?:string): Observable<RequestView> {
+  respondToRequest(requestId: number, requestType: string, accepted: string, rejectionNote?: string): Observable<RequestView> {
     console.log(requestId, requestType);
     const url = `${BACKEND_URL}/response`;
     return this.http.put<RequestView>(
       url,
-      { id: requestId, status: accepted == 'APPROVED' ? 'APPROVED' : 'REJECTED',rejectionNote },
+      { id: requestId, status: accepted == 'APPROVED' ? 'APPROVED' : 'REJECTED', rejectionNote },
       { headers: this.getAuthHeaders() }
     );
   }

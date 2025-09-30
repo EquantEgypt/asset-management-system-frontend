@@ -20,7 +20,7 @@ export class RequestsList {
   role: Role | null = null;
   selectedStatus: string | '' = '';
   selectedType: string | '' = '';
-  activeTab: 'pending' | 'history'| 'my-requests' = 'pending'; 
+  activeTab: 'pending' | 'history' | 'my-requests' = 'pending';
   dataToAssign: AssignPerRequest | null = null;
   searchWord: string = "";
 
@@ -56,36 +56,36 @@ export class RequestsList {
   searchBar(text: string) {
     this.searchWord = text.toLowerCase().trim();
     this.pageIndex = 0;
-    this.loadRequests( this.activeTab );
-  }loadRequests(type?: 'pending' | 'history' | 'my-requests'): void {
-  this.isLoading = true;
+    this.loadRequests(this.activeTab);
+  } loadRequests(type?: 'pending' | 'history' | 'my-requests'): void {
+    this.isLoading = true;
 
-  if (type) {
-    this.activeTab = type;
+    if (type) {
+      this.activeTab = type;
+    }
+
+    const request$ = this.requestService.getRequests(
+      this.activeTab,
+      this.pageIndex,
+      this.pageSize,
+      this.selectedType || null,
+      this.searchWord,
+      this.selectedStatus || null,
+      this.activeTab === 'my-requests'
+    );
+
+    request$.subscribe({
+      next: (data) => {
+        this.requests = data.content;
+        this.totalElements = data.page.totalElements;
+        this.isLoading = false;
+      },
+      error: (err) => {
+        console.error('Failed to load requests', err);
+        this.isLoading = false;
+      },
+    });
   }
-
-  const request$ = this.requestService.getRequests(
-    this.activeTab, 
-    this.pageIndex,
-    this.pageSize,
-    this.selectedType || null,
-    this.searchWord ,
-    this.selectedStatus || null,
-    this.activeTab === 'my-requests' 
-  );
-
-  request$.subscribe({
-    next: (data) => {
-      this.requests = data.content;
-      this.totalElements = data.page.totalElements;
-      this.isLoading = false;
-    },
-    error: (err) => {
-      console.error('Failed to load requests', err);
-      this.isLoading = false;
-    },
-  });
-}
 
   handlePageEvent(event: PageEvent): void {
     this.pageIndex = event.pageIndex;
@@ -131,15 +131,11 @@ export class RequestsList {
     }
   }
 
-
-
   openRejectModal(request: any) {
     this.selectedRequest = request;
     const modal = new (window as any).bootstrap.Modal(document.getElementById('rejectConfirmationModal'));
     modal.show();
   }
-
-
 
   closeModal() {
     const modal = (window as any).bootstrap.Modal.getInstance(document.getElementById('rejectConfirmationModal'));
@@ -170,7 +166,7 @@ export class RequestsList {
         this.rejectionNoteControl.value || undefined
       );
       this.closeRejectModal();
-      this.rejectionNoteControl.reset(); 
+      this.rejectionNoteControl.reset();
     }
   }
 
