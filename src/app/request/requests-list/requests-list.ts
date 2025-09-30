@@ -8,7 +8,6 @@ import { AuthService } from '../../services/auth.service';
 import { AssignAssetForm } from '../../assign-asset-form/assign-asset-form';
 import { MatDialog } from '@angular/material/dialog';
 import { FormControl } from '@angular/forms';
-import { debounceTime, distinctUntilChanged } from 'rxjs';
 
 @Component({
   selector: 'app-requests-list',
@@ -21,6 +20,7 @@ export class RequestsList {
   role: Role | null = null;
   selectedStatus: string | '' = '';
   selectedType: string | '' = '';
+  activeTab: 'pending' | 'history'| 'my-requests' = 'pending'; 
   dataToAssign: AssignPerRequest | null = null;
   searchWord: string = "";
 
@@ -30,6 +30,10 @@ export class RequestsList {
   pageSize = 10;
   pageIndex = 0;
   searchControl = new FormControl('');
+
+  selectedRequest: any = null;
+  rejectionNoteControl = new FormControl('');
+  showRejectModal: boolean = false;
 
   displayedColumns: string[] = [
     'id',
@@ -42,43 +46,46 @@ export class RequestsList {
     'action'
   ];
 
-  constructor(private requestService: RequestService, private auth: AuthService, private dialog: MatDialog
+  constructor(private requestService: RequestService, private auth: AuthService
   ) { }
-
   ngOnInit(): void {
-    this.loadRequests();
+    this.loadRequests('pending');
     this.role = this.auth.getRole();
 
-
-
   }
-
- searchBar(text: string) {
-          this.searchWord= text.toLowerCase().trim();
+  searchBar(text: string) {
+    this.searchWord = text.toLowerCase().trim();
     this.pageIndex = 0;
-    this.loadRequests();
-  }
-  loadRequests(): void {
-    this.isLoading = true;
-    this.requestService.getRequests(
-      this.pageIndex,
-      this.pageSize,
-      this.selectedStatus,
-      this.selectedType,
-      this.searchWord
+    this.loadRequests( this.activeTab );
+  }loadRequests(type?: 'pending' | 'history' | 'my-requests'): void {
+  this.isLoading = true;
 
-    ).subscribe({
-      next: (data) => {
-        this.requests = data.content;
-        this.totalElements = data.page.totalElements;
-        this.isLoading = false;
-      },
-      error: (err) => {
-        console.error('Failed to load requests', err);
-        this.isLoading = false;
-      }
-    });
+  if (type) {
+    this.activeTab = type;
   }
+
+  const request$ = this.requestService.getRequests(
+    this.activeTab, 
+    this.pageIndex,
+    this.pageSize,
+    this.selectedType || null,
+    this.searchWord ,
+    this.selectedStatus || null,
+    this.activeTab === 'my-requests' 
+  );
+
+  request$.subscribe({
+    next: (data) => {
+      this.requests = data.content;
+      this.totalElements = data.page.totalElements;
+      this.isLoading = false;
+    },
+    error: (err) => {
+      console.error('Failed to load requests', err);
+      this.isLoading = false;
+    },
+  });
+}
 
   handlePageEvent(event: PageEvent): void {
     this.pageIndex = event.pageIndex;
@@ -96,7 +103,7 @@ export class RequestsList {
     this.searchControl.setValue('');
   }
 
-  updateStatus(request: RequestView, newStatus: 'APPROVED' | 'REJECTED'): void {
+  updateStatus(request: RequestView, newStatus: 'APPROVED' | 'REJECTED', rejectionNote?: string): void {
     const accepted = newStatus;
     if (request.requestType === 'NEW' && newStatus == 'APPROVED') {
       console.log("the category id im sending is ", request.categoryId)
@@ -112,7 +119,7 @@ export class RequestsList {
       this.showAssignModal = true;
     } else {
       this.requestService
-        .respondToRequest(request.id, request.requestType, accepted)
+        .respondToRequest(request.id, request.requestType, accepted, rejectionNote)
         .subscribe({
           next: () => {
             request.status = newStatus;
@@ -123,47 +130,48 @@ export class RequestsList {
         });
     }
   }
-  
-selectedRequest: any = null;
 
 
-openRejectModal(request: any) {
-  this.selectedRequest = request;
-  const modal = new (window as any).bootstrap.Modal(document.getElementById('rejectConfirmationModal'));
-  modal.show();
-}
 
-confirmReject() {
-  if (this.selectedRequest) {
-    this.updateStatus(this.selectedRequest, 'REJECTED');
-    this.closeModal();
+  openRejectModal(request: any) {
+    this.selectedRequest = request;
+    const modal = new (window as any).bootstrap.Modal(document.getElementById('rejectConfirmationModal'));
+    modal.show();
   }
-}
 
-closeModal() {
-  const modal = (window as any).bootstrap.Modal.getInstance(document.getElementById('rejectConfirmationModal'));
-  if (modal) {
-    modal.hide();
+
+
+  closeModal() {
+    const modal = (window as any).bootstrap.Modal.getInstance(document.getElementById('rejectConfirmationModal'));
+    if (modal) {
+      modal.hide();
+    }
+    this.selectedRequest = null;
   }
-  this.selectedRequest = null;
-}
 
-showRejectModal: boolean = false;
 
-openRejectModalSimple(request: any) {
-  this.selectedRequest = request;
-  this.showRejectModal = true;
-}
-
-closeRejectModal() {
-  this.showRejectModal = false;
-  this.selectedRequest = null;
-}
-
-confirmRejectSimple() {
-  if (this.selectedRequest) {
-    this.updateStatus(this.selectedRequest, 'REJECTED');
-    this.closeRejectModal();
+  openRejectModalSimple(request: any) {
+    this.selectedRequest = request;
+    this.showRejectModal = true;
   }
-}
+
+  closeRejectModal() {
+    this.showRejectModal = false;
+    this.selectedRequest = null;
+  }
+
+
+
+  confirmReject() {
+    if (this.selectedRequest) {
+      this.updateStatus(
+        this.selectedRequest,
+        'REJECTED',
+        this.rejectionNoteControl.value || undefined
+      );
+      this.closeRejectModal();
+      this.rejectionNoteControl.reset(); 
+    }
+  }
+
 }
