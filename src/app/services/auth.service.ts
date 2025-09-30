@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, tap } from 'rxjs';
+import { Observable, tap, BehaviorSubject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Role } from '../model/roles.enum';
@@ -12,15 +12,18 @@ const BACKEND_URL = 'http://localhost:8080';
 })
 export class AuthService {
   private storage: Storage = sessionStorage;
+  private userSubject = new BehaviorSubject<any | null>(this.getUser());
+  private loggedInSubject = new BehaviorSubject<boolean>(this.isAuthenticated());
+ user$ = this.userSubject.asObservable();
+  isLoggedIn$ = this.loggedInSubject.asObservable();
 
   constructor(private http: HttpClient, private router: Router) {}
   login(email: string, password: string, keepLoggedIn: boolean): Observable<any> {
     const basicAuthToken = btoa(`${email}:${password}`);
-    // Make a request with the Authorization header
     return this.http
       .post<any>(
         `${BACKEND_URL}/auth/login`,
-        {}, // body
+        {}, 
         {
           headers: { Authorization: `Basic ${basicAuthToken}` },
         }
@@ -30,6 +33,9 @@ export class AuthService {
           this.storage = keepLoggedIn ? localStorage : sessionStorage;
           this.storage.setItem(AUTH_TOKEN, basicAuthToken);
           this.storage.setItem(USER, JSON.stringify(response));
+            this.userSubject.next(response);
+            this.loggedInSubject.next(true);
+
           this.router.navigate([`/dashboard`]);
         })
       );
@@ -47,7 +53,6 @@ export class AuthService {
   }
 
   isAuthenticated(): boolean {
-    return !!this.storage.getItem(AUTH_TOKEN);
     return !!this.storage.getItem(AUTH_TOKEN);
   }
 
