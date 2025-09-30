@@ -157,7 +157,6 @@ export class AssetList implements OnInit {
   handlePageEvent(e: PageEvent) {
     this.pageSize = e.pageSize;
     this.pageIndex = e.pageIndex;
-
     this.loadAssets();
   }
 
