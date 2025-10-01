@@ -1,0 +1,82 @@
+<div class="asset-details-container" *ngIf="!isLoading && asset">
+  <h2 class="asset-title">{{ asset.assetName }}</h2>
+  
+  <div class="asset-grid">
+    <div class="info-card">
+      <div class="card-title">Basic Information</div>
+      <div class="info-item">
+        <span class="info-label">Brand</span>
+        <span class="info-value">{{ asset.brand }}</span>
+      </div>
+      <div class="info-item">
+        <span class="info-label">Category</span>
+        <span class="info-value">{{ asset.categoryName }}</span>
+      </div>
+      <div class="info-item">
+        <span class="info-label">Type</span>
+        <span class="info-value">{{ asset.typeName }}</span>
+      </div>
+      <div class="info-item">
+        <span class="info-label">Status</span>
+        <span class="info-value">
+          <span class="status-badge" [ngClass]="getStatusClass(asset.status)">
+            {{ asset.status }}
+          </span>
+        </span>
+      </div>
+    </div>
+
+    <div class="info-card">
+      <div class="card-title">Technical Details</div>
+      <div class="info-item">
+        <span class="info-label">Serial Number</span>
+        <span class="info-value">{{ asset.serialNumber }}</span>
+      </div>
+      <div class="info-item">
+        <span class="info-label">Location</span>
+        <span class="info-value">{{ asset.location }}</span>
+      </div>
+      <div class="info-item">
+        <span class="info-label">Purchase Date</span>
+        <span class="info-value">{{ asset.purchaseDate | date:'mediumDate' }}</span>
+      </div>
+      <div class="info-item">
+        <span class="info-label">Warranty End</span>
+        <span class="info-value">{{ asset.warrantyEndDate | date:'mediumDate' }}</span>
+      </div>
+    </div>
+
+    <div class="info-card">
+      <div class="card-title">Assignment Information</div>
+      <div class="info-item">
+        <span class="info-label">Assigned To</span>
+        <span class="info-value">{{ asset.assignedToName || 'N/A' }}</span>
+      </div>
+      <div class="info-item">
+        <span class="info-label">Email</span>
+        <span class="info-value">{{ asset.assignedToEmail || 'N/A' }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="description-card" *ngIf="asset.assetDescription">
+    <div class="description-title">Description</div>
+    <p class="description-text">{{ asset.assetDescription }}</p>
+  </div>
+
+
+  <div class="asset-actions" *ngIf="userRole!== Role.EMPLOYEE" >
+    <button  (click)="goToHistory(asset.assetId)">
+      View History ➡
+    </button>
+  </div>
+
+<div class="back-button-container">
+  <button class="back-btn "(click)="goBackToDashboard()">
+    ⬅ Back to Dashboard
+  </button>
+</div>
+
+<div *ngIf="isLoading" class="loading-spinner">
+  <p>Loading asset details...</p>
+</div>

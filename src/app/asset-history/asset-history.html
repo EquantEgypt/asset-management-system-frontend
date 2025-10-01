@@ -1,0 +1,48 @@
+<div class="asset-history-container" *ngIf="!isLoading && historyList.length > 0">
+  <h2 class="title">Asset History</h2>
+  
+  <div class="history-cards">
+    <div class="history-card" *ngFor="let h of historyList">
+      <div class="card-header">
+        <div class="card-date">{{ h.timestamp | date:'medium' }}</div>
+        <span class="card-status status-badge" [ngClass]="getStatusClass(h.status)">
+          {{ h.status }}
+        </span>
+      </div>
+      
+      <div class="card-details">
+        <div class="detail-item">
+          <span class="detail-label">Assigned To</span>
+          <span class="detail-value">{{ h.assignedTo || 'N/A' }}</span>
+        </div>
+        
+        <div class="detail-item" *ngIf="h.note">
+          <span class="detail-label">Note</span>
+          <span class="detail-value">{{ h.note }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+<div class="paginator-wrapper">
+ <mat-paginator
+    [length]="totalElements"
+    [pageSize]="pageSize"
+    [pageIndex]="pageIndex"
+    [pageSizeOptions]="pageSizeOptions"
+    (page)="handlePageEvent($event)">
+
+  </mat-paginator>
+</div>
+</div>
+
+<div *ngIf="isLoading" class="loading-spinner">
+  <p>Loading asset history...</p>
+</div>
+<div *ngIf="!isLoading && historyList.length === 0" class="empty">
+  <p>No history found for this asset.</p>
+</div>
+<div class="back-button-container">
+  <button  class="back-btn "(click)="goBackToDetails()">
+    ⬅ Back to Asset Details
+  </button>
+</div>
