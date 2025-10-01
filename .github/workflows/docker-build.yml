@@ -25,4 +25,4 @@ jobs:
         with:
           context: .
           push: true
-          tags: your-dockerhub-username/your-repo:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/asset-management-system-frontend:latest
