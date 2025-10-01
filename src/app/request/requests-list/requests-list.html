@@ -126,11 +126,10 @@
 <div *ngIf="showAssignModal && dataToAssign" class="modal-overlay">
     <div class="modal-content">
         <div (click)="showAssignModal = false; dataToAssign = null" class="close-modal-btn">
-            <i class="fa-solid fa-xmark"></i>
-        </div>
+            <i class="fa-solid fa-xmark"></i> 
+        </div> 
         <app-assign-asset-form [receivedData]="dataToAssign" (closeModal)="handleClose($event)">
         </app-assign-asset-form>
-
     </div>
 </div>
 <div class="modal-overlay " *ngIf="showRejectModal" (click)="closeRejectModal()">

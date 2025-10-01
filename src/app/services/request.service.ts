@@ -28,26 +28,27 @@ export class RequestService {
   }
 
   getRequests(
-    endpoint: 'pending' | 'history' | 'my-requests' | '',
     page: number,
     size: number,
     type?: string | null,
     search?: string,
-    status?: string | null,
+    statuses?: string[] | null,
     personal?: boolean
   ): Observable<Page<RequestView>> {
     let params = new HttpParams()
       .set('page', page.toString())
       .set('size', size.toString());
 
-    if (status) params = params.set('status', status);
-    if (type) params = params.set('type', type);
+if (statuses && statuses.length > 0) {
+    statuses.forEach(status => {
+      params = params.append('statuses', status); 
+    });
+  }    if (type) params = params.set('type', type);
     if (search) params = params.set('search', search);
     if (personal) params = params.set('personal', String(personal));
 
-    const url = endpoint ? `${BACKEND_URL}/${endpoint}` : BACKEND_URL;
 
-    return this.http.get<Page<RequestView>>(url, {
+    return this.http.get<Page<RequestView>>( `${BACKEND_URL}` , {
       headers: this.getAuthHeaders(),
       params
     });

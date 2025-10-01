@@ -37,7 +37,7 @@ export class AssignAssetForm implements OnInit {
     note: new FormControl<string | null>(null)
   });
   @Input() receivedData: AssignPerRequest | null = null;
-@Output() closeModal = new EventEmitter<boolean>();
+  @Output() closeModal = new EventEmitter<boolean>();
 
   // Data
   assets: Asset[] = [];
@@ -181,14 +181,16 @@ export class AssignAssetForm implements OnInit {
     }).subscribe({
       next: () => {
         this.toast.success('Asset assigned successfully');
-
         if (this.receivedData) {
           this.requestService
-            .respondToRequest(this.receivedData.requestId, 'NEW', 'APPROVED')
+            .respondToRequest(this.receivedData.requestId, 'APPROVE', {
+              assetId: assetId
+            })
             .subscribe({
               next: () => {
-this.closeModal.emit(true);
+                console.log("done")
 
+                this.closeModal.emit(true);
                 console.log('Request updated successfully');
               },
               error: (err) => {
