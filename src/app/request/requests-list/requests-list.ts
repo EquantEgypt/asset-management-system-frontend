@@ -113,32 +113,31 @@ export class RequestsList {
   }
 
   updateStatus(request: RequestView, newStatus: 'APPROVED' | 'REJECTED', rejectionNote?: string): void {
-    const accepted = newStatus;
-    if (request.requestType === 'NEW' && newStatus == 'APPROVED') {
-      console.log("the category id im sending is ", request.categoryId)
-      this.dataToAssign = {
-        requestId: request.id,
-        userId: request.requesterId,
-        userName: request.requester,
-        typeName: request.assetTypeName,
-        typeId: request.assetTypeId,
-        categoryId: request.categoryId,
-        requestType: request.requestType
-      };
-      this.showAssignModal = true;
-    } else {
-      this.requestService
-      .respondToRequest(request.id, 'APPROVE', {  })
-        .subscribe({
-          next: () => {
-            request.status = newStatus;
-          },
-          error: (err) => {
-            console.error('Failed to update request', err);
-          },
-        });
-    }
+  if (request.requestType === 'NEW' && newStatus === 'APPROVED') {
+    this.dataToAssign = {
+      requestId: request.id,
+      userId: request.requesterId,
+      userName: request.requester,
+      typeName: request.assetTypeName,
+      typeId: request.assetTypeId,
+      categoryId: request.categoryId,
+      requestType: request.requestType
+    };
+    this.showAssignModal = true;
+  } else {
+    this.requestService
+    // Argument of type '"APPROVED" | "REJECTED"' is not assignable to parameter of type '"APPROVE" | "REJECT"'.
+      .respondToRequest(request.id, newStatus, { rejectionNote })
+      .subscribe({
+        next: () => {
+          request.status = newStatus;
+        },
+        error: (err) => {
+          console.error('Failed to update request', err);
+        },
+      });
   }
+}
 
   openRejectModal(request: any) {
     this.selectedRequest = request;

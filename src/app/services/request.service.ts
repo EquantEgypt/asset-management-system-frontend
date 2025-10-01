@@ -54,8 +54,8 @@ if (statuses && statuses.length > 0) {
     });
   }
 
-  respondToRequest(requestId: number, action: 'APPROVE' | 'REJECT', payload: any): Observable<RequestView> {
- const url = `${BACKEND_URL}/${requestId}/${action === 'APPROVE' ? 'approve' : 'reject'}`;
+  respondToRequest(requestId: number, action: 'APPROVED' | 'REJECTED', payload: any): Observable<RequestView> {
+ const url = `${BACKEND_URL}/${requestId}/${action === 'APPROVED' ? 'approve' : 'reject'}`;
   return this.http.put<RequestView>(url, payload, {
     headers: this.getAuthHeaders(),
   });
