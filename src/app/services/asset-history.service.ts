@@ -5,7 +5,15 @@ import { AuthService } from './auth.service';
 import { AssetHistorydto } from '../model/AssetHistory.model';
 
 const BACKEND_URL = 'http://localhost:8080/api/assets/history';
-
+export interface Page<T> {
+  content: T[];
+  page: {
+    size: number;
+    number: number;
+    totalElements: number;
+    totalPages: number;
+  };
+}
 @Injectable({
   providedIn: 'root'
 })
@@ -23,8 +31,8 @@ export class AssetHistoryService {
     });
   }
 
-  getAssetHistory(id: number): Observable<AssetHistorydto[]> {
-    return this.http.get<AssetHistorydto[]>(`${BACKEND_URL}/${id}`, {
+  getAssetHistory(id: number , page: number, size: number): Observable<Page<AssetHistorydto>> {
+    return this.http.get<Page<AssetHistorydto>>(`${BACKEND_URL}/${id}?page=${page}&size=${size}`, {
       headers: this.getAuthHeaders()
     });
   }
