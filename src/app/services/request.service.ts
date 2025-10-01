@@ -28,38 +28,37 @@ export class RequestService {
   }
 
   getRequests(
-    endpoint: 'pending' | 'history' | 'my-requests' | '',
     page: number,
     size: number,
     type?: string | null,
     search?: string,
-    status?: string | null,
+    statuses?: string[] | null,
     personal?: boolean
   ): Observable<Page<RequestView>> {
     let params = new HttpParams()
       .set('page', page.toString())
       .set('size', size.toString());
 
-    if (status) params = params.set('status', status);
-    if (type) params = params.set('type', type);
+if (statuses && statuses.length > 0) {
+    statuses.forEach(status => {
+      params = params.append('statuses', status); 
+    });
+  }    if (type) params = params.set('type', type);
     if (search) params = params.set('search', search);
     if (personal) params = params.set('personal', String(personal));
 
-    const url = endpoint ? `${BACKEND_URL}/${endpoint}` : BACKEND_URL;
 
-    return this.http.get<Page<RequestView>>(url, {
+    return this.http.get<Page<RequestView>>( `${BACKEND_URL}` , {
       headers: this.getAuthHeaders(),
       params
     });
   }
 
-  respondToRequest(requestId: number, requestType: string, accepted: string, rejectionNote?: string): Observable<RequestView> {
-    console.log(requestId, requestType);
-    const url = `${BACKEND_URL}/response`;
-    return this.http.put<RequestView>(
-      url,
-      { id: requestId, status: accepted == 'APPROVED' ? 'APPROVED' : 'REJECTED', rejectionNote },
-      { headers: this.getAuthHeaders() }
-    );
-  }
+  respondToRequest(requestId: number, action: 'APPROVE' | 'REJECT', payload: any): Observable<RequestView> {
+ const url = `${BACKEND_URL}/${requestId}/${action === 'APPROVE' ? 'approve' : 'reject'}`;
+  return this.http.put<RequestView>(url, payload, {
+    headers: this.getAuthHeaders(),
+  });
+}
+
 }

@@ -57,35 +57,44 @@ export class RequestsList {
     this.searchWord = text.toLowerCase().trim();
     this.pageIndex = 0;
     this.loadRequests(this.activeTab);
-  } loadRequests(type?: 'pending' | 'history' | 'my-requests'): void {
-    this.isLoading = true;
+  } 
 
-    if (type) {
-      this.activeTab = type;
-    }
+  loadRequests(type?: 'pending' | 'history' | 'my-requests'): void {
+  this.isLoading = true;
 
-    const request$ = this.requestService.getRequests(
-      this.activeTab,
-      this.pageIndex,
-      this.pageSize,
-      this.selectedType || null,
-      this.searchWord,
-      this.selectedStatus || null,
-      this.activeTab === 'my-requests'
-    );
-
-    request$.subscribe({
-      next: (data) => {
-        this.requests = data.content;
-        this.totalElements = data.page.totalElements;
-        this.isLoading = false;
-      },
-      error: (err) => {
-        console.error('Failed to load requests', err);
-        this.isLoading = false;
-      },
-    });
+  if (type) {
+    this.activeTab = type;
   }
+
+  let statuses: string[] | null = null;
+
+  if (this.activeTab === 'pending') {
+    statuses = ['PENDING'];
+  } else if (this.activeTab === 'history') {
+    statuses = ['APPROVED', 'REJECTED'];
+  }
+
+  const request$ = this.requestService.getRequests(
+    this.pageIndex,
+    this.pageSize,
+    this.selectedType || null,
+    this.searchWord,
+    statuses,
+    this.activeTab === 'my-requests'
+  );
+
+  request$.subscribe({
+    next: (data) => {
+      this.requests = data.content;
+      this.totalElements = data.page.totalElements;
+      this.isLoading = false;
+    },
+    error: (err) => {
+      console.error('Failed to load requests', err);
+      this.isLoading = false;
+    },
+  });
+}
 
   handlePageEvent(event: PageEvent): void {
     this.pageIndex = event.pageIndex;
@@ -119,7 +128,7 @@ export class RequestsList {
       this.showAssignModal = true;
     } else {
       this.requestService
-        .respondToRequest(request.id, request.requestType, accepted, rejectionNote)
+      .respondToRequest(request.id, 'APPROVE', {  })
         .subscribe({
           next: () => {
             request.status = newStatus;
