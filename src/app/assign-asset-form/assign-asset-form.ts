@@ -183,7 +183,7 @@ export class AssignAssetForm implements OnInit {
         this.toast.success('Asset assigned successfully');
         if (this.receivedData) {
           this.requestService
-            .respondToRequest(this.receivedData.requestId, 'APPROVE', {
+            .respondToRequest(this.receivedData.requestId, 'APPROVED', {
               assetId: assetId
             })
             .subscribe({
