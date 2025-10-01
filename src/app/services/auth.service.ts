@@ -3,10 +3,12 @@ import { Observable, tap, BehaviorSubject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Role } from '../model/roles.enum';
+
 const AUTH_TOKEN = 'AUTH_TOKEN';
 const ROLES = 'ROLES';
 const USER = 'User';
 const BACKEND_URL = 'http://localhost:8080';
+
 @Injectable({
   providedIn: 'root',
 })
@@ -82,6 +84,31 @@ export class AuthService {
   getCurrentUsername(): string | null {
     const userStr = this.storage.getItem(USER);
     if (!userStr) return null;
+    const user = JSON.parse(userStr);
+    return user?.username ?? null;
+  }
+
+  getCurrentUserId(): number | null {
+    const userStr = this.storage.getItem(USER);
+    if (!userStr) {
+      return null;
+    }
+    const user = JSON.parse(userStr);
+    return user?.id ?? null;
+  }
+  getCurrentUserDepartment(): string | null {
+    const userStr = this.storage.getItem(USER);
+    if (!userStr) {
+      return null;
+    }
+    const user = JSON.parse(userStr);
+    return user?.departmentName ?? null;
+  }
+  getCurrentUsername(): string | null {
+    const userStr = this.storage.getItem(USER);
+    if (!userStr) {
+      return null;
+    }
     const user = JSON.parse(userStr);
     return user?.username ?? null;
   }
