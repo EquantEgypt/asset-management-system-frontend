@@ -81,72 +81,9 @@ export class AuthService {
     const user = JSON.parse(userStr);
     return user?.departmentName ?? null;
   }
-  getCurrentUsername(): string | null {
-    const userStr = this.storage.getItem(USER);
-    if (!userStr) return null;
-    const user = JSON.parse(userStr);
-    return user?.username ?? null;
-  }
 
-  getCurrentUserId(): number | null {
-    const userStr = this.storage.getItem(USER);
-    if (!userStr) {
-      return null;
-    }
-    const user = JSON.parse(userStr);
-    return user?.id ?? null;
-  }
-  getCurrentUserDepartment(): string | null {
-    const userStr = this.storage.getItem(USER);
-    if (!userStr) {
-      return null;
-    }
-    const user = JSON.parse(userStr);
-    return user?.departmentName ?? null;
-  }
-   
 
-  getCurrentUserId(): number | null {
-    const userStr = this.storage.getItem(USER);
-    if (!userStr) {
-      return null;
-    }
-    const user = JSON.parse(userStr);
-    return user?.id ?? null;
-  }
-  getCurrentUserDepartment(): string | null {
-    const userStr = this.storage.getItem(USER);
-    if (!userStr) {
-      return null;
-    }
-    const user = JSON.parse(userStr);
-    return user?.departmentName ?? null;
-  }
-    getCurrentUsername(): string | null {
-    const userStr = this.storage.getItem(USER);
-    if (!userStr) {
-      return null;
-    }
-    const user = JSON.parse(userStr);
-    return user?.username ?? null;
-  }
-
-  getCurrentUserId(): number | null {
-    const userStr = this.storage.getItem(USER);
-    if (!userStr) {
-      return null;
-    }
-    const user = JSON.parse(userStr);
-    return user?.id ?? null;
-  }
-  getCurrentUserDepartment(): string | null {
-    const userStr = this.storage.getItem(USER);
-    if (!userStr) {
-      return null;
-    }
-    const user = JSON.parse(userStr);
-    return user?.departmentName ?? null;
-  }
+  
     getCurrentUsername(): string | null {
     const userStr = this.storage.getItem(USER);
     if (!userStr) {

@@ -206,29 +206,9 @@ export class AssetList implements OnInit {
   handlePageEvent(e: PageEvent) {
     this.pageSize = e.pageSize;
     this.pageIndex = e.pageIndex;
-
-  loadCategories(): void {
-    this.categoryService
-      .getCategories()
-      .subscribe((data) => (this.categories = data));
-  }
-
-  loadTypes(): void {
-    this.typeService.getTypes().subscribe((data) => (this.types = data));
-  }
-
-  loadDepartments(): void {
-    this.departmentService.getDepartmentsName().subscribe((data) => (this.departments = data));
-  }
-
-
-
-  applyFilters(): void {
-    this.loadAssets();
-  }
-
-
-  navigateToAddAsset(): void {
+  this.loadAssets();
+}
+ navigateToAddAsset(): void {
     this.router.navigate(['/assets/add']);
   }
   toggleRequestModal() {

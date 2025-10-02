@@ -22,20 +22,7 @@ export class AssetService {
       'Authorization': `Basic ${token}`
     });
   }
-
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 getAssets(filter?: any): Observable<Page<AssetListDTO>> {
-=======
-getAssets(filter?: any): Observable<Page<MiniAsset>> {
->>>>>>> needs pagination
-=======
-getAssets(filter?: any): Observable<Page<MiniAsset>> {
->>>>>>> needs pagination
-=======
-getAssets(filter?: any): Observable<Page<MiniAsset>> {
->>>>>>> fe0300a4d0cc354e8df065ba7b9e6d27231dc3a1
   let params = new HttpParams();
 
   if (filter) {
@@ -47,15 +34,7 @@ getAssets(filter?: any): Observable<Page<MiniAsset>> {
     });
   }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
   return this.http.get<Page<AssetListDTO>>(`${BACKEND_URL}`, {
-=======
-  return this.http.get<Page<MiniAsset>>(`${BACKEND_URL}`, {
->>>>>>> needs pagination
-=======
-  return this.http.get<Page<MiniAsset>>(`${BACKEND_URL}`, {
->>>>>>> fe0300a4d0cc354e8df065ba7b9e6d27231dc3a1
     headers: this.getAuthHeaders(),
     params
   });
