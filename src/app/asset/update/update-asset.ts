@@ -15,6 +15,8 @@ import { UpdateAsset } from '../../model/update-asset.model';
 import { AssetDetailsService } from '../../services/asset-details.service';
 import { Brand } from '../../model/brand.enum';
 import { Location } from '../../model/location.enum';
+import { of } from 'rxjs';
+import { switchMap, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-update-asset',
@@ -61,9 +63,21 @@ export class UpdateAssetComponent implements OnInit {
 
   ngOnInit(): void {
     this.assetId = Number(this.route.snapshot.paramMap.get('id'));
-    this.loadCategories();
-    if (this.assetId) {
-      this.assetDetailsService.getAssetDetails(this.assetId).subscribe(asset => {
+
+    this.categoryService.getCategories().pipe(
+      takeUntilDestroyed(this.destroyRef),
+      tap(categories => this.categories = categories),
+      switchMap(() => {
+        if (this.assetId) {
+          return this.assetDetailsService.getAssetDetails(this.assetId);
+        }
+        return of(null);
+      })
+    ).subscribe(asset => {
+      if (asset) {
+        const assetCategory = this.categories.find(c => c.name === asset.categoryName);
+        const categoryId = assetCategory ? assetCategory.id : null;
+
         this.assetForm.patchValue({
           name: asset.assetName,
           brand: asset.brand,
@@ -72,42 +86,38 @@ export class UpdateAssetComponent implements OnInit {
           serialNumber: asset.serialNumber,
           purchaseDate: new Date(asset.purchaseDate).toISOString().split('T')[0],
           warrantyEndDate: new Date(asset.warrantyEndDate).toISOString().split('T')[0],
-          categoryId: this.categories.find(c => c.name === asset.categoryName)?.id,
+          categoryId: categoryId,
         });
-        
-        if (this.assetForm.get('categoryId')?.value) {
-          const categoryId = this.assetForm.get('categoryId')?.value;
+
+        if (categoryId) {
           this.typeService.getTypes(categoryId).subscribe(types => {
             this.types = types;
             this.assetForm.get('typeId')?.enable();
-            this.assetForm.patchValue({
-              typeId: this.types.find(t => t.name === asset.typeName)?.id
-            });
+            const assetType = this.types.find(t => t.name === asset.typeName);
+            if (assetType) {
+              this.assetForm.patchValue({ typeId: assetType.id });
+            }
           });
         }
-      });
-    }
+      }
+    });
 
     this.assetForm.get('categoryId')?.valueChanges.subscribe(categoryId => {
       const typeControl = this.assetForm.get('typeId');
       if (categoryId) {
+        typeControl?.reset(); 
         this.typeService.getTypes(categoryId).subscribe(types => {
           this.types = types;
           typeControl?.enable();
         });
       } else {
         this.types = [];
+        typeControl?.reset();
         typeControl?.disable();
       }
     });
   }
-
-  loadCategories(): void {
-    this.categoryService.getCategories()
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe(data => this.categories = data);
-  }
-
+  
   onSubmit(): void {
     if (this.assetForm.invalid) {
       this.assetForm.markAllAsTouched();
