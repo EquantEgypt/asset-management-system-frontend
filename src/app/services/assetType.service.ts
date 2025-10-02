@@ -23,8 +23,8 @@ export class TypeService {
 
   getTypes(categoryId?: number): Observable<Type[]> {
     let params = new HttpParams();
-    if (categoryId !== null && categoryId !== undefined) {
-      params = params.set('categoryId', categoryId);
+    if (categoryId) {
+      params = params.set('categoryId', categoryId.toString());
     }
     return this.http.get<Type[]>(`${BACKEND_URL}/types`, {
       headers: this.getAuthHeaders(),

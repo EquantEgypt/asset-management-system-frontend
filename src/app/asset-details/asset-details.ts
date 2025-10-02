@@ -34,6 +34,10 @@ goToHistory(id: number) {
 
   this.router.navigate(['/history', id]);
 }
+
+goToEdit(id: number) {
+    this.router.navigate(['/assets/update', id]);
+  }
   ngOnInit(): void {
         this.userRole = this.authService.getRole();
 

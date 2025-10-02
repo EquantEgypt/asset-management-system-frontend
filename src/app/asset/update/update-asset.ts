@@ -1,28 +1,29 @@
-// src/app/asset/add/add-asset.ts
+// src/app/asset/update/update-asset.ts
 
 import { Component, OnInit, inject, DestroyRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AssetService } from '../../services/assets.service';
 import { CategoryService } from '../../services/category.service';
 import { TypeService } from '../../services/assetType.service';
-import { AssetRequest } from '../../model/asset.model';
 import { ToastService } from 'angular-toastify';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Category } from '../../model/categoryModel';
 import { Type } from '../../model/AssetTypeModel';
+import { UpdateAsset } from '../../model/update-asset.model';
+import { AssetDetailsService } from '../../services/asset-details.service';
 import { Brand } from '../../model/brand.enum';
 import { Location } from '../../model/location.enum';
 
 @Component({
-  selector: 'app-add-asset',
+  selector: 'app-update-asset',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, RouterLink],
-  templateUrl: './add-asset.html',
-  styleUrls: ['./add-asset.css']
+  templateUrl: './update-asset.html',
+  styleUrls: ['./update-asset.css']
 })
-export class AddAssetComponent implements OnInit {
+export class UpdateAssetComponent implements OnInit {
   assetForm: FormGroup;
   categories: Category[] = [];
   types: Type[] = [];
@@ -30,6 +31,7 @@ export class AddAssetComponent implements OnInit {
   brands = Object.values(Brand);
   errorMessage: string | null = null;
   isLoading = false;
+  assetId!: number;
 
   private destroyRef = inject(DestroyRef);
 
@@ -39,7 +41,9 @@ export class AddAssetComponent implements OnInit {
     private categoryService: CategoryService,
     private typeService: TypeService,
     private router: Router,
-    private toast: ToastService
+    private route: ActivatedRoute,
+    private toast: ToastService,
+    private assetDetailsService: AssetDetailsService
   ) {
     this.assetForm = this.fb.group({
       name: ['', [Validators.required]],
@@ -51,13 +55,39 @@ export class AddAssetComponent implements OnInit {
       serialNumber: ['', [Validators.required]],
       purchaseDate: ['', [Validators.required]],
       warrantyEndDate: ['', [Validators.required]],
-      status: ['AVAILABLE', [Validators.required]],
       imagePath: ['']
     });
   }
 
   ngOnInit(): void {
+    this.assetId = Number(this.route.snapshot.paramMap.get('id'));
     this.loadCategories();
+    if (this.assetId) {
+      this.assetDetailsService.getAssetDetails(this.assetId).subscribe(asset => {
+        this.assetForm.patchValue({
+          name: asset.assetName,
+          brand: asset.brand,
+          assetDescription: asset.assetDescription,
+          location: asset.location,
+          serialNumber: asset.serialNumber,
+          purchaseDate: new Date(asset.purchaseDate).toISOString().split('T')[0],
+          warrantyEndDate: new Date(asset.warrantyEndDate).toISOString().split('T')[0],
+          categoryId: this.categories.find(c => c.name === asset.categoryName)?.id,
+        });
+        
+        if (this.assetForm.get('categoryId')?.value) {
+          const categoryId = this.assetForm.get('categoryId')?.value;
+          this.typeService.getTypes(categoryId).subscribe(types => {
+            this.types = types;
+            this.assetForm.get('typeId')?.enable();
+            this.assetForm.patchValue({
+              typeId: this.types.find(t => t.name === asset.typeName)?.id
+            });
+          });
+        }
+      });
+    }
+
     this.assetForm.get('categoryId')?.valueChanges.subscribe(categoryId => {
       const typeControl = this.assetForm.get('typeId');
       if (categoryId) {
@@ -88,21 +118,21 @@ export class AddAssetComponent implements OnInit {
     this.errorMessage = null;
 
     const formValue = this.assetForm.value;
-    const assetData: AssetRequest = {
+    const assetData: UpdateAsset = {
       ...formValue,
       purchaseDate: new Date(formValue.purchaseDate).toISOString(),
       warrantyEndDate: new Date(formValue.warrantyEndDate).toISOString()
     };
 
-    this.assetService.addAsset(assetData).subscribe({
+    this.assetService.updateAsset(this.assetId, assetData).subscribe({
       next: () => {
         this.isLoading = false;
-        this.toast.success('Asset added successfully!');
-        this.router.navigate(['/dashboard']);
+        this.toast.success('Asset updated successfully!');
+        this.router.navigate(['/assets', this.assetId]);
       },
       error: (err) => {
         this.isLoading = false;
-        this.errorMessage = err.error?.message || 'Failed to add asset. Please try again.';
+        this.errorMessage = err.error?.message || 'Failed to update asset. Please try again.';
         if (this.errorMessage) {
           this.toast.error(this.errorMessage);
         }

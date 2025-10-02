@@ -1,6 +1,6 @@
 <div class="form-container">
   <form [formGroup]="assetForm" (ngSubmit)="onSubmit()" class="asset-form">
-    <h2 class="form-title">Add New Asset</h2>
+    <h2 class="form-title">Update Asset</h2>
 
     <div *ngIf="errorMessage" class="error-banner">
       {{ errorMessage }}
@@ -8,8 +8,8 @@
 
     <div class="form-row">
       <div class="form-group">
-        <label for="assetName">Asset Name</label>
-        <input id="assetName" type="text" formControlName="name" placeholder="e.g., MacBook Pro 16">
+      <label for="assetName">Asset Name</label>
+      <input id="assetName" type="text" formControlName="name" placeholder="e.g., MacBook Pro 16">
       </div>
       <div class="form-group">
         <label for="brand">Brand</label>
@@ -68,10 +68,10 @@
     </div>
 
     <div class="form-actions">
-      <button type="button" class="cancel-btn" routerLink="/dashboard" [disabled]="isLoading">Cancel</button>
+      <button type="button" class="cancel-btn" [routerLink]="['/assets', assetId]" [disabled]="isLoading">Cancel</button>
       <button type="submit" class="submit-btn" [disabled]="assetForm.invalid || isLoading">
-        <span *ngIf="!isLoading">Add Asset</span>
-        <span *ngIf="isLoading">Adding...</span>
+        <span *ngIf="!isLoading">Update Asset</span>
+        <span *ngIf="isLoading">Updating...</span>
       </button>
     </div>
   </form>
