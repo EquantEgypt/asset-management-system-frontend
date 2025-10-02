@@ -10,7 +10,7 @@ const USER = 'User';
 const BACKEND_URL = 'http://localhost:8080';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
   private storage: Storage = sessionStorage;
@@ -65,6 +65,29 @@ export class AuthService {
     return user?.role ?? null;
   }
 
+  getCurrentUserId(): number | null {
+    const userStr = this.storage.getItem(USER);
+    if (!userStr) {
+      return null;
+    }
+    const user = JSON.parse(userStr);
+    return user?.id ?? null;
+  }
+  getCurrentUserDepartment(): string | null {
+    const userStr = this.storage.getItem(USER);
+    if (!userStr) {
+      return null;
+    }
+    const user = JSON.parse(userStr);
+    return user?.departmentName ?? null;
+  }
+  getCurrentUsername(): string | null {
+    const userStr = this.storage.getItem(USER);
+    if (!userStr) return null;
+    const user = JSON.parse(userStr);
+    return user?.username ?? null;
+  }
+
   getAuthToken(): string | null {
     return this.storage.getItem(AUTH_TOKEN);
   }
@@ -72,5 +95,17 @@ export class AuthService {
   getUser(): any {
     const userStr = this.storage.getItem(USER);
     return userStr ? JSON.parse(userStr) : null;
+  }
+  isAdmin(): boolean {
+    return this.getRole() === Role.ADMIN;
+  } 
+  isIT(): boolean {
+    return this.getRole() === Role.IT;
+  }
+  isEmployee(): boolean {
+    return this.getRole() === Role.EMPLOYEE;
+  }
+  isManager(): boolean {
+    return this.getRole() === Role.MANAGER;
   }
 }

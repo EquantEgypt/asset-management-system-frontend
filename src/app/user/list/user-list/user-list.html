@@ -81,6 +81,13 @@
             class="fa-solid fa-user-plus"></i>
         </td>
       </ng-container>
+               <ng-container matColumnDef="request" >
+            <th mat-header-cell *matHeaderCellDef>request</th>
+            <td mat-cell *matCellDef="let user" class="assignee-button" (click)="toggleRequestModal($event,user)"><i
+                    class="fa-solid fa-user-plus"></i>
+            </td>
+        </ng-container>
+
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
@@ -94,5 +101,9 @@
   <div *ngIf="!isLoading && users.length == 0">
     <h2>No users available.</h2>
   </div>
-
+      <div *ngIf="requestModal" class="modal-backdrop">
+        <div class="modal-box">
+    <app-add-request [userId]="userId" [userName]="userName"   (closeModal)="closeModal()"></app-add-request></div>
+  </div>
 </div>
+

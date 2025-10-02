@@ -1,34 +1,33 @@
 <div class="admin-dashboard-container">
-    <!-- Sidebar -->
-    <div class="sidebar" [class.collapsed]="isCollapsed">
-      <div class="sidebar-header">
-        <h2 *ngIf="!isCollapsed">Resources</h2>
-        <button class="toggle-btn" (click)="toggleSidebar()">
-          <i class="fa" [ngClass]="isCollapsed ? 'fa-chevron-right' : 'fa-chevron-left'"></i>
-        </button>
-      </div>
-  
-      <ul class="menu-list">
-        <li [class.active]="activeTab === 'requests'" (click)="setActive('requests')">
-          <i class="fa-solid fa-envelope-open-text"></i>
-          <span *ngIf="!isCollapsed">Requests</span>
-        </li>
-        <li [class.active]="activeTab === 'assets'" (click)="setActive('assets')">
-          <i class="fa-solid fa-database"></i>
-          <span *ngIf="!isCollapsed">Assets</span>
-        </li>
-        <li [class.active]="activeTab === 'users'" (click)="setActive('users')">
-          <i class="fa-solid fa-users"></i>
-          <span *ngIf="!isCollapsed">Users</span>
-        </li>
-      </ul>
+  <!-- Sidebar -->
+  <div class="sidebar" [class.collapsed]="isCollapsed">
+    <div class="sidebar-header">
+      <h2 *ngIf="!isCollapsed">Resources</h2>
+      <button class="toggle-btn" (click)="toggleSidebar()">
+        <i class="fa" [ngClass]="isCollapsed ? 'fa-chevron-right' : 'fa-chevron-left'"></i>
+      </button>
     </div>
-  
-    <!-- Main Content -->
-    <div class="card-display">
-      <!-- <app-request-list *ngIf="activeTab === 'requests'"></app-request-list> -->
-      <app-asset-list *ngIf="activeTab === 'assets'"></app-asset-list>
-      <app-user-list *ngIf="activeTab === 'users'"></app-user-list>
-    </div>
+
+    <ul class="menu-list">
+      <li [class.active]="activeTab === 'requests'" (click)="setActive('requests')">
+        <i class="fa-solid fa-envelope-open-text"></i>
+        <span *ngIf="!isCollapsed">Requests</span>
+      </li>
+      <li [class.active]="activeTab === 'assets'" (click)="setActive('assets')">
+        <i class="fa-solid fa-database"></i>
+        <span *ngIf="!isCollapsed">Assets</span>
+      </li>
+      <li [class.active]="activeTab === 'users'" (click)="setActive('users')">
+        <i class="fa-solid fa-users"></i>
+        <span *ngIf="!isCollapsed">Users</span>
+      </li>
+    </ul>
   </div>
-  
+
+  <!-- Main Content -->
+  <div class="card-display">
+    <!-- <app-request-list *ngIf="activeTab === 'requests'"></app-request-list> -->
+    <app-asset-list *ngIf="activeTab === 'assets'"></app-asset-list>
+    <app-user-list *ngIf="activeTab === 'users'"></app-user-list>
+  </div>
+</div>
