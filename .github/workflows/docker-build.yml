@@ -1,3 +1,11 @@
+name: CI/CD Docker Build
+
+on:
+  push:
+    branches:
+      - main
+      - test-pipeline
+
 jobs:
   docker:
     runs-on: ubuntu-latest
