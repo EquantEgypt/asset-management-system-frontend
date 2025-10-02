@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { AssetDetailsdto } from '../model/AssetDetails.model';
 import { AuthService } from './auth.service';
 
-const BACKEND_URL = 'http://localhost:8080/api/assets/details';
+const BACKEND_URL = 'http://localhost:8080/assets/details';
 
 @Injectable({
   providedIn: 'root'

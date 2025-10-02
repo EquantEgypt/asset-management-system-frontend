@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { AuthService } from './auth.service';
 import { AssetHistorydto } from '../model/AssetHistory.model';
 
-const BACKEND_URL = 'http://localhost:8080/api/assets/history';
+const BACKEND_URL = 'http://localhost:8080/assets/history';
 export interface Page<T> {
   content: T[];
   page: {
