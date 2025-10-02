@@ -7,8 +7,8 @@ import { SharedModule } from '../../../shared/shared.module';
 import { UserService } from '../../../services/user.service';
 import { Department } from '../../../model/department.model';
 import { DepartmentService } from '../../../services/departments.service';
-import { Router } from '@angular/router';
 import { AddRequestComponent } from '../../../request/add/add-request.component';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -97,7 +97,6 @@ filterByRole(): void {
     this.pageIndex = 0;
     this.loadUsers();
   }
-
 toggleRequestModal(event: Event, user: User) {
     event.stopPropagation();
     this.userId = user.id;

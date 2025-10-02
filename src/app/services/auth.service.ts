@@ -65,7 +65,6 @@ export class AuthService {
     return user?.role ?? null;
   }
 
-<<<<<<< HEAD
   getCurrentUserId(): number | null {
     const userStr = this.storage.getItem(USER);
     if (!userStr) {
@@ -160,11 +159,6 @@ export class AuthService {
   getAuthToken(): string | null {
     return this.storage.getItem(AUTH_TOKEN);
   }
-
-  getAuthToken(): string | null {
-    return this.storage.getItem(AUTH_TOKEN);
-  }
-
   getUser(): any {
     const userStr = this.storage.getItem(USER);
     return userStr ? JSON.parse(userStr) : null;
