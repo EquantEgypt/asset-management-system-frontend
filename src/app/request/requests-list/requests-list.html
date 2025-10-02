@@ -5,13 +5,7 @@
                 Pending Requests
             </h2>
 
-            @if(role !== 'EMPLOYEE') {
-            <h2 (click)="loadRequests('my-requests')" [class.active]="activeTab === 'my-requests'">
-                My Requests
-            </h2>
-            }
-
-            <h2 (click)="loadRequests('history')" [class.active]="activeTab === 'history'">
+            <h2 (click)="loadRequests('past')" [class.active]="activeTab === 'past'">
                 Requests History
             </h2>
         </div>

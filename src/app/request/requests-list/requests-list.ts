@@ -20,7 +20,7 @@ export class RequestsList {
   role: Role | null = null;
   selectedStatus: string | '' = '';
   selectedType: string | '' = '';
-  activeTab: 'pending' | 'history' | 'my-requests' = 'pending';
+  activeTab: 'pending' | 'past' = 'pending';
   dataToAssign: AssignPerRequest | null = null;
   searchWord: string = "";
 
@@ -58,20 +58,19 @@ export class RequestsList {
     this.pageIndex = 0;
     this.loadRequests(this.activeTab);
   } 
-
-  loadRequests(type?: 'pending' | 'history' | 'my-requests'): void {
+loadRequests(type?: 'pending' | 'past'): void {
   this.isLoading = true;
 
   if (type) {
     this.activeTab = type;
   }
 
-  let statuses: string[] | null = null;
+  let status: string | null = null;
 
   if (this.activeTab === 'pending') {
-    statuses = ['PENDING'];
-  } else if (this.activeTab === 'history') {
-    statuses = ['APPROVED', 'REJECTED'];
+    status = 'PENDING';
+  } else if (this.activeTab === 'past') {
+    status = 'PAST';  
   }
 
   const request$ = this.requestService.getRequests(
@@ -79,8 +78,7 @@ export class RequestsList {
     this.pageSize,
     this.selectedType || null,
     this.searchWord,
-    statuses,
-    this.activeTab === 'my-requests'
+    status
   );
 
   request$.subscribe({
@@ -95,6 +93,7 @@ export class RequestsList {
     },
   });
 }
+
 
   handlePageEvent(event: PageEvent): void {
     this.pageIndex = event.pageIndex;
@@ -126,7 +125,6 @@ export class RequestsList {
     this.showAssignModal = true;
   } else {
     this.requestService
-    // Argument of type '"APPROVED" | "REJECTED"' is not assignable to parameter of type '"APPROVE" | "REJECT"'.
       .respondToRequest(request.id, newStatus, { rejectionNote })
       .subscribe({
         next: () => {

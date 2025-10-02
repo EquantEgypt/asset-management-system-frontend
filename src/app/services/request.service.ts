@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { Request, RequestView } from '../model/request.model';
 import { AuthService } from './auth.service';
 import { Page } from '../model/Page.model';
-const BACKEND_URL = 'http://localhost:8080/requests';
+const BACKEND_URL = 'http://localhost:8080/request';
 @Injectable({
   providedIn: 'root'
 })
@@ -26,28 +26,24 @@ export class RequestService {
     size: number,
     type?: string | null,
     search?: string,
-    statuses?: string[] | null,
-    personal?: boolean
+    status?: string| null
   ): Observable<Page<RequestView>> {
     let params = new HttpParams()
       .set('page', page.toString())
       .set('size', size.toString());
-if (statuses && statuses.length > 0) {
-    statuses.forEach(status => {
-      params = params.append('statuses', status);
-    });
-  }    if (type) params = params.set('type', type);
+      if (status) params = params.set('status', status); 
+
+      if (type) params = params.set('type', type);
     if (search) params = params.set('search', search);
-    if (personal) params = params.set('personal', String(personal));
-    return this.http.get<Page<RequestView>>( `${BACKEND_URL}` , {
+    return this.http.get<Page<RequestView>>(`${BACKEND_URL}`, {
       headers: this.getAuthHeaders(),
       params
     });
   }
   respondToRequest(requestId: number, action: 'APPROVED' | 'REJECTED', payload: any): Observable<RequestView> {
- const url = `${BACKEND_URL}/${requestId}/${action === 'APPROVED' ? 'approve' : 'reject'}`;
-  return this.http.put<RequestView>(url, payload, {
-    headers: this.getAuthHeaders(),
-  });
-}
+    const url = `${BACKEND_URL}/${requestId}/${action === 'APPROVED' ? 'approve' : 'reject'}`;
+    return this.http.put<RequestView>(url, payload, {
+      headers: this.getAuthHeaders(),
+    });
+  }
 }
