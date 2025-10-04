@@ -25,22 +25,21 @@
           </mat-select>
         </mat-form-field>
       </div>
-      <div class="">
 
+      <div class="">
         <mat-form-field appearance="outline" class="search-field">
           <mat-label>Search by name/email</mat-label>
           <input matInput type="text" class="search-bar" placeholder="Search by name/email"
             (input)="searchByNameOrEmail(searchInput.value)" #searchInput>
         </mat-form-field>
-
-       
       </div>
-
     </div>
   </div>
+
   <div *ngIf="isLoading" class="loading-div">
     <mat-spinner diameter="40"></mat-spinner>
   </div>
+
   <div *ngIf="users.length > 0">
     <table mat-table [dataSource]="users" class="mat-elevation-z4 users-table">
 
@@ -63,7 +62,7 @@
         <th mat-header-cell *matHeaderCellDef>Role</th>
         <td mat-cell *matCellDef="let user">
           <span class="badge role" [ngClass]="user.role.toLowerCase()">
-            {{ user.role}}
+            {{ user.role }}
           </span>
         </td>
       </ng-container>
@@ -76,16 +75,28 @@
           </span>
         </td>
       </ng-container>
+
       <ng-container matColumnDef="assign_asset">
         <th mat-header-cell *matHeaderCellDef>Assign</th>
-        <td mat-cell *matCellDef="let user" class="assignee-button" (click)="navigateToAssignAsset(user)"><i
-            class="fa-solid fa-user-plus"></i>
+        <td mat-cell *matCellDef="let user" class="assignee-button" (click)="navigateToAssignAsset(user)">
+          <i class="fa-solid fa-user-plus"></i>
         </td>
       </ng-container>
+
       <ng-container matColumnDef="request">
-        <th mat-header-cell *matHeaderCellDef>request</th>
-        <td mat-cell *matCellDef="let user" class="assignee-button" (click)="toggleRequestModal($event,user)"><i
-            class="fa-solid fa-user-plus"></i>
+        <th mat-header-cell *matHeaderCellDef>Request</th>
+        <td mat-cell *matCellDef="let user" class="assignee-button" (click)="toggleRequestModal($event, user)">
+          <i class="fa-solid fa-user-plus"></i>
+        </td>
+      </ng-container>
+
+      <!-- زرار الـ Details اللي إنت ضايفه -->
+      <ng-container matColumnDef="details">
+        <th mat-header-cell *matHeaderCellDef>Details</th>
+        <td mat-cell *matCellDef="let user">
+          <button mat-icon-button color="primary" [routerLink]="['/user-details', user.id]">
+            <i class="fa-solid fa-circle-info"></i>
+          </button>
         </td>
       </ng-container>
 
@@ -93,8 +104,13 @@
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
 
-    <mat-paginator [length]="totalElements" [pageIndex]="pageIndex" [pageSize]="pageSize"
-      [pageSizeOptions]="pageSizeOptions" (page)="handlePageEvent($event)" aria-label="Select page"
+    <mat-paginator
+      [length]="totalElements"
+      [pageIndex]="pageIndex"
+      [pageSize]="pageSize"
+      [pageSizeOptions]="pageSizeOptions"
+      (page)="handlePageEvent($event)"
+      aria-label="Select page"
       class="pagniation-bannel">
     </mat-paginator>
   </div>
@@ -102,6 +118,7 @@
   <div *ngIf="!isLoading && users.length == 0">
     <h2>No users available.</h2>
   </div>
+
   <div *ngIf="requestModal" class="modal-backdrop">
     <div class="modal-box">
       <app-add-request [userId]="userId" [userName]="userName" (closeModal)="closeModal()"></app-add-request>
