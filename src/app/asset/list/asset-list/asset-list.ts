@@ -214,4 +214,11 @@ export class AssetList implements OnInit {
   toggleRequestModal() {
     this.showRequestModal = !this.showRequestModal;
   }
+  
+  onRowClick(asset: any) {
+  console.log("Row clicked:", asset);
+
+  this.router.navigate(['/assets', asset.id]);
+
+}
 }

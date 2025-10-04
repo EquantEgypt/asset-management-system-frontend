@@ -5,6 +5,8 @@ import { Dashboard } from './dashboard/dashboard';
 import { Role } from './model/roles.enum';
 import { AddAssetComponent } from './asset/add/add-asset';
 import { AssignAssetForm } from './assign-asset-form/assign-asset-form';
+import { AssetHistory } from './asset-history/asset-history';
+import { AssetDetails } from './asset-details/asset-details';
 export const routes: Routes = [
   { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
 
@@ -30,6 +32,17 @@ export const routes: Routes = [
     component: AssignAssetForm,
     canActivate: [AuthGuard],
     data: { roles: [Role.ADMIN, Role.MANAGER, Role.IT] }
+  },
+    { path: 'assets/:id', 
+    component: AssetDetails,
+    canActivate: [AuthGuard],
+    data: { roles: [Role.ADMIN, Role.EMPLOYEE, Role.MANAGER, Role.IT] }
+  },
+   { path: 'history/:id', 
+    component: AssetHistory,
+    canActivate: [AuthGuard],
+    data: { roles: [Role.ADMIN, Role.MANAGER, Role.IT] }
+
   },
   { path: '**', redirectTo: 'dashboard' }
 ];
