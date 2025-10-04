@@ -1,0 +1,90 @@
+.user-details-container {
+  max-width: 1100px;
+  margin: 20px auto;
+  padding: 10px;
+  font-family: "Segoe UI", sans-serif;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 20px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.avatar {
+  font-size: 60px;
+  color: #3f51b5;
+  margin-right: 20px;
+}
+
+.info h2 {
+  margin: 0;
+  font-size: 22px;
+  font-weight: bold;
+  color: #333;
+}
+
+.info p {
+  margin: 3px 0;
+  font-size: 14px;
+  color: #555;
+}
+
+.info span {
+  font-size: 13px;
+  color: #777;
+}
+
+.section-title {
+  margin: 25px 0 10px;
+  font-size: 18px;
+  font-weight: bold;
+  color: #444;
+}
+
+.card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+}
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.field label {
+  font-size: 13px;
+  font-weight: bold;
+  color: #666;
+  display: block;
+}
+
+.field p {
+  margin: 5px 0 0;
+  font-size: 14px;
+  color: #222;
+}
+
+.active {
+  color: green;
+  font-weight: bold;
+}
+
+.inactive {
+  color: red;
+  font-weight: bold;
+}

@@ -1,0 +1,50 @@
+<div class="user-details-container" *ngIf="userDetails; else loading">
+
+  <!-- Header with Avatar -->
+  <div class="header">
+    <div class="avatar">
+      <i class="fa-solid fa-user"></i>
+    </div>
+    <div class="info">
+      <h2>{{ userDetails.fullName }}</h2>
+      <p>{{ userDetails.email }}</p>
+      <span>@{{ userDetails.username }}</span>
+    </div>
+  </div>
+
+  <!-- Personal Information -->
+  <h3 class="section-title">Personal Information</h3>
+  <div class="card grid-3">
+    <div class="field">
+      <label>Phone Number</label>
+      <p>{{ userDetails.phone }}</p>
+    </div>
+    <div class="field">
+      <label>Role</label>
+      <p>{{ userDetails.role }}</p>
+    </div>
+    <div class="field">
+      <label>Status</label>
+      <p [ngClass]="userDetails.isActive ? 'active' : 'inactive'">
+        {{ userDetails.isActive ? 'Active' : 'Inactive' }}
+      </p>
+    </div>
+  </div>
+
+  <!-- HR Information -->
+  <h3 class="section-title">Human Resource Information</h3>
+  <div class="card grid-2">
+    <div class="field">
+      <label>Department</label>
+      <p>{{ userDetails.departmentName }}</p>
+    </div>
+    <div class="field">
+      <label>Hire Date</label>
+      <p>{{ userDetails.hireDate | date }}</p>
+    </div>
+  </div>
+</div>
+
+<ng-template #loading>
+  <p>Loading user details...</p>
+</ng-template>

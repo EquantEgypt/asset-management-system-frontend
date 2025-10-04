@@ -10,7 +10,6 @@ import { DepartmentService } from '../../../services/departments.service';
 import { AddRequestComponent } from '../../../request/add/add-request.component';
 import { Router } from '@angular/router';
 
-
 @Component({
   selector: 'app-user-list',
   imports: [SharedModule,AddRequestComponent],
@@ -35,6 +34,10 @@ export class UserList implements OnInit {
   requestModal: boolean = false;
   userId: number | null = null;
   userName: string | null = null;
+  formModal2: boolean = false;
+  formModalDetails: boolean = false;
+  isUserDetailsModalOpen: boolean = false;
+  selectedUser: User | null = null;
   constructor(
     private userService: UserService,
     private departmentService: DepartmentService,
@@ -44,7 +47,7 @@ export class UserList implements OnInit {
 
   ) { }
 
-  displayedColumns: string[] = ['id', 'username', 'email', 'role', 'department', 'assign_asset', 'request'];
+  displayedColumns: string[] = ['id', 'username', 'email', 'role', 'department', 'assign_asset', 'request','details'];
   ngOnInit() {
     this.loadUsers();
     this.userRole = this.auth.getRole();
@@ -107,6 +110,23 @@ closeModal() {
   this.requestModal = false;
   this.userId = null;
   this.userName = null;
+  this.formModal = false;
+  this.isUserDetailsModalOpen = false;
+  this.requestModal = false;
+  this.userId = null;
+  this.userName = null;
+  this.selectedUser = null;
+}
+toggleModal(event: Event, user: User) {
+  event.stopPropagation();
+  this.userId = user.id;
+  this.userName = user.username;
+  this.formModal = !this.formModal;
+}
+openDetails(event: Event, user: User) {
+  event.stopPropagation();
+  this.selectedUser = user;
+  this.isUserDetailsModalOpen = true;
 }
  navigateToAssignAsset(user: User): void {
     this.router.navigate(['/asset-assignments'], {
