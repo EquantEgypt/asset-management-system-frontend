@@ -26,7 +26,7 @@ import { AddRequestComponent } from "../../../request/add/add-request.component"
   standalone: true,
   imports: [SharedModule, FormsModule, MatSlideToggleModule, AddRequestComponent],
   templateUrl: './asset-list.html',
-  styleUrls: ['./asset-list.css'],
+  styleUrls: ['./asset-list.css']
 })
 export class AssetList implements OnInit {
   assets: AssetListDTO[] = [];
@@ -62,9 +62,7 @@ export class AssetList implements OnInit {
     'brand',
     'category',
     'type',
-    'status',
-    'assignedUser',
-    'department',
+    'quantity', 
   ];
   myAssetsColumns: string[] = [
     'serialNumber',
@@ -152,14 +150,13 @@ export class AssetList implements OnInit {
 
     this.assetService.getAssets(filters).subscribe({
       next: (data) => {
-        this.assets = data.content;
-        this.totalElements = data.page.totalElements;
+        // this.assets = data;
         this.isLoading = false;
       },
       error: (err) => {
         console.error('Failed to load assets', err);
         this.isLoading = false;
-      },
+      }
     });
   }
 
@@ -183,6 +180,7 @@ export class AssetList implements OnInit {
   }
 
   loadDepartments(): void {
+
     this.departmentService.getDepartmentsName().subscribe({
       next: (data) => {
         this.departments = data;
@@ -192,6 +190,9 @@ export class AssetList implements OnInit {
         this.departments = [];
       },
     });
+    this.departmentService
+      .getDepartmentsName()
+      .subscribe((data) => (this.departments = data));
   }
 
   applyFilters(): void {
@@ -205,10 +206,9 @@ export class AssetList implements OnInit {
   handlePageEvent(e: PageEvent) {
     this.pageSize = e.pageSize;
     this.pageIndex = e.pageIndex;
-    this.loadAssets();
-  }
-
-  navigateToAddAsset(): void {
+  this.loadAssets();
+}
+ navigateToAddAsset(): void {
     this.router.navigate(['/assets/add']);
   }
   toggleRequestModal() {

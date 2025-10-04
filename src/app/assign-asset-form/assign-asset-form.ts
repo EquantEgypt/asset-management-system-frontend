@@ -1,7 +1,6 @@
-import { Component, OnInit, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
 import { FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
@@ -17,6 +16,8 @@ import { UserService } from '../services/user.service';
 import { ToastService } from 'angular-toastify';
 import { ConfirmationModalComponent } from '../confirmation-modal/confirmation-modal/confirmation-modal.spec';
 import { SharedModule } from '../shared/shared.module';
+import { AssignPerRequest } from '../model/request.model';
+import { RequestService } from '../services/request.service';
 
 @Component({
   selector: 'app-assign-asset-form',
@@ -35,6 +36,8 @@ export class AssignAssetForm implements OnInit {
     assetId: new FormControl<number | null>(null, Validators.required),
     note: new FormControl<string | null>(null)
   });
+  @Input() receivedData: AssignPerRequest | null = null;
+  @Output() closeModal = new EventEmitter<boolean>();
 
   // Data
   assets: Asset[] = [];
@@ -49,6 +52,7 @@ export class AssignAssetForm implements OnInit {
   defaultUserName: string = '';
   defaultUserId: number | null = null;
   typeId: number | null = null;
+  disabelAll = false;
   // Autocomplete
   userSearch = new FormControl<User | string>('');
   filteredUsers$: Observable<User[]> = of([]);
@@ -62,6 +66,7 @@ export class AssignAssetForm implements OnInit {
   private toast = inject(ToastService);
   private dialog = inject(MatDialog);
   private router = inject(Router);
+  private requestService = inject(RequestService);
 
   ngOnInit(): void {
     this.loadCategories();
@@ -72,8 +77,31 @@ export class AssignAssetForm implements OnInit {
       this.assignForm.patchValue({ userId: this.selectedUser.id });
       this.userSearch.setValue(this.selectedUser);
     }
+    if (this.receivedData) {
+      this.disabelAll = true;
 
+      const userObj: User = {
+        id: this.receivedData.userId,
+        username: this.receivedData.userName,
+      } as User;
+      this.selectedUser = userObj;
+      this.assignForm.patchValue({
+        userId: this.receivedData.userId,
+        categoryId: this.receivedData.categoryId,
+        typeName: this.receivedData.typeName
+      });
+      const typeObj: Type = {
+        id: this.receivedData.typeId,
+        name: this.receivedData.typeName,
+      } as Type;
+
+      this.onTypeChange(typeObj)
+      this.userSearch.setValue(userObj);
+      this.userSearch.disable();
+      this.assignForm.get('categoryId')?.disable();
+    }
   }
+
 
   private initUserSearch(): void {
     this.filteredUsers$ = this.userSearch.valueChanges.pipe(
@@ -104,7 +132,6 @@ export class AssignAssetForm implements OnInit {
       this.showTypesField = true;
     });
   }
-
 
   onTypeChange(type: Type): void {
     if (!type) return;
@@ -143,9 +170,8 @@ export class AssignAssetForm implements OnInit {
   }
 
   confirmAssignment(): void {
-    const { assetId, userId, note, typeId, categoryId } = this.assignForm.value;
-
-
+    const { assetId, userId, note, typeId, categoryId } = this.assignForm.getRawValue();;
+    console.log(categoryId)
     this.assignService.assignAsset({
       assetId: assetId!,
       userId: userId!,
@@ -155,9 +181,28 @@ export class AssignAssetForm implements OnInit {
     }).subscribe({
       next: () => {
         this.toast.success('Asset assigned successfully');
+        if (this.receivedData) {
+          this.requestService
+            .respondToRequest(this.receivedData.requestId, 'APPROVED', {
+              assetId: assetId
+            })
+            .subscribe({
+              next: () => {
+                console.log("done")
+
+                this.closeModal.emit(true);
+                console.log('Request updated successfully');
+              },
+              error: (err) => {
+                console.error('Failed to update request', err);
+              },
+            });
+        }
+
         this.router.navigate(['/dashboard']);
       },
       error: () => {
+
         this.toast.error('Failed to assign asset');
       }
     });

@@ -81,9 +81,14 @@ export class AuthService {
     const user = JSON.parse(userStr);
     return user?.departmentName ?? null;
   }
-  getCurrentUsername(): string | null {
+
+
+  
+    getCurrentUsername(): string | null {
     const userStr = this.storage.getItem(USER);
-    if (!userStr) return null;
+    if (!userStr) {
+      return null;
+    }
     const user = JSON.parse(userStr);
     return user?.username ?? null;
   }
@@ -91,11 +96,11 @@ export class AuthService {
   getAuthToken(): string | null {
     return this.storage.getItem(AUTH_TOKEN);
   }
-
   getUser(): any {
     const userStr = this.storage.getItem(USER);
     return userStr ? JSON.parse(userStr) : null;
   }
+
   isAdmin(): boolean {
     return this.getRole() === Role.ADMIN;
   } 
@@ -108,4 +113,6 @@ export class AuthService {
   isManager(): boolean {
     return this.getRole() === Role.MANAGER;
   }
+
+
 }

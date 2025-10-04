@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
 import {AssetAssignment } from '../model/asset.model';
 import { AuthService } from './auth.service';
 import { User } from '../model/user.model';
-const BACKEND_URL = 'http://localhost:8080/asset-assignments';
+const BACKEND_URL = 'http://localhost:8080/assets/assign';
 @Injectable({
   providedIn: 'root'
 })

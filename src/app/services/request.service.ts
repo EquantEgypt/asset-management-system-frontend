@@ -4,37 +4,46 @@ import { Observable } from 'rxjs';
 import { Request, RequestView } from '../model/request.model';
 import { AuthService } from './auth.service';
 import { Page } from '../model/Page.model';
-
 const BACKEND_URL = 'http://localhost:8080/request';
-
 @Injectable({
   providedIn: 'root'
 })
 export class RequestService {
-
-  constructor(private http: HttpClient, private authService: AuthService) {}
-
+  constructor(private http: HttpClient, private authService: AuthService) { }
   private getAuthHeaders(): HttpHeaders {
     const token = this.authService.getAuthToken();
     return new HttpHeaders({
       'Authorization': `Basic ${token}`
     });
   }
-
   addRequest(requestData: Request): Observable<Request> {
     return this.http.post<Request>(`${BACKEND_URL}`, requestData, {
       headers: this.getAuthHeaders()
     });
   }
-
-  getRequests(page: number, size: number): Observable<Page<RequestView>> {
-    const params = new HttpParams()
+  getRequests(
+    page: number,
+    size: number,
+    type?: string | null,
+    search?: string,
+    status?: string| null
+  ): Observable<Page<RequestView>> {
+    let params = new HttpParams()
       .set('page', page.toString())
       .set('size', size.toString());
+      if (status) params = params.set('status', status); 
 
+      if (type) params = params.set('type', type);
+    if (search) params = params.set('search', search);
     return this.http.get<Page<RequestView>>(`${BACKEND_URL}`, {
       headers: this.getAuthHeaders(),
       params
+    });
+  }
+  respondToRequest(requestId: number, action: 'APPROVED' | 'REJECTED', payload: any): Observable<RequestView> {
+    const url = `${BACKEND_URL}/${requestId}/${action === 'APPROVED' ? 'approve' : 'reject'}`;
+    return this.http.put<RequestView>(url, payload, {
+      headers: this.getAuthHeaders(),
     });
   }
 }

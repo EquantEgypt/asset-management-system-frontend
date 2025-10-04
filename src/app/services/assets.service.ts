@@ -22,7 +22,6 @@ export class AssetService {
       'Authorization': `Basic ${token}`
     });
   }
-
 getAssets(filter?: any): Observable<Page<AssetListDTO>> {
   let params = new HttpParams();
 

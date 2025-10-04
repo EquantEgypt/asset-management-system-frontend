@@ -1,13 +1,8 @@
 <h2 mat-dialog-title>Confirm Assignment</h2>
-
 <mat-dialog-content>
   <p><strong>User:</strong> {{ data.user?.username }}</p>
   <p><strong>Email:</strong> {{ data.user?.email }}</p>
   <p><strong>Asset:</strong> {{ data.asset?.assetName }} (SN: {{ data.asset?.serialNumber }})</p>
-  <p><strong>Assignment Date:</strong> {{ data.formValue.assignmentDate }}</p>
-  @if (data.formValue.returnDate) {
-    <p><strong>Return Date:</strong> {{ data.formValue.returnDate }}</p>
-  }
   @if (data.formValue.note) {
     <p><strong>Note:</strong> {{ data.formValue.note }}</p>
   }
