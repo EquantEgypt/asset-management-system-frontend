@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { UserDetailsModel } from '../model/UserDetailsModel';
-import { AuthService } from './auth.service';   // عشان تجيب التوكن
+import { AuthService } from './auth.service';  
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +12,7 @@ export class UserDetailsService {
 
   constructor(
     private http: HttpClient,
-    private authService: AuthService   // نجيب التوكن من السيرفيس
+    private authService: AuthService  
   ) {}
 
   getUserDetails(id: number): Observable<UserDetailsModel> {

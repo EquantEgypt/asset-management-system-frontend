@@ -1,17 +1,13 @@
-
 <div *ngIf="!isLoggedIn">
   <router-outlet></router-outlet>
 </div>
-
 <div *ngIf="isLoggedIn">
   <app-header 
     [userEmail]="userEmail" 
     (logoutEvent)="logout()">
   </app-header>
-
   <router-outlet></router-outlet>
 </div>
-
 <lib-toastify-toast-container
   [position]="'top-right'"
   [transition]="'bounce'"

@@ -36,11 +36,7 @@ export class UserList implements OnInit {
   requestModal: boolean = false;
   userId: number | null = null;
   userName: string | null = null;
-   // ✨ دول اللي ناقصين
-  formModal2: boolean = false;
-  formModalDetails: boolean = false;
-
-  // ✨ المستخدم اللي هتفتحه في details modal
+  isUserDetailsModalOpen: boolean = false;
   selectedUser: User | null = null;
   constructor(
     private userService: UserService,
@@ -114,9 +110,8 @@ closeModal() {
   this.requestModal = false;
   this.userId = null;
   this.userName = null;
-    this.formModal = false;
-  this.formModal2 = false;
-  this.formModalDetails = false;
+  this.formModal = false;
+  this.isUserDetailsModalOpen = false;
   this.requestModal = false;
   this.userId = null;
   this.userName = null;
@@ -128,18 +123,10 @@ toggleModal(event: Event, user: User) {
   this.userName = user.username;
   this.formModal = !this.formModal;
 }
-toggleModal2(event: Event, user: User) {
-  event.stopPropagation();
-  this.userId = user.id;
-  this.userName = user.username;
-  this.formModal2 = !this.formModal2;
-}
 openDetails(event: Event, user: User) {
   event.stopPropagation();
   this.selectedUser = user;
-  this.formModalDetails = true;
+  this.isUserDetailsModalOpen = true;
 }
-
-
 
 }
