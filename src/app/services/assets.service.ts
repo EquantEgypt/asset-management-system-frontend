@@ -6,6 +6,7 @@ import { AuthService } from './auth.service';
 import { AssetRequest } from '../model/asset.model';
 import { AssetListDTO } from '../model/asset-list-dto.model';
 import { Page } from '../model/Page.model';
+import { UpdateAsset } from '../model/update-asset.model';
 
 const BACKEND_URL = 'http://localhost:8080/assets';
 
@@ -43,6 +44,12 @@ getAssets(filter?: any): Observable<Page<AssetListDTO>> {
 
   addAsset(assetData: AssetRequest): Observable<Asset> {
     return this.http.post<Asset>(`${BACKEND_URL}`, assetData, {
+      headers: this.getAuthHeaders()
+    });
+  }
+
+   updateAsset(id: number, assetData: UpdateAsset): Observable<Asset> {
+    return this.http.put<Asset>(`${BACKEND_URL}/${id}`, assetData, {
       headers: this.getAuthHeaders()
     });
   }

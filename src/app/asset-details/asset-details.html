@@ -65,8 +65,11 @@
   </div>
 
 
-  <div class="asset-actions" *ngIf="userRole!== Role.EMPLOYEE" >
-    <button  (click)="goToHistory(asset.assetId)">
+ <div class="asset-actions" *ngIf="userRole!== Role.EMPLOYEE" >
+    <button (click)="goToEdit(asset.assetId)"> 
+      Edit Asset ✏️
+    </button>
+    <button (click)="goToHistory(asset.assetId)">
       View History ➡
     </button>
   </div>
