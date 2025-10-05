@@ -3,8 +3,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AssetDetailsdto } from '../model/AssetDetails.model';
 import { AssetDetailsService } from '../services/asset-details.service';
 import { SharedModule } from '../shared/shared.module';
-import { Role } from '../model/roles.enum';               
-import { AuthService } from '../services/auth.service';   
+import { Role } from '../model/roles.enum';
+import { AuthService } from '../services/auth.service';
 import { AssetStatus } from '../model/asset-status.enum';
 
 @Component({
@@ -14,32 +14,32 @@ import { AssetStatus } from '../model/asset-status.enum';
   standalone: true,
   imports: [
     SharedModule,
-   
-],
+
+  ],
 })
 export class AssetDetails implements OnInit {
   asset?: AssetDetailsdto;
   isLoading = true;
-  userRole: Role | null = null;   
-  Role = Role;   
+  userRole: Role | null = null;
+  Role = Role;
   constructor(
     private route: ActivatedRoute,
     private assetDetailsService: AssetDetailsService,
-    private router: Router  , 
-    private authService: AuthService,   
+    private router: Router,
+    private authService: AuthService,
 
 
-  ) {}
-goToHistory(id: number) {
+  ) { }
+  goToHistory(id: number) {
 
-  this.router.navigate(['/history', id]);
-}
+    this.router.navigate(['/history', id]);
+  }
 
-goToEdit(id: number) {
+  goToEdit(id: number) {
     this.router.navigate(['/assets/update', id]);
   }
   ngOnInit(): void {
-        this.userRole = this.authService.getRole();
+    this.userRole = this.authService.getRole();
 
     const id = Number(this.route.snapshot.paramMap.get('id'));
     if (id) {
@@ -51,14 +51,14 @@ goToEdit(id: number) {
         error: (err) => {
           console.error('Error loading asset details:', err);
           this.isLoading = false;
-        
+
 
         }
       });
     }
   }
 
-getStatusClass(status: AssetStatus | string): string {
+  getStatusClass(status: AssetStatus | string): string {
     switch (status) {
       case AssetStatus.AVAILABLE:
         return 'available';
@@ -73,7 +73,20 @@ getStatusClass(status: AssetStatus | string): string {
     }
   }
 
-goBackToDashboard(): void {
-  this.router.navigate(['/dashboard']);   
-}
+  goBackToDashboard(): void {
+    this.router.navigate(['/dashboard']);
+  }
+  onUnassign(assetId: number) {
+    this.assetDetailsService.unassignAsset(assetId).subscribe({
+      next: () => {
+        console.log(`Asset ${assetId} unassigned successfully`);
+        // You might want to refresh asset details here
+        // this.loadAssetDetails(assetId);
+      },
+      error: (err) => {
+        console.error('Error unassigning asset:', err);
+      }
+    });
+  }
+
 }

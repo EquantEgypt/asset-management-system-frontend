@@ -1,6 +1,6 @@
 <div class="asset-details-container" *ngIf="!isLoading && asset">
   <h2 class="asset-title">{{ asset.assetName }}</h2>
-  
+
   <div class="asset-grid">
     <div class="info-card">
       <div class="card-title">Basic Information</div>
@@ -50,11 +50,14 @@
       <div class="card-title">Assignment Information</div>
       <div class="info-item">
         <span class="info-label">Assigned To</span>
-        <span class="info-value">{{ asset.assignedToName || 'N/A' }}</span>
+        <span class="info-value" *ngif="asset.status==`assigned`">{{ asset.assignedToName || 'N/A' }}</span>
       </div>
       <div class="info-item">
         <span class="info-label">Email</span>
-        <span class="info-value">{{ asset.assignedToEmail || 'N/A' }}</span>
+        <span class="info-value" *ngif="asset.status==`assigned`">{{ asset.assignedToEmail || 'N/A' }}</span>
+      </div>
+      <div class="info-actions unassign-btn">
+        <button class="unassign-btn" (click)="onUnassign(asset.assetId)">Unassign</button>
       </div>
     </div>
   </div>
@@ -65,8 +68,8 @@
   </div>
 
 
- <div class="asset-actions" *ngIf="userRole!== Role.EMPLOYEE" >
-    <button (click)="goToEdit(asset.assetId)"> 
+  <div class="asset-actions" *ngIf="userRole!== Role.EMPLOYEE">
+    <button (click)="goToEdit(asset.assetId)">
       Edit Asset ✏️
     </button>
     <button (click)="goToHistory(asset.assetId)">
@@ -74,12 +77,12 @@
     </button>
   </div>
 
-<div class="back-button-container">
-  <button class="back-btn "(click)="goBackToDashboard()">
-    ⬅ Back to Dashboard
-  </button>
-</div>
+  <div class="back-button-container">
+    <button class="back-btn " (click)="goBackToDashboard()">
+      ⬅ Back to Dashboard
+    </button>
+  </div>
 
-<div *ngIf="isLoading" class="loading-spinner">
-  <p>Loading asset details...</p>
-</div>
+  <div *ngIf="isLoading" class="loading-spinner">
+    <p>Loading asset details...</p>
+  </div>

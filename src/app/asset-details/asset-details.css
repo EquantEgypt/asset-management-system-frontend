@@ -173,6 +173,7 @@
   right: 20px;
   z-index: 10;
   
+}
   button {
     background-color: #ffffff;
     color: #FF7900;
@@ -187,7 +188,8 @@
     gap: 6px;
     transition: all 0.2s ease;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-
+    
+  }
     &:hover {
       background-color: #f8fafc;
       border-color: #FF7900;
@@ -203,8 +205,6 @@
         background-color: #f8fafc !important;
         border-color: #FF7900 !important;
       }
-    }
-  }
 }
 
 .loading-spinner {
@@ -264,15 +264,30 @@
     align-items: flex-start;
     gap: 4px;
 
+  }
     .info-label, .info-value {
       text-align: left;
       margin-left: 0;
     }
-  }
 
   .back-button-container,
   .asset-actions {
     position: static;
     margin-bottom: 16px;
   }
+  .unassign-btn {
+  background-color: #e74c3c; /* Red */
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.2s ease;
+}
+
+.unassign-btn:hover {
+  background-color: #c0392b; /* Darker red */
+}
+
 }

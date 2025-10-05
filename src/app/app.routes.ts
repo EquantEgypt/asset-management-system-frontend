@@ -34,7 +34,8 @@ export const routes: Routes = [
     canActivate: [AuthGuard],
     data: { roles: [Role.ADMIN, Role.MANAGER, Role.IT] }
   },
-    { path: 'assets/:id', 
+  {
+    path: 'assets/:id',
     component: AssetDetails,
     canActivate: [AuthGuard],
     data: { roles: [Role.ADMIN, Role.EMPLOYEE, Role.MANAGER, Role.IT] }
@@ -45,7 +46,8 @@ export const routes: Routes = [
     canActivate: [AuthGuard],
     data: { roles: [Role.ADMIN] }
   },
-   { path: 'history/:id', 
+  {
+    path: 'history/:id',
     component: AssetHistory,
     canActivate: [AuthGuard],
     data: { roles: [Role.ADMIN, Role.MANAGER, Role.IT] }
