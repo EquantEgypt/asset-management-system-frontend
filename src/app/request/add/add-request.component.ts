@@ -112,8 +112,11 @@ export class AddRequestComponent implements OnInit {
       page: 0,
       size: 100,
     };
+    if(this.userName===null){
     filter.myAssetsFlag = true;
-
+}else{
+    filter.assignedUser = this.userName;
+}
     this.assetService
       .getAssets(filter)
       .pipe(takeUntilDestroyed(this.destroyRef))
@@ -155,7 +158,7 @@ export class AddRequestComponent implements OnInit {
 
     let currentUserId: number | null = null;
     if (this.userId === null) {
-      // currentUserId = this.authService.getCurrentUserId();
+     currentUserId = this.authService.getCurrentUserId();
     } else {
       currentUserId = this.userId;
     }
